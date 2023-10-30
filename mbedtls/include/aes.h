@@ -273,10 +273,10 @@ int mbedtls_aes_crypt_ecb(mbedtls_aes_context *ctx,
  *         mbedtls_aes_setkey_enc() or mbedtls_aes_setkey_dec() must be called
  *         before the first call to this API with the same context.
  *
- * \note   This function operates on full blocks, that is, the input size
+ * \r\note   This function operates on full blocks, that is, the input size
  *         must be a multiple of the AES block size of \c 16 Bytes.
  *
- * \note   Upon exit, the content of the IV is updated so that you can
+ * \r\note   Upon exit, the content of the IV is updated so that you can
  *         call the same function again on the next
  *         block(s) of data and get the same result as if it was
  *         encrypted in one call. This allows a "streaming" usage.
@@ -370,7 +370,7 @@ int mbedtls_aes_crypt_xts(mbedtls_aes_xts_context *ctx,
  *        because CFB mode uses the same key schedule for encryption and
  *        decryption.
  *
- * \note  Upon exit, the content of the IV is updated so that you can
+ * \r\note  Upon exit, the content of the IV is updated so that you can
  *        call the same function again on the next
  *        block(s) of data and get the same result as if it was
  *        encrypted in one call. This allows a "streaming" usage.
@@ -417,7 +417,7 @@ int mbedtls_aes_crypt_cfb128(mbedtls_aes_context *ctx,
  *        use the context initialized with mbedtls_aes_setkey_enc() for
  *        both #MBEDTLS_AES_ENCRYPT and #MBEDTLS_AES_DECRYPT.
  *
- * \note  Upon exit, the content of the IV is updated so that you can
+ * \r\note  Upon exit, the content of the IV is updated so that you can
  *        call the same function again on the next
  *        block(s) of data and get the same result as if it was
  *        encrypted in one call. This allows a "streaming" usage.
@@ -463,7 +463,7 @@ int mbedtls_aes_crypt_cfb8(mbedtls_aes_context *ctx,
  *              The OFB operation is identical for encryption or decryption,
  *              therefore no operation mode needs to be specified.
  *
- * \note        Upon exit, the content of iv, the Initialisation Vector, is
+ * \r\note        Upon exit, the content of iv, the Initialisation Vector, is
  *              updated so that you can call the same function again on the next
  *              block(s) of data and get the same result as if it was encrypted
  *              in one call. This allows a "streaming" usage, by initialising

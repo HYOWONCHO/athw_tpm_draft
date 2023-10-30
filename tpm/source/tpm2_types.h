@@ -724,7 +724,7 @@ static inline word32 ByteReverseWord32(word32 value)
 #elif defined(WOLFSSL_BYTESWAP32_ASM) && defined(__GNUC__) && \
       defined(__aarch64__)
     __asm__ volatile (
-        "REV32 %0, %0  \n"
+        "REV32 %0, %0  \r\n"
         : "+r" (value)
         :
     );
@@ -732,7 +732,7 @@ static inline word32 ByteReverseWord32(word32 value)
 #elif defined(WOLFSSL_BYTESWAP32_ASM) && defined(__GNUC__) && \
       (defined(__thumb__) || defined(__arm__))
     __asm__ volatile (
-        "REV %0, %0  \n"
+        "REV %0, %0  \r\n"
         : "+r" (value)
         :
     );

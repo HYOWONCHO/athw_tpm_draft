@@ -57,7 +57,7 @@ typedef enum {
  * \brief    The key wrapping context-type definition. The key wrapping context is passed
  *           to the APIs called.
  *
- * \note     The definition of this type may change in future library versions.
+ * \r\note     The definition of this type may change in future library versions.
  *           Don't make any assumptions on this context!
  */
 typedef struct {

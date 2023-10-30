@@ -88,7 +88,7 @@ extern "C" {
 /**
  * Domain-parameter identifiers: curve, subgroup, and generator.
  *
- * \note Only curves over prime fields are supported.
+ * \r\note Only curves over prime fields are supported.
  *
  * \warning This library does not support validation of arbitrary domain
  * parameters. Therefore, only standardized domain parameters from trusted
@@ -158,7 +158,7 @@ typedef struct mbedtls_ecp_curve_info {
 /**
  * \brief           The ECP point structure, in Jacobian coordinates.
  *
- * \note            All functions expect and return points satisfying
+ * \r\note            All functions expect and return points satisfying
  *                  the following condition: <code>Z == 0</code> or
  *                  <code>Z == 1</code>. Other values of \p Z are
  *                  used only by internal functions.
@@ -230,7 +230,7 @@ mbedtls_ecp_point;
  * additions or subtractions. Therefore, it is only an approximative modular
  * reduction. It must return 0 on success and non-zero on failure.
  *
- * \note        Alternative implementations of the ECP module must obey the
+ * \r\note        Alternative implementations of the ECP module must obey the
  *              following constraints.
  *              * Group IDs must be distinct: if two group structures have
  *                the same ID, then they must be identical.
@@ -271,7 +271,7 @@ typedef struct mbedtls_ecp_group {
 mbedtls_ecp_group;
 
 /**
- * \name SECTION: Module settings
+ * \r\name SECTION: Module settings
  *
  * The configuration options you can set for this module are in this section.
  * Either change them in mbedtls_config.h, or define them using the compiler command line.
@@ -370,14 +370,14 @@ mbedtls_ecp_group;
 /**
  * \brief           Internal restart context for multiplication
  *
- * \note            Opaque struct
+ * \r\note            Opaque struct
  */
 typedef struct mbedtls_ecp_restart_mul mbedtls_ecp_restart_mul_ctx;
 
 /**
  * \brief           Internal restart context for ecp_muladd()
  *
- * \note            Opaque struct
+ * \r\note            Opaque struct
  */
 typedef struct mbedtls_ecp_restart_muladd mbedtls_ecp_restart_muladd_ctx;
 
@@ -433,7 +433,7 @@ typedef void mbedtls_ecp_restart_ctx;
  *
  * A generic key-pair that may be used for ECDSA and fixed ECDH, for example.
  *
- * \note    Members are deliberately in the same order as in the
+ * \r\note    Members are deliberately in the same order as in the
  *          ::mbedtls_ecdsa_context structure.
  */
 typedef struct mbedtls_ecp_keypair {
@@ -507,14 +507,14 @@ mbedtls_ecp_keypair;
  *                  Lower (non-zero) values mean ECC functions will block for
  *                  a lesser maximum amount of time.
  *
- * \note            A "basic operation" is defined as a rough equivalent of a
+ * \r\note            A "basic operation" is defined as a rough equivalent of a
  *                  multiplication in GF(p) for the NIST P-256 curve.
  *                  As an indication, with default settings, a scalar
  *                  multiplication (full run of \c mbedtls_ecp_mul()) is:
  *                  - about 3300 basic operations for P-256
  *                  - about 9400 basic operations for P-384
  *
- * \note            Very low values are not always respected: sometimes
+ * \r\note            Very low values are not always respected: sometimes
  *                  functions need to block for a minimum number of
  *                  operations, and will do so even if max_ops is set to a
  *                  lower value.  That minimum depends on the curve size, and
@@ -527,7 +527,7 @@ mbedtls_ecp_keypair;
  *                  P-384   682     416     320     272     248
  *                  P-521  1364     832     640     544     496
  *
- * \note            This setting is currently ignored by Curve25519.
+ * \r\note            This setting is currently ignored by Curve25519.
  */
 void mbedtls_ecp_set_max_ops(unsigned max_ops);
 
@@ -549,7 +549,7 @@ mbedtls_ecp_curve_type mbedtls_ecp_get_type(const mbedtls_ecp_group *grp);
  * \brief           This function retrieves the information defined in
  *                  mbedtls_ecp_curve_info() for all supported curves.
  *
- * \note            This function returns information about all curves
+ * \r\note            This function returns information about all curves
  *                  supported by the library. Some curves may not be
  *                  supported for all algorithms. Call mbedtls_ecdh_can_do()
  *                  or mbedtls_ecdsa_can_do() to check if a curve is
@@ -564,7 +564,7 @@ const mbedtls_ecp_curve_info *mbedtls_ecp_curve_list(void);
  *                  identifiers of all supported curves in the order of
  *                  preference.
  *
- * \note            This function returns information about all curves
+ * \r\note            This function returns information about all curves
  *                  supported by the library. Some curves may not be
  *                  supported for all algorithms. Call mbedtls_ecdh_can_do()
  *                  or mbedtls_ecdsa_can_do() to check if a curve is
@@ -619,7 +619,7 @@ void mbedtls_ecp_point_init(mbedtls_ecp_point *pt);
  * \brief           This function initializes an ECP group context
  *                  without loading any domain parameters.
  *
- * \note            After this function is called, domain parameters
+ * \r\note            After this function is called, domain parameters
  *                  for various ECP groups can be loaded through the
  *                  mbedtls_ecp_group_load() or mbedtls_ecp_tls_read_group()
  *                  functions.
@@ -729,7 +729,7 @@ int mbedtls_ecp_is_zero(mbedtls_ecp_point *pt);
 /**
  * \brief           This function compares two points.
  *
- * \note            This assumes that the points are normalized. Otherwise,
+ * \r\note            This assumes that the points are normalized. Otherwise,
  *                  they may compare as "not equal" even if they are.
  *
  * \param P         The first point to compare. This must be initialized.
@@ -789,11 +789,11 @@ int mbedtls_ecp_point_write_binary(const mbedtls_ecp_group *grp,
 /**
  * \brief           This function imports a point from unsigned binary data.
  *
- * \note            This function does not check that the point actually
+ * \r\note            This function does not check that the point actually
  *                  belongs to the given group, see mbedtls_ecp_check_pubkey()
  *                  for that.
  *
- * \note            For compressed points, see #MBEDTLS_ECP_PF_COMPRESSED for
+ * \r\note            For compressed points, see #MBEDTLS_ECP_PF_COMPRESSED for
  *                  limitations.
  *
  * \param grp       The group to which the point should belong.
@@ -818,7 +818,7 @@ int mbedtls_ecp_point_read_binary(const mbedtls_ecp_group *grp,
 /**
  * \brief           This function imports a point from a TLS ECPoint record.
  *
- * \note            On function return, \p *buf is updated to point immediately
+ * \r\note            On function return, \p *buf is updated to point immediately
  *                  after the ECPoint record.
  *
  * \param grp       The ECP group to use.
@@ -868,7 +868,7 @@ int mbedtls_ecp_tls_write_point(const mbedtls_ecp_group *grp,
  * \brief           This function sets up an ECP group context
  *                  from a standardized set of domain parameters.
  *
- * \note            The index should be a value of the NamedCurve enum,
+ * \r\note            The index should be a value of the NamedCurve enum,
  *                  as defined in <em>RFC-4492: Elliptic Curve Cryptography
  *                  (ECC) Cipher Suites for Transport Layer Security (TLS)</em>,
  *                  usually in the form of an \c MBEDTLS_ECP_DP_XXX macro.
@@ -887,7 +887,7 @@ int mbedtls_ecp_group_load(mbedtls_ecp_group *grp, mbedtls_ecp_group_id id);
  * \brief           This function sets up an ECP group context from a TLS
  *                  ECParameters record as defined in RFC 4492, Section 5.4.
  *
- * \note            The read pointer \p buf is updated to point right after
+ * \r\note            The read pointer \p buf is updated to point right after
  *                  the ECParameters record on exit.
  *
  * \param grp       The group context to setup. This must be initialized.
@@ -907,7 +907,7 @@ int mbedtls_ecp_tls_read_group(mbedtls_ecp_group *grp,
  * \brief           This function extracts an elliptic curve group ID from a
  *                  TLS ECParameters record as defined in RFC 4492, Section 5.4.
  *
- * \note            The read pointer \p buf is updated to point right after
+ * \r\note            The read pointer \p buf is updated to point right after
  *                  the ECParameters record on exit.
  *
  * \param grp       The address at which to store the group id.
@@ -952,7 +952,7 @@ int mbedtls_ecp_tls_write_group(const mbedtls_ecp_group *grp,
  *
  *                  It is not thread-safe to use same group in multiple threads.
  *
- * \note            To prevent timing attacks, this function
+ * \r\note            To prevent timing attacks, this function
  *                  executes the exact same sequence of base-field
  *                  operations for any valid \p m. It avoids any if-branch or
  *                  array index depending on the value of \p m. It also uses
@@ -985,7 +985,7 @@ int mbedtls_ecp_mul(mbedtls_ecp_group *grp, mbedtls_ecp_point *R,
  *
  * \see             mbedtls_ecp_mul()
  *
- * \note            This function does the same as \c mbedtls_ecp_mul(), but
+ * \r\note            This function does the same as \c mbedtls_ecp_mul(), but
  *                  it can return early and restart according to the limit set
  *                  with \c mbedtls_ecp_set_max_ops() to reduce blocking.
  *
@@ -1019,7 +1019,7 @@ int mbedtls_ecp_mul_restartable(mbedtls_ecp_group *grp, mbedtls_ecp_point *R,
  * \brief           This function checks if domain parameter A of the curve is
  *                  \c -3.
  *
- * \note            This function is only defined for short Weierstrass curves.
+ * \r\note            This function is only defined for short Weierstrass curves.
  *                  It may not be included in builds without any short
  *                  Weierstrass curve.
  *
@@ -1041,10 +1041,10 @@ static inline int mbedtls_ecp_group_a_is_minus_3(const mbedtls_ecp_group *grp)
  *
  *                  It is not thread-safe to use same group in multiple threads.
  *
- * \note            In contrast to mbedtls_ecp_mul(), this function does not
+ * \r\note            In contrast to mbedtls_ecp_mul(), this function does not
  *                  guarantee a constant execution flow and timing.
  *
- * \note            This function is only defined for short Weierstrass curves.
+ * \r\note            This function is only defined for short Weierstrass curves.
  *                  It may not be included in builds without any short
  *                  Weierstrass curve.
  *
@@ -1081,11 +1081,11 @@ int mbedtls_ecp_muladd(mbedtls_ecp_group *grp, mbedtls_ecp_point *R,
  *
  * \see             \c mbedtls_ecp_muladd()
  *
- * \note            This function works the same as \c mbedtls_ecp_muladd(),
+ * \r\note            This function works the same as \c mbedtls_ecp_muladd(),
  *                  but it can return early and restart according to the limit
  *                  set with \c mbedtls_ecp_set_max_ops() to reduce blocking.
  *
- * \note            This function is only defined for short Weierstrass curves.
+ * \r\note            This function is only defined for short Weierstrass curves.
  *                  It may not be included in builds without any short
  *                  Weierstrass curve.
  *
@@ -1133,7 +1133,7 @@ int mbedtls_ecp_muladd_restartable(
  *                  used has a small cofactor. In particular, it is useless for
  *                  the NIST groups which all have a cofactor of 1.
  *
- * \note            This function uses bare components rather than an
+ * \r\note            This function uses bare components rather than an
  *                  ::mbedtls_ecp_keypair structure, to ease use with other
  *                  structures, such as ::mbedtls_ecdh_context or
  *                  ::mbedtls_ecdsa_context.
@@ -1155,7 +1155,7 @@ int mbedtls_ecp_check_pubkey(const mbedtls_ecp_group *grp,
  * \brief           This function checks that an \c mbedtls_mpi is a
  *                  valid private key for this curve.
  *
- * \note            This function uses bare components rather than an
+ * \r\note            This function uses bare components rather than an
  *                  ::mbedtls_ecp_keypair structure to ease use with other
  *                  structures, such as ::mbedtls_ecdh_context or
  *                  ::mbedtls_ecdsa_context.
@@ -1197,7 +1197,7 @@ int mbedtls_ecp_gen_privkey(const mbedtls_ecp_group *grp,
  * \brief           This function generates a keypair with a configurable base
  *                  point.
  *
- * \note            This function uses bare components rather than an
+ * \r\note            This function uses bare components rather than an
  *                  ::mbedtls_ecp_keypair structure to ease use with other
  *                  structures, such as ::mbedtls_ecdh_context or
  *                  ::mbedtls_ecdsa_context.
@@ -1229,7 +1229,7 @@ int mbedtls_ecp_gen_keypair_base(mbedtls_ecp_group *grp,
 /**
  * \brief           This function generates an ECP keypair.
  *
- * \note            This function uses bare components rather than an
+ * \r\note            This function uses bare components rather than an
  *                  ::mbedtls_ecp_keypair structure to ease use with other
  *                  structures, such as ::mbedtls_ecdh_context or
  *                  ::mbedtls_ecdsa_context.

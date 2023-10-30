@@ -82,7 +82,7 @@
 #define MBEDTLS_CTR_DRBG_SEEDLEN            (MBEDTLS_CTR_DRBG_KEYSIZE + MBEDTLS_CTR_DRBG_BLOCKSIZE)   /**< The seed length, calculated as (counter + AES key). */
 
 /**
- * \name SECTION: Module settings
+ * \r\name SECTION: Module settings
  *
  * The configuration options you can set for this module are in this section.
  * Either change them in mbedtls_config.h or define them using the compiler command
@@ -215,7 +215,7 @@ mbedtls_ctr_drbg_context;
  *                      and prepares it for mbedtls_ctr_drbg_seed()
  *                      or mbedtls_ctr_drbg_free().
  *
- * \note                The reseed interval is
+ * \r\note                The reseed interval is
  *                      #MBEDTLS_CTR_DRBG_RESEED_INTERVAL by default.
  *                      You can override it by calling
  *                      mbedtls_ctr_drbg_set_reseed_interval().
@@ -271,7 +271,7 @@ void mbedtls_ctr_drbg_init(mbedtls_ctr_drbg_context *ctx);
 #endif
 #if defined(MBEDTLS_THREADING_C)
 /**
- * \note                When Mbed TLS is built with threading support,
+ * \r\note                When Mbed TLS is built with threading support,
  *                      after this function returns successfully,
  *                      it is safe to call mbedtls_ctr_drbg_random()
  *                      from multiple threads. Other operations, including
@@ -281,7 +281,7 @@ void mbedtls_ctr_drbg_init(mbedtls_ctr_drbg_context *ctx);
 /**
  * - The \p custom string.
  *
- * \note                To achieve the nominal security strength permitted
+ * \r\note                To achieve the nominal security strength permitted
  *                      by CTR_DRBG, the entropy length must be:
  *                      - at least 16 bytes for a 128-bit strength
  *                      (maximum achievable strength when using AES-128);
@@ -341,7 +341,7 @@ void mbedtls_ctr_drbg_free(mbedtls_ctr_drbg_context *ctx);
  * \brief               This function turns prediction resistance on or off.
  *                      The default value is off.
  *
- * \note                If enabled, entropy is gathered at the beginning of
+ * \r\note                If enabled, entropy is gathered at the beginning of
  *                      every call to mbedtls_ctr_drbg_random_with_add()
  *                      or mbedtls_ctr_drbg_random().
  *                      Only use this if your entropy source has sufficient
@@ -359,7 +359,7 @@ void mbedtls_ctr_drbg_set_prediction_resistance(mbedtls_ctr_drbg_context *ctx,
  *
  * The default value is #MBEDTLS_CTR_DRBG_ENTROPY_LEN.
  *
- * \note                The security strength of CTR_DRBG is bounded by the
+ * \r\note                The security strength of CTR_DRBG is bounded by the
  *                      entropy length. Thus:
  *                      - When using AES-256
  *                        (\c MBEDTLS_CTR_DRBG_USE_128_BIT_KEY is disabled,
@@ -421,7 +421,7 @@ void mbedtls_ctr_drbg_set_reseed_interval(mbedtls_ctr_drbg_context *ctx,
  * \brief               This function reseeds the CTR_DRBG context, that is
  *                      extracts data from the entropy source.
  *
- * \note                This function is not thread-safe. It is not safe
+ * \r\note                This function is not thread-safe. It is not safe
  *                      to call this function if another thread might be
  *                      concurrently obtaining random numbers from the same
  *                      context or updating or reseeding the same context.
@@ -443,7 +443,7 @@ int mbedtls_ctr_drbg_reseed(mbedtls_ctr_drbg_context *ctx,
 /**
  * \brief              This function updates the state of the CTR_DRBG context.
  *
- * \note                This function is not thread-safe. It is not safe
+ * \r\note                This function is not thread-safe. It is not safe
  *                      to call this function if another thread might be
  *                      concurrently obtaining random numbers from the same
  *                      context or updating or reseeding the same context.
@@ -471,7 +471,7 @@ int mbedtls_ctr_drbg_update(mbedtls_ctr_drbg_context *ctx,
  * This function automatically reseeds if the reseed counter is exceeded
  * or prediction resistance is enabled.
  *
- * \note                This function is not thread-safe. It is not safe
+ * \r\note                This function is not thread-safe. It is not safe
  *                      to call this function if another thread might be
  *                      concurrently obtaining random numbers from the same
  *                      context or updating or reseeding the same context.
@@ -507,7 +507,7 @@ int mbedtls_ctr_drbg_random_with_add(void *p_rng,
  */
 #if defined(MBEDTLS_THREADING_C)
 /**
- * \note                When Mbed TLS is built with threading support,
+ * \r\note                When Mbed TLS is built with threading support,
  *                      it is safe to call mbedtls_ctr_drbg_random()
  *                      from multiple threads. Other operations, including
  *                      reseeding, are not thread-safe.

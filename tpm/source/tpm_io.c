@@ -92,7 +92,7 @@ static int TPM2_IoCb_SPI(TPM2_CTX* ctx, const byte* txBuf, byte* rxBuf,
 #else
 
     /* TODO: Add your platform here for HW SPI interface */
-    printf("Add your platform here for HW SPI interface\r\n");
+    printf("Add your platform here for HW SPI interface\r\r\n");
     (void)txBuf;
     (void)rxBuf;
     (void)xferSz;
@@ -117,10 +117,10 @@ int TPM2_IoCb(TPM2_CTX* ctx, int isRead, word32 addr, byte* buf,
 #endif
 
 #ifdef WOLFTPM_DEBUG_IO
-    printf("TPM2_IoCb (Adv): Read %d, Addr %x, Size %d\r\n",
+    printf("TPM2_IoCb (Adv): Read %d, Addr %x, Size %d\r\r\n",
         isRead ? 1 : 0, addr, size);
     if (!isRead) {
-        printf("Write Size %d\r\n", size);
+        printf("Write Size %d\r\r\n", size);
         TPM2_PrintBin(buf, size);
     }
 #endif
@@ -138,7 +138,7 @@ int TPM2_IoCb(TPM2_CTX* ctx, int isRead, word32 addr, byte* buf,
         ret = TPM2_IoCb_STCubeMX_I2C(ctx, isRead, addr, buf, size, userCtx);
     #else
         /* TODO: Add your platform here for HW I2C interface */
-        printf("Add your platform here for HW I2C interface\r\n");
+        printf("Add your platform here for HW I2C interface\r\r\n");
         (void)isRead;
         (void)addr;
         (void)buf;
@@ -172,7 +172,7 @@ int TPM2_IoCb(TPM2_CTX* ctx, int isRead, word32 addr, byte* buf,
 
 #ifdef WOLFTPM_DEBUG_IO
     if (isRead) {
-        printf("Read Size %d\r\n", size);
+        printf("Read Size %d\r\r\n", size);
         TPM2_PrintBin(buf, size);
     }
 #endif
@@ -197,7 +197,7 @@ int TPM2_IoCb(TPM2_CTX* ctx, const byte* txBuf, byte* rxBuf,
 #endif
 
 #ifdef WOLFTPM_DEBUG_IO
-    printf("TPM2_IoCb: Ret %d, Sz %d\r\n", ret, xferSz);
+    printf("TPM2_IoCb: Ret %d, Sz %d\r\r\n", ret, xferSz);
     TPM2_PrintBin(txBuf, xferSz);
     TPM2_PrintBin(rxBuf, xferSz);
 #endif

@@ -70,7 +70,7 @@ int athw_tpm_command_size(const void *command)
  * @param[out] len_ptr response length 
  *  
  * @note If \a "resp" parameter is NULL, caller dose not care 
- *       about it. \n \a "len_ptr" parameter is a bidirectional.
+ *       about it. \r\n \a "len_ptr" parameter is a bidirectional.
  * 
  * @return Return code for TPM repsonse 
  */

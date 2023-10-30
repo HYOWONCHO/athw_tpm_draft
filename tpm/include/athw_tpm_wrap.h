@@ -14,6 +14,17 @@ typedef WOLFTPM2_KEY        athwtpm2_key_t;
 typedef WOLFTPM2_BUFFER     athwtpm2_buf_t;
 typedef WOLFTPM2_SESSION    athwtpm2_session_t;
 
+
+
+typedef WOLFTPM2_DEV        ATHW_DEV;
+typedef WOLFTPM2_KEYBLOB    ATHW_KEYBLOB;
+typedef WOLFTPM2_HANDLE     ATHW_HANDLE;
+typedef WOLFTPM2_KEY        ATHW_KEY;
+typedef WOLFTPM2_BUFFER     ATHW_BUFFER;
+typedef WOLFTPM2_SESSION    ATHW_SESSION;
+
+
+
 typedef struct _athwtpm2_keyhnd_t {
     athwtpm2_dev_t          *dev;
     athwtpm2_keyblob_t      *blob;
@@ -143,6 +154,35 @@ int athw_tpm_create_and_load_key(void *handle, const byte *auth, int authsz);
 
 
 int athw_tpm_start_session(void *session, TPM_SE type, int cipheralg);
+
+int ATHW_GetKeyTemplate_RSA_SRK(TPMT_PUBLIC* publicTemplate);
+int ATHW_GetKeyTemplate_ECC_SRK(TPMT_PUBLIC* publicTemplate);
+
+int ATHW_CreateSRK(ATHW_DEV* dev, ATHW_KEY* srkKey, TPM_ALG_ID alg,
+    const byte* auth, int authSz);
+
+int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
+    TPM_HANDLE primaryHandle, TPMT_PUBLIC* publicTemplate,
+    const byte* auth, int authSz);
+
+int ATHWTPM2_EncryptSecret(WOLFTPM2_DEV* dev, const WOLFTPM2_KEY* tpmKey,
+    TPM2B_DATA *data, TPM2B_ENCRYPTED_SECRET *secret,
+    const char* label);
+
+int ATHW_TPM2_KDFa(
+    TPM_ALG_ID   hashAlg,   /* IN: hash algorithm used in HMAC */
+    TPM2B_DATA  *keyIn,     /* IN: key */
+    const char  *label,     /* IN: a 0-byte terminated label used in KDF */
+    TPM2B_NONCE *contextU,  /* IN: context U (newer) */
+    TPM2B_NONCE *contextV,  /* IN: context V */
+    BYTE        *key,       /* OUT: key buffer */
+    UINT32       keySz      /* IN: size of generated key in bytes */
+);
+
+int ATHWTPM2_StartSession(ATHW_DEV* dev, ATHW_SESSION* session,
+    ATHW_KEY* tpmKey, ATHW_HANDLE* bind, TPM_SE sesType,
+    int encDecAlg);
+
 
 #ifdef _cplusplus
 }

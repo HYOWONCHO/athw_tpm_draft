@@ -28,7 +28,7 @@
 #include <stddef.h>
 
 /**
- * \name PEM Error codes
+ * \r\name PEM Error codes
  * These error codes are returned in case of errors reading the
  * PEM data.
  * \{
@@ -91,11 +91,11 @@ void mbedtls_pem_init(mbedtls_pem_context *ctx);
  *                  MBEDTLS_ERR_PEM_NO_HEADER_FOOTER_PRESENT, use_len is
  *                  the length to skip)
  *
- * \note            Attempts to check password correctness by verifying if
+ * \r\note            Attempts to check password correctness by verifying if
  *                  the decrypted text starts with an ASN.1 sequence of
  *                  appropriate length
  *
- * \note            \c mbedtls_pem_free must be called on PEM context before
+ * \r\note            \c mbedtls_pem_free must be called on PEM context before
  *                  the PEM context can be reused in another call to
  *                  \c mbedtls_pem_read_buffer
  *
@@ -115,7 +115,7 @@ int mbedtls_pem_read_buffer(mbedtls_pem_context *ctx, const char *header, const 
  *
  * \return          A pointer to the decoded binary data.
  *
- * \note            The returned pointer remains valid only until \p ctx is
+ * \r\note            The returned pointer remains valid only until \p ctx is
                     modified or freed.
  */
 static inline const unsigned char *mbedtls_pem_get_buffer(mbedtls_pem_context *ctx, size_t *buflen)
@@ -147,11 +147,11 @@ void mbedtls_pem_free(mbedtls_pem_context *ctx);
  * \param olen      The address at which to store the total length written
  *                  or required (if \p buf_len is not enough).
  *
- * \note            You may pass \c NULL for \p buf and \c 0 for \p buf_len
+ * \r\note            You may pass \c NULL for \p buf and \c 0 for \p buf_len
  *                  to request the length of the resulting PEM buffer in
  *                  `*olen`.
  *
- * \note            This function may be called with overlapping \p der_data
+ * \r\note            This function may be called with overlapping \p der_data
  *                  and \p buf buffers.
  *
  * \return          \c 0 on success.

@@ -436,11 +436,11 @@ __STATIC_INLINE uint32_t LL_CRS_GetSyncPolarity(void)
 
 /**
   * @brief  Configure CRS for the synchronization
-  * @rmtoll CR           TRIM          LL_CRS_ConfigSynchronization\n
-  *         CFGR         RELOAD        LL_CRS_ConfigSynchronization\n
-  *         CFGR         FELIM         LL_CRS_ConfigSynchronization\n
-  *         CFGR         SYNCDIV       LL_CRS_ConfigSynchronization\n
-  *         CFGR         SYNCSRC       LL_CRS_ConfigSynchronization\n
+  * @rmtoll CR           TRIM          LL_CRS_ConfigSynchronization\r\n
+  *         CFGR         RELOAD        LL_CRS_ConfigSynchronization\r\n
+  *         CFGR         FELIM         LL_CRS_ConfigSynchronization\r\n
+  *         CFGR         SYNCDIV       LL_CRS_ConfigSynchronization\r\n
+  *         CFGR         SYNCSRC       LL_CRS_ConfigSynchronization\r\n
   *         CFGR         SYNCPOL       LL_CRS_ConfigSynchronization
   * @param  HSI48CalibrationValue a number between Min_Data = 0 and Max_Data = 127 for STM32L412xx/L422xx or 63 otherwise
   * @param  ErrorLimitValue a number between Min_Data = 0 and Max_Data = 0xFFFF

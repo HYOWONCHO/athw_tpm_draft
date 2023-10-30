@@ -212,7 +212,7 @@ WOLFTPM_API int wolfTPM2_OpenExisting(WOLFTPM2_DEV* dev, TPM2HalIoCb ioCb, void*
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Easy to use TPM and wolfcrypt deinitialization
-    \note Calls wolfTPM2_Cleanup_ex with appropriate doShutdown parameter
+    \r\note Calls wolfTPM2_Cleanup_ex with appropriate doShutdown parameter
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO communication)
@@ -389,7 +389,7 @@ WOLFTPM_API int wolfTPM2_UnsetAuthSession(WOLFTPM2_DEV* dev, int index, WOLFTPM2
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Sets a TPM Authorization slot using the provided index, session handle, attributes and auth
-    \note It is recommended to use one of the other wolfTPM2 wrappers, like wolfTPM2_SetAuthPassword.
+    \r\note It is recommended to use one of the other wolfTPM2 wrappers, like wolfTPM2_SetAuthPassword.
     Because the wolfTPM2_SetAuth wrapper provides complete control over the TPM Authorization slot for
     advanced use cases. In most scenarios, wolfTPM2_SetAuthHandle and SetAuthPassword are used.
 
@@ -414,7 +414,7 @@ WOLFTPM_API int wolfTPM2_SetAuth(WOLFTPM2_DEV* dev, int index,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Sets a TPM Authorization slot using the provided user auth, typically a password
-    \note Often used for authorizing the loading and use of TPM keys, including Primary Keys
+    \r\note Often used for authorizing the loading and use of TPM keys, including Primary Keys
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -432,7 +432,7 @@ WOLFTPM_API int wolfTPM2_SetAuthPassword(WOLFTPM2_DEV* dev, int index, const TPM
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Sets a TPM Authorization slot using the user auth associated with a wolfTPM2 Handle
-    \note This wrapper is especially useful when using a TPM key for multiple operations and TPM Authorization is required again.
+    \r\note This wrapper is especially useful when using a TPM key for multiple operations and TPM Authorization is required again.
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -451,7 +451,7 @@ WOLFTPM_API int wolfTPM2_SetAuthHandle(WOLFTPM2_DEV* dev, int index, const WOLFT
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Sets a TPM Authorization slot using the provided TPM session handle, index and session attributes
-    \note This wrapper is useful for configuring TPM sessions, e.g. session for parameter encryption
+    \r\note This wrapper is useful for configuring TPM sessions, e.g. session for parameter encryption
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -471,7 +471,7 @@ WOLFTPM_API int wolfTPM2_SetAuthSession(WOLFTPM2_DEV* dev, int index,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Updates the Name used in a TPM Session with the Name associated with wolfTPM2 Handle
-    \note Typically, this wrapper is used from another wrappers and in very specific use cases. For example, wolfTPM2_NVWriteAuth
+    \r\note Typically, this wrapper is used from another wrappers and in very specific use cases. For example, wolfTPM2_NVWriteAuth
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -490,7 +490,7 @@ WOLFTPM_API int wolfTPM2_SetAuthHandleName(WOLFTPM2_DEV* dev, int index, const W
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Create a TPM session, Policy, HMAC or Trial
-    \note This wrapper can also be used to start TPM session for parameter encryption, see wolfTPM nvram or keygen example
+    \r\note This wrapper can also be used to start TPM session for parameter encryption, see wolfTPM nvram or keygen example
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -511,7 +511,7 @@ WOLFTPM_API int wolfTPM2_StartSession(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Creates a TPM session with Policy Secret to satisfy the default EK policy
-    \note This wrapper can be used only if the EK authorization is not changed from default
+    \r\note This wrapper can be used only if the EK authorization is not changed from default
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -529,7 +529,7 @@ WOLFTPM_API int wolfTPM2_CreateAuthSession_EkPolicy(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Single function to prepare and create a TPM 2.0 Primary Key
-    \note TPM 2.0 allows only asymmetric RSA or ECC primary keys. Afterwards, both symmetric and asymmetric keys can be created under a TPM 2.0 Primary Key
+    \r\note TPM 2.0 allows only asymmetric RSA or ECC primary keys. Afterwards, both symmetric and asymmetric keys can be created under a TPM 2.0 Primary Key
     Typically, Primary Keys are used to create Hierarchies of TPM 2.0 Keys.
     The TPM uses a Primary Key to wrap the other keys, signing or decrypting.
 
@@ -555,7 +555,7 @@ WOLFTPM_API int wolfTPM2_CreatePrimaryKey(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Change the authorization secret of a TPM 2.0 key
-    \note TPM does not allow the authorization secret of a Primary Key to be changed.
+    \r\note TPM does not allow the authorization secret of a Primary Key to be changed.
     Instead, use wolfTPM2_CreatePrimary to create the same PrimaryKey with a new auth.
 
     \return TPM_RC_SUCCESS: successful
@@ -578,7 +578,7 @@ WOLFTPM_API int wolfTPM2_ChangeAuthKey(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* key,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Single function to prepare and create a TPM 2.0 Key
-    \note This function only creates the key material and stores it into the keyblob argument. To load the key use wolfTPM2_LoadKey
+    \r\note This function only creates the key material and stores it into the keyblob argument. To load the key use wolfTPM2_LoadKey
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -603,7 +603,7 @@ WOLFTPM_API int wolfTPM2_CreateKey(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Single function to load a TPM 2.0 key
-    \note To load a TPM 2.0 key its parent(Primary Key) should also be loaded prior to this operation. Primary Keys are loaded when they are created.
+    \r\note To load a TPM 2.0 key its parent(Primary Key) should also be loaded prior to this operation. Primary Keys are loaded when they are created.
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -670,7 +670,7 @@ WOLFTPM_API int wolfTPM2_CreateLoadedKey(WOLFTPM2_DEV* dev, WOLFTPM2_KEYBLOB* ke
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Wrapper to load the public part of an external key
-    \note The key must be formatted to the format expected by the TPM, see the 'pub' argument and the alternative wrappers.
+    \r\note The key must be formatted to the format expected by the TPM, see the 'pub' argument and the alternative wrappers.
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -694,7 +694,7 @@ WOLFTPM_API int wolfTPM2_LoadPublicKey_ex(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* key,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Single function to import an external private key and load it into the TPM in one step
-    \note The private key material needs to be prepared in a format that the TPM expects, see the 'sens' argument
+    \r\note The private key material needs to be prepared in a format that the TPM expects, see the 'sens' argument
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -717,7 +717,7 @@ WOLFTPM_API int wolfTPM2_LoadPrivateKey(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Single function to import an external private key and load it into the TPM in one step
-    \note The primary key material needs to be prepared in a format that the TPM expects, see the 'sens' argument
+    \r\note The primary key material needs to be prepared in a format that the TPM expects, see the 'sens' argument
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -739,7 +739,7 @@ WOLFTPM_API int wolfTPM2_ImportPrivateKey(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Helper function to import the public part of an external RSA key
-    \note Recommended for use, because it does not require TPM format of the public part
+    \r\note Recommended for use, because it does not require TPM format of the public part
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -762,7 +762,7 @@ WOLFTPM_API int wolfTPM2_LoadRsaPublicKey(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* key,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Advanced helper function to import the public part of an external RSA key
-    \note Allows the developer to specify TPM hashing algorithm and RSA scheme
+    \r\note Allows the developer to specify TPM hashing algorithm and RSA scheme
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -909,7 +909,7 @@ WOLFTPM_API int wolfTPM2_LoadRsaPrivateKey_ex(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Helper function to import the public part of an external ECC key
-    \note Recommended for use, because it does not require TPM format of the public part
+    \r\note Recommended for use, because it does not require TPM format of the public part
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1028,7 +1028,7 @@ WOLFTPM_API int wolfTPM2_LoadEccPrivateKey(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Helper function to receive the public part of a loaded TPM object using its handle
-    \note The public part of a TPM symmetric keys contains just TPM meta data
+    \r\note The public part of a TPM symmetric keys contains just TPM meta data
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1048,7 +1048,7 @@ WOLFTPM_API int wolfTPM2_ReadPublicKey(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* key,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Using this wrapper a secret can be sealed inside a TPM 2.0 Key
-    \note The secret size can not be larger than 128 bytes
+    \r\note The secret size can not be larger than 128 bytes
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1075,7 +1075,7 @@ WOLFTPM_API int wolfTPM2_CreateKeySeal(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Using this wrapper a secret can be sealed inside a TPM 2.0 Key with pcr selection
-    \note The secret size can not be larger than 128 bytes
+    \r\note The secret size can not be larger than 128 bytes
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1106,7 +1106,7 @@ WOLFTPM_API int wolfTPM2_CreateKeySeal_ex(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Helper function to generate a hash of the public area of an object in the format expected by the TPM
-    \note Computed TPM name includes hash of the TPM_ALG_ID and the public are of the object
+    \r\note Computed TPM name includes hash of the TPM_ALG_ID and the public are of the object
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1272,7 +1272,7 @@ WOLFTPM_API int wolfTPM2_RsaKey_TpmToPemPub(WOLFTPM2_DEV* dev,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Import a RSA wolfcrypt key into the TPM
-    \note Allows the use of externally generated keys by wolfcrypt to be used with TPM 2.0
+    \r\note Allows the use of externally generated keys by wolfcrypt to be used with TPM 2.0
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1290,7 +1290,7 @@ WOLFTPM_API int wolfTPM2_RsaKey_WolfToTpm(WOLFTPM2_DEV* dev, RsaKey* wolfKey,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Import a RSA wolfcrypt key into the TPM under a specific Primary Key or Hierarchy
-    \note Allows the use of wolfcrypt generated keys with wolfTPM
+    \r\note Allows the use of wolfcrypt generated keys with wolfTPM
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1371,7 +1371,7 @@ WOLFTPM_API int wolfTPM2_EccKey_TpmToWolf(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* tpmKe
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Import a ECC wolfcrypt key into the TPM
-    \note Allows the use of externally generated keys by wolfcrypt to be used with TPM 2.0
+    \r\note Allows the use of externally generated keys by wolfcrypt to be used with TPM 2.0
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1389,7 +1389,7 @@ WOLFTPM_API int wolfTPM2_EccKey_WolfToTpm(WOLFTPM2_DEV* dev, ecc_key* wolfKey,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Import ECC wolfcrypt key into the TPM under a specific Primary Key or Hierarchy
-    \note Allows the use of wolfcrypt generated keys with wolfTPM
+    \r\note Allows the use of wolfcrypt generated keys with wolfTPM
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1409,7 +1409,7 @@ WOLFTPM_API int wolfTPM2_EccKey_WolfToTpm_ex(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* pa
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Import a ECC public key generated from wolfcrypt key into the TPM
-    \note Allows the use of externally generated public ECC key by wolfcrypt to be used with TPM 2.0
+    \r\note Allows the use of externally generated public ECC key by wolfcrypt to be used with TPM 2.0
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1618,7 +1618,7 @@ WOLFTPM_API int wolfTPM2_ECDHGenKey(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* ecdhKey,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Generates ephemeral key and computes Z (shared secret)
-    \note One shot API using private key handle to generate key-pair and return public point and shared secret
+    \r\note One shot API using private key handle to generate key-pair and return public point and shared secret
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1663,7 +1663,7 @@ WOLFTPM_API int wolfTPM2_ECDHGenZ(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* privKey,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Generates ephemeral ECC key and returns array index (2 phase method)
-    \note One time use key
+    \r\note One time use key
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1684,7 +1684,7 @@ WOLFTPM_API int wolfTPM2_ECDHEGenKey(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* ecdhKey,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Computes Z (shared secret) using pubPoint and counter (2 phase method)
-    \note The counter, array ID, can only be used one time
+    \r\note The counter, array ID, can only be used one time
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1752,7 +1752,7 @@ WOLFTPM_API int wolfTPM2_RsaDecrypt(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* key,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Read the values of a specified TPM 2.0 Platform Configuration Registers(PCR)
-    \note Make sure to specify the correct hashing algorithm, because there are two sets of PCR registers, one for SHA256 and the other for SHA1(deprecated, but still possible to be read)
+    \r\note Make sure to specify the correct hashing algorithm, because there are two sets of PCR registers, one for SHA256 and the other for SHA1(deprecated, but still possible to be read)
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1774,7 +1774,7 @@ WOLFTPM_API int wolfTPM2_ResetPCR(WOLFTPM2_DEV* dev, int pcrIndex);
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Extend a PCR register with a user provided digest
-    \note Make sure to specify the correct hashing algorithm
+    \r\note Make sure to specify the correct hashing algorithm
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1796,7 +1796,7 @@ WOLFTPM_API int wolfTPM2_ExtendPCR(WOLFTPM2_DEV* dev, int pcrIndex, int hashAlg,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Creates a new NV Index to be later used for storing data into the TPM's NVRAM
-    \note This is a wolfTPM2 wrapper around TPM2_NV_DefineSpace
+    \r\note This is a wolfTPM2 wrapper around TPM2_NV_DefineSpace
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1823,7 +1823,7 @@ WOLFTPM_API int wolfTPM2_NVCreateAuth(WOLFTPM2_DEV* dev, WOLFTPM2_HANDLE* parent
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Stores user data to a NV Index, at a given offset
-    \note User data size should be less or equal to the NV Index maxSize specified using wolfTPM2_CreateAuth
+    \r\note User data size should be less or equal to the NV Index maxSize specified using wolfTPM2_CreateAuth
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -1846,7 +1846,7 @@ WOLFTPM_API int wolfTPM2_NVWriteAuth(WOLFTPM2_DEV* dev, WOLFTPM2_NV* nv,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Reads user data from a NV Index, starting at the given offset
-    \note User data size should be less or equal to the NV Index maxSize specified using wolfTPM2_CreateAuth
+    \r\note User data size should be less or equal to the NV Index maxSize specified using wolfTPM2_CreateAuth
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2036,7 +2036,7 @@ WOLFTPM_API int wolfTPM2_NVDeleteKey(WOLFTPM2_DEV* dev, TPM_HANDLE primaryHandle
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Get the wolfcrypt RNG instance used for wolfTPM
-    \note Only if wolfcrypt is enabled and configured for use instead of the TPM RNG
+    \r\note Only if wolfcrypt is enabled and configured for use instead of the TPM RNG
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2051,7 +2051,7 @@ WOLFTPM_API struct WC_RNG* wolfTPM2_GetRng(WOLFTPM2_DEV* dev);
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Get a set of random number, generated with the TPM RNG or wolfcrypt RNG
-    \note Define WOLFTPM2_USE_HW_RNG to use the TPM RNG source
+    \r\note Define WOLFTPM2_USE_HW_RNG to use the TPM RNG source
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2117,7 +2117,7 @@ WOLFTPM_API int wolfTPM2_HashStart(WOLFTPM2_DEV* dev, WOLFTPM2_HASH* hash,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Update a TPM generated hash with new user data
-    \note Make sure the auth is correctly set
+    \r\note Make sure the auth is correctly set
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2137,7 +2137,7 @@ WOLFTPM_API int wolfTPM2_HashUpdate(WOLFTPM2_DEV* dev, WOLFTPM2_HASH* hash,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Finalize a TPM generated hash and get the digest output in a user buffer
-    \note Make sure the auth is correctly set
+    \r\note Make sure the auth is correctly set
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2157,7 +2157,7 @@ WOLFTPM_API int wolfTPM2_HashFinish(WOLFTPM2_DEV* dev, WOLFTPM2_HASH* hash,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Creates and loads a new TPM key of KeyedHash type, typically used for HMAC operations
-    \note To generate HMAC using the TPM it is recommended to use the wolfTPM2_Hmac wrappers
+    \r\note To generate HMAC using the TPM it is recommended to use the wolfTPM2_Hmac wrappers
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2208,7 +2208,7 @@ WOLFTPM_API int wolfTPM2_HmacStart(WOLFTPM2_DEV* dev, WOLFTPM2_HMAC* hmac,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Update a TPM generated hmac with new user data
-    \note Make sure the TPM authorization is correctly set
+    \r\note Make sure the TPM authorization is correctly set
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2228,7 +2228,7 @@ WOLFTPM_API int wolfTPM2_HmacUpdate(WOLFTPM2_DEV* dev, WOLFTPM2_HMAC* hmac,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Finalize a TPM generated hmac and get the digest output in a user buffer
-    \note Make sure the TPM authorization is correctly set
+    \r\note Make sure the TPM authorization is correctly set
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2295,7 +2295,7 @@ WOLFTPM_API int wolfTPM2_SetCommand(WOLFTPM2_DEV* dev, TPM_CC commandCode,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Helper function to shutdown or reset the TPM
-    \note If doStartup is set, then TPM2_Startup is performed right after TPM2_Shutdown
+    \r\note If doStartup is set, then TPM2_Startup is performed right after TPM2_Shutdown
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2328,7 +2328,7 @@ WOLFTPM_API int wolfTPM2_UnloadHandles(WOLFTPM2_DEV* dev, word32 handleStart,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief One-shot API to unload all transient TPM handles
-    \note If there are Primary Keys as transient objects, they need to be recreated before TPM keys can be used
+    \r\note If there are Primary Keys as transient objects, they need to be recreated before TPM keys can be used
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2425,7 +2425,7 @@ WOLFTPM_API int wolfTPM2_GetKeyTemplate_KeyedHash(TPMT_PUBLIC* publicTemplate,
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Prepares a TPM public template for new key for sealing secrets
-    \note There are strict requirements for a Key Seal, therefore most of the key parameters are predetermined by the wrapper
+    \r\note There are strict requirements for a Key Seal, therefore most of the key parameters are predetermined by the wrapper
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -2563,7 +2563,7 @@ WOLFTPM_API int wolfTPM2_GetNvAttributesTemplate(TPM_HANDLE auth, word32* nvAttr
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Generates a new TPM Endorsement key, based on the user selected algorithm, RSA or ECC
-    \note Although only RSA and ECC can be used for EK, symmetric keys can be created and used by the TPM
+    \r\note Although only RSA and ECC can be used for EK, symmetric keys can be created and used by the TPM
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -2581,7 +2581,7 @@ WOLFTPM_API int wolfTPM2_CreateEK(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* ekKey, TPM_AL
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief Generates a new TPM Primary Key that will be used as a Storage Key for other TPM keys
-    \note Although only RSA and ECC can be used for EK, symmetric keys can be created and used by the TPM
+    \r\note Although only RSA and ECC can be used for EK, symmetric keys can be created and used by the TPM
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)
@@ -2625,7 +2625,7 @@ WOLFTPM_API int wolfTPM2_CreateAndLoadAIK(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* aikKe
 /*!
     \ingroup wolfTPM2_Wrappers
     \brief One-shot API to generate a TPM signed timestamp
-    \note The attestation key must be generated and loaded prior to this call
+    \r\note The attestation key must be generated and loaded prior to this call
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (check TPM IO and TPM return code)

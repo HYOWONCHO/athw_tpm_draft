@@ -147,7 +147,7 @@ int mbedtls_chachapoly_setkey(mbedtls_chachapoly_context *ctx,
  *                  guarantees for the messages encrypted with the same nonce
  *                  and key.
  *
- * \note            If the context is being used for AAD only (no data to
+ * \r\note            If the context is being used for AAD only (no data to
  *                  encrypt or decrypt) then \p mode can be set to any value.
  *
  * \warning         Decryption with the piecewise API is discouraged, see the
@@ -177,7 +177,7 @@ int mbedtls_chachapoly_starts(mbedtls_chachapoly_context *ctx,
  *                  usually transmitted separately from the ciphertext or
  *                  computed locally by each party.
  *
- * \note            This function is called before data is encrypted/decrypted.
+ * \r\note            This function is called before data is encrypted/decrypted.
  *                  I.e. call this function to process the AAD before calling
  *                  \c mbedtls_chachapoly_update().
  *
@@ -269,7 +269,7 @@ int mbedtls_chachapoly_finish(mbedtls_chachapoly_context *ctx,
  * \brief           This function performs a complete ChaCha20-Poly1305
  *                  authenticated encryption with the previously-set key.
  *
- * \note            Before using this function, you must set the key with
+ * \r\note            Before using this function, you must set the key with
  *                  \c mbedtls_chachapoly_setkey().
  *
  * \warning         You must never use the same nonce twice with the same key.
@@ -307,7 +307,7 @@ int mbedtls_chachapoly_encrypt_and_tag(mbedtls_chachapoly_context *ctx,
  * \brief           This function performs a complete ChaCha20-Poly1305
  *                  authenticated decryption with the previously-set key.
  *
- * \note            Before using this function, you must set the key with
+ * \r\note            Before using this function, you must set the key with
  *                  \c mbedtls_chachapoly_setkey().
  *
  * \param ctx       The ChaCha20-Poly1305 context to use (holds the key).

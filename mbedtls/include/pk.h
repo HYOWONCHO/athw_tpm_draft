@@ -100,7 +100,7 @@ typedef enum {
 typedef struct mbedtls_pk_rsassa_pss_options {
     /** The digest to use for MGF1 in PSS.
      *
-     * \note When #MBEDTLS_USE_PSA_CRYPTO is enabled and #MBEDTLS_RSA_C is
+     * \r\note When #MBEDTLS_USE_PSA_CRYPTO is enabled and #MBEDTLS_RSA_C is
      *       disabled, this must be equal to the \c md_alg argument passed
      *       to mbedtls_pk_verify_ext(). In a future version of the library,
      *       this constraint may apply whenever #MBEDTLS_USE_PSA_CRYPTO is
@@ -111,7 +111,7 @@ typedef struct mbedtls_pk_rsassa_pss_options {
     /** The expected length of the salt, in bytes. This may be
      * #MBEDTLS_RSA_SALT_LEN_ANY to accept any salt length.
      *
-     * \note When #MBEDTLS_USE_PSA_CRYPTO is enabled, only
+     * \r\note When #MBEDTLS_USE_PSA_CRYPTO is enabled, only
      *       #MBEDTLS_RSA_SALT_LEN_ANY is valid. Any other value may be
      *       ignored (allowing any salt length).
      */
@@ -225,7 +225,7 @@ typedef struct mbedtls_pk_debug_item {
 /**
  * \brief           Public key information and operations
  *
- * \note        The library does not support custom pk info structures,
+ * \r\note        The library does not support custom pk info structures,
  *              only built-in structures returned by
  *              mbedtls_cipher_info_from_type().
  */
@@ -337,7 +337,7 @@ void mbedtls_pk_init(mbedtls_pk_context *ctx);
  * \param ctx       The context to clear. It must have been initialized.
  *                  If this is \c NULL, this function does nothing.
  *
- * \note            For contexts that have been set up with
+ * \r\note            For contexts that have been set up with
  *                  mbedtls_pk_setup_opaque(), this does not free the underlying
  *                  PSA key and you still need to call psa_destroy_key()
  *                  independently if you want to destroy that key.
@@ -374,7 +374,7 @@ void mbedtls_pk_restart_free(mbedtls_pk_restart_ctx *ctx);
  *                  MBEDTLS_ERR_PK_BAD_INPUT_DATA on invalid input,
  *                  MBEDTLS_ERR_PK_ALLOC_FAILED on allocation failure.
  *
- * \note            For contexts holding an RSA-alt key, use
+ * \r\note            For contexts holding an RSA-alt key, use
  *                  \c mbedtls_pk_setup_rsa_alt() instead.
  */
 int mbedtls_pk_setup(mbedtls_pk_context *ctx, const mbedtls_pk_info_t *info);
@@ -383,7 +383,7 @@ int mbedtls_pk_setup(mbedtls_pk_context *ctx, const mbedtls_pk_info_t *info);
 /**
  * \brief           Initialize a PK context to wrap a PSA key.
  *
- * \note            This function replaces mbedtls_pk_setup() for contexts
+ * \r\note            This function replaces mbedtls_pk_setup() for contexts
  *                  that wrap a (possibly opaque) PSA key instead of
  *                  storing and manipulating the key material directly.
  *
@@ -391,13 +391,13 @@ int mbedtls_pk_setup(mbedtls_pk_context *ctx, const mbedtls_pk_info_t *info);
  * \param key       The PSA key to wrap, which must hold an ECC or RSA key
  *                  pair (see notes below).
  *
- * \note            The wrapped key must remain valid as long as the
+ * \r\note            The wrapped key must remain valid as long as the
  *                  wrapping PK context is in use, that is at least between
  *                  the point this function is called and the point
  *                  mbedtls_pk_free() is called on this context. The wrapped
  *                  key might then be independently used or destroyed.
  *
- * \note            This function is currently only available for ECC or RSA
+ * \r\note            This function is currently only available for ECC or RSA
  *                  key pairs (that is, keys containing private key material).
  *                  Support for other key types may be added later.
  *
@@ -426,7 +426,7 @@ int mbedtls_pk_setup_opaque(mbedtls_pk_context *ctx,
  * \return          0 on success, or MBEDTLS_ERR_PK_BAD_INPUT_DATA if the
  *                  context wasn't already initialized as RSA_ALT.
  *
- * \note            This function replaces \c mbedtls_pk_setup() for RSA-alt.
+ * \r\note            This function replaces \c mbedtls_pk_setup() for RSA-alt.
  */
 int mbedtls_pk_setup_rsa_alt(mbedtls_pk_context *ctx, void *key,
                              mbedtls_pk_rsa_alt_decrypt_func decrypt_func,
@@ -524,7 +524,7 @@ int mbedtls_pk_can_do_ext(const mbedtls_pk_context *ctx, psa_algorithm_t alg,
  *                  signature in \p sig but its length is less than \p sig_len,
  *                  or a specific error code.
  *
- * \note            For RSA keys, the default padding type is PKCS#1 v1.5.
+ * \r\note            For RSA keys, the default padding type is PKCS#1 v1.5.
  *                  Use \c mbedtls_pk_verify_ext( MBEDTLS_PK_RSASSA_PSS, ... )
  *                  to verify RSASSA_PSS signatures.
  */
@@ -535,7 +535,7 @@ int mbedtls_pk_verify(mbedtls_pk_context *ctx, mbedtls_md_type_t md_alg,
 /**
  * \brief           Restartable version of \c mbedtls_pk_verify()
  *
- * \note            Performs the same job as \c mbedtls_pk_verify(), but can
+ * \r\note            Performs the same job as \c mbedtls_pk_verify(), but can
  *                  return early and restart according to the limit set with
  *                  \c mbedtls_ecp_set_max_ops() to reduce blocking for ECC
  *                  operations. For RSA, same as \c mbedtls_pk_verify().
@@ -578,12 +578,12 @@ int mbedtls_pk_verify_restartable(mbedtls_pk_context *ctx,
  *                  signature in \p sig but its length is less than \p sig_len,
  *                  or a specific error code.
  *
- * \note            If hash_len is 0, then the length associated with md_alg
+ * \r\note            If hash_len is 0, then the length associated with md_alg
  *                  is used instead, or an error returned if it is invalid.
  *
- * \note            md_alg may be MBEDTLS_MD_NONE, only if hash_len != 0
+ * \r\note            md_alg may be MBEDTLS_MD_NONE, only if hash_len != 0
  *
- * \note            If type is MBEDTLS_PK_RSASSA_PSS, then options must point
+ * \r\note            If type is MBEDTLS_PK_RSASSA_PSS, then options must point
  *                  to a mbedtls_pk_rsassa_pss_options structure,
  *                  otherwise it must be NULL. Note that if
  *                  #MBEDTLS_USE_PSA_CRYPTO is defined, the salt length is not
@@ -615,11 +615,11 @@ int mbedtls_pk_verify_ext(mbedtls_pk_type_t type, const void *options,
  *
  * \return          0 on success, or a specific error code.
  *
- * \note            For RSA keys, the default padding type is PKCS#1 v1.5.
+ * \r\note            For RSA keys, the default padding type is PKCS#1 v1.5.
  *                  There is no interface in the PK module to make RSASSA-PSS
  *                  signatures yet.
  *
- * \note            For RSA, md_alg may be MBEDTLS_MD_NONE if hash_len != 0.
+ * \r\note            For RSA, md_alg may be MBEDTLS_MD_NONE if hash_len != 0.
  *                  For ECDSA, md_alg may never be MBEDTLS_MD_NONE.
  */
 int mbedtls_pk_sign(mbedtls_pk_context *ctx, mbedtls_md_type_t md_alg,
@@ -650,10 +650,10 @@ int mbedtls_pk_sign(mbedtls_pk_context *ctx, mbedtls_md_type_t md_alg,
  *
  * \return          0 on success, or a specific error code.
  *
- * \note            When \p pk_type is #MBEDTLS_PK_RSASSA_PSS,
+ * \r\note            When \p pk_type is #MBEDTLS_PK_RSASSA_PSS,
  *                  see #PSA_ALG_RSA_PSS for a description of PSS options used.
  *
- * \note            For RSA, md_alg may be MBEDTLS_MD_NONE if hash_len != 0.
+ * \r\note            For RSA, md_alg may be MBEDTLS_MD_NONE if hash_len != 0.
  *                  For ECDSA, md_alg may never be MBEDTLS_MD_NONE.
  *
  */
@@ -669,7 +669,7 @@ int mbedtls_pk_sign_ext(mbedtls_pk_type_t pk_type,
 /**
  * \brief           Restartable version of \c mbedtls_pk_sign()
  *
- * \note            Performs the same job as \c mbedtls_pk_sign(), but can
+ * \r\note            Performs the same job as \c mbedtls_pk_sign(), but can
  *                  return early and restart according to the limit set with
  *                  \c mbedtls_ecp_set_max_ops() to reduce blocking for ECC
  *                  operations. For RSA, same as \c mbedtls_pk_sign().
@@ -715,7 +715,7 @@ int mbedtls_pk_sign_restartable(mbedtls_pk_context *ctx,
  * \param f_rng     RNG function, must not be \c NULL.
  * \param p_rng     RNG parameter
  *
- * \note            For RSA keys, the default padding type is PKCS#1 v1.5.
+ * \r\note            For RSA keys, the default padding type is PKCS#1 v1.5.
  *
  * \return          0 on success, or a specific error code.
  */
@@ -736,9 +736,9 @@ int mbedtls_pk_decrypt(mbedtls_pk_context *ctx,
  * \param f_rng     RNG function, must not be \c NULL.
  * \param p_rng     RNG parameter
  *
- * \note            \p f_rng is used for padding generation.
+ * \r\note            \p f_rng is used for padding generation.
  *
- * \note            For RSA keys, the default padding type is PKCS#1 v1.5.
+ * \r\note            For RSA keys, the default padding type is PKCS#1 v1.5.
  *
  * \return          0 on success, or a specific error code.
  */
@@ -847,7 +847,7 @@ static inline mbedtls_ecp_keypair *mbedtls_pk_ec(const mbedtls_pk_context pk)
 /**
  * \brief           Parse a private key in PEM or DER format
  *
- * \note            If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note            If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                  subsystem must have been initialized by calling
  *                  psa_crypto_init() before calling this function.
  *
@@ -870,11 +870,11 @@ static inline mbedtls_ecp_keypair *mbedtls_pk_ec(const mbedtls_pk_context pk)
  * \param f_rng     RNG function, must not be \c NULL. Used for blinding.
  * \param p_rng     RNG parameter
  *
- * \note            On entry, ctx must be empty, either freshly initialised
+ * \r\note            On entry, ctx must be empty, either freshly initialised
  *                  with mbedtls_pk_init() or reset with mbedtls_pk_free(). If you need a
  *                  specific key type, check the result with mbedtls_pk_can_do().
  *
- * \note            The key is also checked for correctness.
+ * \r\note            The key is also checked for correctness.
  *
  * \return          0 if successful, or a specific PK or PEM error code
  */
@@ -887,7 +887,7 @@ int mbedtls_pk_parse_key(mbedtls_pk_context *ctx,
 /**
  * \brief           Parse a public key in PEM or DER format
  *
- * \note            If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note            If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                  subsystem must have been initialized by calling
  *                  psa_crypto_init() before calling this function.
  *
@@ -901,14 +901,14 @@ int mbedtls_pk_parse_key(mbedtls_pk_context *ctx,
  *                  For PEM data, this includes the terminating null byte,
  *                  so \p keylen must be equal to `strlen(key) + 1`.
  *
- * \note            On entry, ctx must be empty, either freshly initialised
+ * \r\note            On entry, ctx must be empty, either freshly initialised
  *                  with mbedtls_pk_init() or reset with mbedtls_pk_free(). If you need a
  *                  specific key type, check the result with mbedtls_pk_can_do().
  *
- * \note            For compressed points, see #MBEDTLS_ECP_PF_COMPRESSED for
+ * \r\note            For compressed points, see #MBEDTLS_ECP_PF_COMPRESSED for
  *                  limitations.
  *
- * \note            The key is also checked for correctness.
+ * \r\note            The key is also checked for correctness.
  *
  * \return          0 if successful, or a specific PK or PEM error code
  */
@@ -920,7 +920,7 @@ int mbedtls_pk_parse_public_key(mbedtls_pk_context *ctx,
 /**
  * \brief           Load and parse a private key
  *
- * \note            If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note            If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                  subsystem must have been initialized by calling
  *                  psa_crypto_init() before calling this function.
  *
@@ -935,11 +935,11 @@ int mbedtls_pk_parse_public_key(mbedtls_pk_context *ctx,
  * \param f_rng     RNG function, must not be \c NULL. Used for blinding.
  * \param p_rng     RNG parameter
  *
- * \note            On entry, ctx must be empty, either freshly initialised
+ * \r\note            On entry, ctx must be empty, either freshly initialised
  *                  with mbedtls_pk_init() or reset with mbedtls_pk_free(). If you need a
  *                  specific key type, check the result with mbedtls_pk_can_do().
  *
- * \note            The key is also checked for correctness.
+ * \r\note            The key is also checked for correctness.
  *
  * \return          0 if successful, or a specific PK or PEM error code
  */
@@ -955,12 +955,12 @@ int mbedtls_pk_parse_keyfile(mbedtls_pk_context *ctx,
  *                  but not set up.
  * \param path      filename to read the public key from
  *
- * \note            On entry, ctx must be empty, either freshly initialised
+ * \r\note            On entry, ctx must be empty, either freshly initialised
  *                  with mbedtls_pk_init() or reset with mbedtls_pk_free(). If
  *                  you need a specific key type, check the result with
  *                  mbedtls_pk_can_do().
  *
- * \note            The key is also checked for correctness.
+ * \r\note            The key is also checked for correctness.
  *
  * \return          0 if successful, or a specific PK or PEM error code
  */

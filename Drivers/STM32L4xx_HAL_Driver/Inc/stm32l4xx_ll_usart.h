@@ -842,7 +842,7 @@ __STATIC_INLINE uint32_t LL_USART_GetRXFIFOThreshold(const USART_TypeDef *USARTx
   * @brief  Configure TX and RX FIFOs Threshold
   * @note   Macro IS_UART_FIFO_INSTANCE(USARTx) can be used to check whether or not
   *         FIFO mode feature is supported by the USARTx instance.
-  * @rmtoll CR3          TXFTCFG       LL_USART_ConfigFIFOsThreshold\n
+  * @rmtoll CR3          TXFTCFG       LL_USART_ConfigFIFOsThreshold\r\n
   *         CR3          RXFTCFG       LL_USART_ConfigFIFOsThreshold
   * @param  USARTx USART Instance
   * @param  TXThreshold This parameter can be one of the following values:
@@ -994,7 +994,7 @@ __STATIC_INLINE void LL_USART_DisableDirectionTx(USART_TypeDef *USARTx)
 /**
   * @brief  Configure simultaneously enabled/disabled states
   *         of Transmitter and Receiver
-  * @rmtoll CR1          RE            LL_USART_SetTransferDirection\n
+  * @rmtoll CR1          RE            LL_USART_SetTransferDirection\r\n
   *         CR1          TE            LL_USART_SetTransferDirection
   * @param  USARTx USART Instance
   * @param  TransferDirection This parameter can be one of the following values:
@@ -1011,7 +1011,7 @@ __STATIC_INLINE void LL_USART_SetTransferDirection(USART_TypeDef *USARTx, uint32
 
 /**
   * @brief  Return enabled/disabled states of Transmitter and Receiver
-  * @rmtoll CR1          RE            LL_USART_GetTransferDirection\n
+  * @rmtoll CR1          RE            LL_USART_GetTransferDirection\r\n
   *         CR1          TE            LL_USART_GetTransferDirection
   * @param  USARTx USART Instance
   * @retval Returned value can be one of the following values:
@@ -1030,7 +1030,7 @@ __STATIC_INLINE uint32_t LL_USART_GetTransferDirection(const USART_TypeDef *USAR
   * @note   This function selects if hardware parity control (generation and detection) is enabled or disabled.
   *         When the parity control is enabled (Odd or Even), computed parity bit is inserted at the MSB position
   *         (9th or 8th bit depending on data width) and parity is checked on the received data.
-  * @rmtoll CR1          PS            LL_USART_SetParity\n
+  * @rmtoll CR1          PS            LL_USART_SetParity\r\n
   *         CR1          PCE           LL_USART_SetParity
   * @param  USARTx USART Instance
   * @param  Parity This parameter can be one of the following values:
@@ -1046,7 +1046,7 @@ __STATIC_INLINE void LL_USART_SetParity(USART_TypeDef *USARTx, uint32_t Parity)
 
 /**
   * @brief  Return Parity configuration (enabled/disabled and parity mode if enabled)
-  * @rmtoll CR1          PS            LL_USART_GetParity\n
+  * @rmtoll CR1          PS            LL_USART_GetParity\r\n
   *         CR1          PCE           LL_USART_GetParity
   * @param  USARTx USART Instance
   * @retval Returned value can be one of the following values:
@@ -1088,7 +1088,7 @@ __STATIC_INLINE uint32_t LL_USART_GetWakeUpMethod(const USART_TypeDef *USARTx)
 
 /**
   * @brief  Set Word length (i.e. nb of data bits, excluding start and stop bits)
-  * @rmtoll CR1          M0            LL_USART_SetDataWidth\n
+  * @rmtoll CR1          M0            LL_USART_SetDataWidth\r\n
   *         CR1          M1            LL_USART_SetDataWidth
   * @param  USARTx USART Instance
   * @param  DataWidth This parameter can be one of the following values:
@@ -1104,7 +1104,7 @@ __STATIC_INLINE void LL_USART_SetDataWidth(USART_TypeDef *USARTx, uint32_t DataW
 
 /**
   * @brief  Return Word length (i.e. nb of data bits, excluding start and stop bits)
-  * @rmtoll CR1          M0            LL_USART_GetDataWidth\n
+  * @rmtoll CR1          M0            LL_USART_GetDataWidth\r\n
   *         CR1          M1            LL_USART_GetDataWidth
   * @param  USARTx USART Instance
   * @retval Returned value can be one of the following values:
@@ -1279,8 +1279,8 @@ __STATIC_INLINE uint32_t LL_USART_GetClockPolarity(const USART_TypeDef *USARTx)
   *         - Clock Phase configuration using @ref LL_USART_SetClockPhase() function
   *         - Clock Polarity configuration using @ref LL_USART_SetClockPolarity() function
   *         - Output of Last bit Clock pulse configuration using @ref LL_USART_SetLastClkPulseOutput() function
-  * @rmtoll CR2          CPHA          LL_USART_ConfigClock\n
-  *         CR2          CPOL          LL_USART_ConfigClock\n
+  * @rmtoll CR2          CPHA          LL_USART_ConfigClock\r\n
+  *         CR2          CPOL          LL_USART_ConfigClock\r\n
   *         CR2          LBCL          LL_USART_ConfigClock
   * @param  USARTx USART Instance
   * @param  Phase This parameter can be one of the following values:
@@ -1428,10 +1428,10 @@ __STATIC_INLINE uint32_t LL_USART_GetStopBitsLength(const USART_TypeDef *USARTx)
   *         - Data Width configuration using @ref LL_USART_SetDataWidth() function
   *         - Parity Control and mode configuration using @ref LL_USART_SetParity() function
   *         - Stop bits configuration using @ref LL_USART_SetStopBitsLength() function
-  * @rmtoll CR1          PS            LL_USART_ConfigCharacter\n
-  *         CR1          PCE           LL_USART_ConfigCharacter\n
-  *         CR1          M0            LL_USART_ConfigCharacter\n
-  *         CR1          M1            LL_USART_ConfigCharacter\n
+  * @rmtoll CR1          PS            LL_USART_ConfigCharacter\r\n
+  *         CR1          PCE           LL_USART_ConfigCharacter\r\n
+  *         CR1          M0            LL_USART_ConfigCharacter\r\n
+  *         CR1          M1            LL_USART_ConfigCharacter\r\n
   *         CR2          STOP          LL_USART_ConfigCharacter
   * @param  USARTx USART Instance
   * @param  DataWidth This parameter can be one of the following values:
@@ -1718,7 +1718,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledRxTimeout(const USART_TypeDef *USARTx
   *         Mute mode inactive (for example, end of block detection in ModBus protocol).
   *         In this case, the whole received character (8-bit) is compared to the ADD[7:0]
   *         value and CMF flag is set on match)
-  * @rmtoll CR2          ADD           LL_USART_ConfigNodeAddress\n
+  * @rmtoll CR2          ADD           LL_USART_ConfigNodeAddress\r\n
   *         CR2          ADDM7         LL_USART_ConfigNodeAddress
   * @param  USARTx USART Instance
   * @param  AddressLen This parameter can be one of the following values:
@@ -1817,7 +1817,7 @@ __STATIC_INLINE void LL_USART_DisableCTSHWFlowCtrl(USART_TypeDef *USARTx)
   * @brief  Configure HW Flow Control mode (both CTS and RTS)
   * @note   Macro IS_UART_HWFLOW_INSTANCE(USARTx) can be used to check whether or not
   *         Hardware Flow control feature is supported by the USARTx instance.
-  * @rmtoll CR3          RTSE          LL_USART_SetHWFlowCtrl\n
+  * @rmtoll CR3          RTSE          LL_USART_SetHWFlowCtrl\r\n
   *         CR3          CTSE          LL_USART_SetHWFlowCtrl
   * @param  USARTx USART Instance
   * @param  HardwareFlowControl This parameter can be one of the following values:
@@ -1836,7 +1836,7 @@ __STATIC_INLINE void LL_USART_SetHWFlowCtrl(USART_TypeDef *USARTx, uint32_t Hard
   * @brief  Return HW Flow Control configuration (both CTS and RTS)
   * @note   Macro IS_UART_HWFLOW_INSTANCE(USARTx) can be used to check whether or not
   *         Hardware Flow control feature is supported by the USARTx instance.
-  * @rmtoll CR3          RTSE          LL_USART_GetHWFlowCtrl\n
+  * @rmtoll CR3          RTSE          LL_USART_GetHWFlowCtrl\r\n
   *         CR3          CTSE          LL_USART_GetHWFlowCtrl
   * @param  USARTx USART Instance
   * @retval Returned value can be one of the following values:
@@ -2799,10 +2799,10 @@ __STATIC_INLINE uint32_t LL_USART_GetDESignalPolarity(const USART_TypeDef *USART
   * @note   Other remaining configurations items related to Asynchronous Mode
   *         (as Baud Rate, Word length, Parity, ...) should be set using
   *         dedicated functions
-  * @rmtoll CR2          LINEN         LL_USART_ConfigAsyncMode\n
-  *         CR2          CLKEN         LL_USART_ConfigAsyncMode\n
-  *         CR3          SCEN          LL_USART_ConfigAsyncMode\n
-  *         CR3          IREN          LL_USART_ConfigAsyncMode\n
+  * @rmtoll CR2          LINEN         LL_USART_ConfigAsyncMode\r\n
+  *         CR2          CLKEN         LL_USART_ConfigAsyncMode\r\n
+  *         CR3          SCEN          LL_USART_ConfigAsyncMode\r\n
+  *         CR3          IREN          LL_USART_ConfigAsyncMode\r\n
   *         CR3          HDSEL         LL_USART_ConfigAsyncMode
   * @param  USARTx USART Instance
   * @retval None
@@ -2836,10 +2836,10 @@ __STATIC_INLINE void LL_USART_ConfigAsyncMode(USART_TypeDef *USARTx)
   * @note   Other remaining configurations items related to Synchronous Mode
   *         (as Baud Rate, Word length, Parity, Clock Polarity, ...) should be set using
   *         dedicated functions
-  * @rmtoll CR2          LINEN         LL_USART_ConfigSyncMode\n
-  *         CR2          CLKEN         LL_USART_ConfigSyncMode\n
-  *         CR3          SCEN          LL_USART_ConfigSyncMode\n
-  *         CR3          IREN          LL_USART_ConfigSyncMode\n
+  * @rmtoll CR2          LINEN         LL_USART_ConfigSyncMode\r\n
+  *         CR2          CLKEN         LL_USART_ConfigSyncMode\r\n
+  *         CR3          SCEN          LL_USART_ConfigSyncMode\r\n
+  *         CR3          IREN          LL_USART_ConfigSyncMode\r\n
   *         CR3          HDSEL         LL_USART_ConfigSyncMode
   * @param  USARTx USART Instance
   * @retval None
@@ -2876,11 +2876,11 @@ __STATIC_INLINE void LL_USART_ConfigSyncMode(USART_TypeDef *USARTx)
   * @note   Other remaining configurations items related to LIN Mode
   *         (as Baud Rate, Word length, LIN Break Detection Length, ...) should be set using
   *         dedicated functions
-  * @rmtoll CR2          CLKEN         LL_USART_ConfigLINMode\n
-  *         CR2          STOP          LL_USART_ConfigLINMode\n
-  *         CR2          LINEN         LL_USART_ConfigLINMode\n
-  *         CR3          IREN          LL_USART_ConfigLINMode\n
-  *         CR3          SCEN          LL_USART_ConfigLINMode\n
+  * @rmtoll CR2          CLKEN         LL_USART_ConfigLINMode\r\n
+  *         CR2          STOP          LL_USART_ConfigLINMode\r\n
+  *         CR2          LINEN         LL_USART_ConfigLINMode\r\n
+  *         CR3          IREN          LL_USART_ConfigLINMode\r\n
+  *         CR3          SCEN          LL_USART_ConfigLINMode\r\n
   *         CR3          HDSEL         LL_USART_ConfigLINMode
   * @param  USARTx USART Instance
   * @retval None
@@ -2916,10 +2916,10 @@ __STATIC_INLINE void LL_USART_ConfigLINMode(USART_TypeDef *USARTx)
   * @note   Other remaining configurations items related to Half Duplex Mode
   *         (as Baud Rate, Word length, Parity, ...) should be set using
   *         dedicated functions
-  * @rmtoll CR2          LINEN         LL_USART_ConfigHalfDuplexMode\n
-  *         CR2          CLKEN         LL_USART_ConfigHalfDuplexMode\n
-  *         CR3          HDSEL         LL_USART_ConfigHalfDuplexMode\n
-  *         CR3          SCEN          LL_USART_ConfigHalfDuplexMode\n
+  * @rmtoll CR2          LINEN         LL_USART_ConfigHalfDuplexMode\r\n
+  *         CR2          CLKEN         LL_USART_ConfigHalfDuplexMode\r\n
+  *         CR3          HDSEL         LL_USART_ConfigHalfDuplexMode\r\n
+  *         CR3          SCEN          LL_USART_ConfigHalfDuplexMode\r\n
   *         CR3          IREN          LL_USART_ConfigHalfDuplexMode
   * @param  USARTx USART Instance
   * @retval None
@@ -2957,10 +2957,10 @@ __STATIC_INLINE void LL_USART_ConfigHalfDuplexMode(USART_TypeDef *USARTx)
   * @note   Other remaining configurations items related to Smartcard Mode
   *         (as Baud Rate, Word length, Parity, ...) should be set using
   *         dedicated functions
-  * @rmtoll CR2          LINEN         LL_USART_ConfigSmartcardMode\n
-  *         CR2          STOP          LL_USART_ConfigSmartcardMode\n
-  *         CR2          CLKEN         LL_USART_ConfigSmartcardMode\n
-  *         CR3          HDSEL         LL_USART_ConfigSmartcardMode\n
+  * @rmtoll CR2          LINEN         LL_USART_ConfigSmartcardMode\r\n
+  *         CR2          STOP          LL_USART_ConfigSmartcardMode\r\n
+  *         CR2          CLKEN         LL_USART_ConfigSmartcardMode\r\n
+  *         CR3          HDSEL         LL_USART_ConfigSmartcardMode\r\n
   *         CR3          SCEN          LL_USART_ConfigSmartcardMode
   * @param  USARTx USART Instance
   * @retval None
@@ -3000,11 +3000,11 @@ __STATIC_INLINE void LL_USART_ConfigSmartcardMode(USART_TypeDef *USARTx)
   * @note   Other remaining configurations items related to Irda Mode
   *         (as Baud Rate, Word length, Power mode, ...) should be set using
   *         dedicated functions
-  * @rmtoll CR2          LINEN         LL_USART_ConfigIrdaMode\n
-  *         CR2          CLKEN         LL_USART_ConfigIrdaMode\n
-  *         CR2          STOP          LL_USART_ConfigIrdaMode\n
-  *         CR3          SCEN          LL_USART_ConfigIrdaMode\n
-  *         CR3          HDSEL         LL_USART_ConfigIrdaMode\n
+  * @rmtoll CR2          LINEN         LL_USART_ConfigIrdaMode\r\n
+  *         CR2          CLKEN         LL_USART_ConfigIrdaMode\r\n
+  *         CR2          STOP          LL_USART_ConfigIrdaMode\r\n
+  *         CR3          SCEN          LL_USART_ConfigIrdaMode\r\n
+  *         CR3          HDSEL         LL_USART_ConfigIrdaMode\r\n
   *         CR3          IREN          LL_USART_ConfigIrdaMode
   * @param  USARTx USART Instance
   * @retval None
@@ -3040,10 +3040,10 @@ __STATIC_INLINE void LL_USART_ConfigIrdaMode(USART_TypeDef *USARTx)
   * @note   Other remaining configurations items related to Multi processor Mode
   *         (as Baud Rate, Wake Up Method, Node address, ...) should be set using
   *         dedicated functions
-  * @rmtoll CR2          LINEN         LL_USART_ConfigMultiProcessMode\n
-  *         CR2          CLKEN         LL_USART_ConfigMultiProcessMode\n
-  *         CR3          SCEN          LL_USART_ConfigMultiProcessMode\n
-  *         CR3          HDSEL         LL_USART_ConfigMultiProcessMode\n
+  * @rmtoll CR2          LINEN         LL_USART_ConfigMultiProcessMode\r\n
+  *         CR2          CLKEN         LL_USART_ConfigMultiProcessMode\r\n
+  *         CR3          SCEN          LL_USART_ConfigMultiProcessMode\r\n
+  *         CR3          HDSEL         LL_USART_ConfigMultiProcessMode\r\n
   *         CR3          IREN          LL_USART_ConfigMultiProcessMode
   * @param  USARTx USART Instance
   * @retval None
@@ -4500,7 +4500,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledDMADeactOnRxErr(const USART_TypeDef *
 
 /**
   * @brief  Get the data register address used for DMA transfer
-  * @rmtoll RDR          RDR           LL_USART_DMA_GetRegAddr\n
+  * @rmtoll RDR          RDR           LL_USART_DMA_GetRegAddr\r\n
   * @rmtoll TDR          TDR           LL_USART_DMA_GetRegAddr
   * @param  USARTx USART Instance
   * @param  Direction This parameter can be one of the following values:

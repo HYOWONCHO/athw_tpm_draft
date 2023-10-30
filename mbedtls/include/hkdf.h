@@ -30,7 +30,7 @@
 #include "mbedtls/md.h"
 
 /**
- *  \name HKDF Error codes
+ *  \r\name HKDF Error codes
  *  \{
  */
 /** Bad input parameters to function. */

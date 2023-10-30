@@ -36,7 +36,7 @@ extern "C" {
  * \{ */
 
 /**
- * \name Structures and functions for parsing CRLs
+ * \r\name Structures and functions for parsing CRLs
  * \{
  */
 
@@ -107,7 +107,7 @@ mbedtls_x509_crl;
 /**
  * \brief          Parse a DER-encoded CRL and append it to the chained list
  *
- * \note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                 subsystem must have been initialized by calling
  *                 psa_crypto_init() before calling this function.
  *
@@ -123,9 +123,9 @@ int mbedtls_x509_crl_parse_der(mbedtls_x509_crl *chain,
 /**
  * \brief          Parse one or more CRLs and append them to the chained list
  *
- * \note           Multiple CRLs are accepted only if using PEM format
+ * \r\note           Multiple CRLs are accepted only if using PEM format
  *
- * \note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                 subsystem must have been initialized by calling
  *                 psa_crypto_init() before calling this function.
  *
@@ -142,9 +142,9 @@ int mbedtls_x509_crl_parse(mbedtls_x509_crl *chain, const unsigned char *buf, si
 /**
  * \brief          Load one or more CRLs and append them to the chained list
  *
- * \note           Multiple CRLs are accepted only if using PEM format
+ * \r\note           Multiple CRLs are accepted only if using PEM format
  *
- * \note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                 subsystem must have been initialized by calling
  *                 psa_crypto_init() before calling this function.
  *

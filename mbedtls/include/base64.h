@@ -51,7 +51,7 @@ extern "C" {
  *                 written to the buffer and *olen is set to the maximum
  *                 length representable as a size_t.
  *
- * \note           Call this function with dlen = 0 to obtain the
+ * \r\note           Call this function with dlen = 0 to obtain the
  *                 required buffer size in *olen
  */
 int mbedtls_base64_encode(unsigned char *dst, size_t dlen, size_t *olen,
@@ -71,7 +71,7 @@ int mbedtls_base64_encode(unsigned char *dst, size_t dlen, size_t *olen,
  *                 not correct. *olen is always updated to reflect the amount
  *                 of data that has (or would have) been written.
  *
- * \note           Call this function with *dst = NULL or dlen = 0 to obtain
+ * \r\note           Call this function with *dst = NULL or dlen = 0 to obtain
  *                 the required buffer size in *olen
  */
 int mbedtls_base64_decode(unsigned char *dst, size_t dlen, size_t *olen,

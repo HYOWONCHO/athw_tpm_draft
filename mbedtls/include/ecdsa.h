@@ -42,7 +42,7 @@
  * \param bits      Curve size in bits
  * \return          Maximum signature size in bytes
  *
- * \note            This macro returns a compile-time constant if its argument
+ * \r\note            This macro returns a compile-time constant if its argument
  *                  is one. It may evaluate its argument multiple times.
  */
 /*
@@ -72,7 +72,7 @@ extern "C" {
  *                  ECDSA context is not supported; objects of this type
  *                  should not be shared between multiple threads.
  *
- * \note            pk_wrap module assumes that "ecdsa_context" is identical
+ * \r\note            pk_wrap module assumes that "ecdsa_context" is identical
  *                  to "ecp_keypair" (see for example structure
  *                  "mbedtls_eckey_info" where ECDSA sign/verify functions
  *                  are used also for EC key)
@@ -84,14 +84,14 @@ typedef mbedtls_ecp_keypair mbedtls_ecdsa_context;
 /**
  * \brief           Internal restart context for ecdsa_verify()
  *
- * \note            Opaque struct, defined in ecdsa.c
+ * \r\note            Opaque struct, defined in ecdsa.c
  */
 typedef struct mbedtls_ecdsa_restart_ver mbedtls_ecdsa_restart_ver_ctx;
 
 /**
  * \brief           Internal restart context for ecdsa_sign()
  *
- * \note            Opaque struct, defined in ecdsa.c
+ * \r\note            Opaque struct, defined in ecdsa.c
  */
 typedef struct mbedtls_ecdsa_restart_sig mbedtls_ecdsa_restart_sig_ctx;
 
@@ -99,7 +99,7 @@ typedef struct mbedtls_ecdsa_restart_sig mbedtls_ecdsa_restart_sig_ctx;
 /**
  * \brief           Internal restart context for ecdsa_sign_det()
  *
- * \note            Opaque struct, defined in ecdsa.c
+ * \r\note            Opaque struct, defined in ecdsa.c
  */
 typedef struct mbedtls_ecdsa_restart_det mbedtls_ecdsa_restart_det_ctx;
 #endif
@@ -138,10 +138,10 @@ int mbedtls_ecdsa_can_do(mbedtls_ecp_group_id gid);
  * \brief           This function computes the ECDSA signature of a
  *                  previously-hashed message.
  *
- * \note            The deterministic version implemented in
+ * \r\note            The deterministic version implemented in
  *                  mbedtls_ecdsa_sign_det_ext() is usually preferred.
  *
- * \note            If the bitlength of the message hash is larger than the
+ * \r\note            If the bitlength of the message hash is larger than the
  *                  bitlength of the group order, then the hash is truncated
  *                  as defined in <em>Standards for Efficient Cryptography Group
  *                  (SECG): SEC1 Elliptic Curve Cryptography</em>, section
@@ -183,7 +183,7 @@ int mbedtls_ecdsa_sign(mbedtls_ecp_group *grp, mbedtls_mpi *r, mbedtls_mpi *s,
  *                  Usage of the Digital Signature Algorithm (DSA) and Elliptic
  *                  Curve Digital Signature Algorithm (ECDSA)</em>.
  *
- * \note            If the bitlength of the message hash is larger than the
+ * \r\note            If the bitlength of the message hash is larger than the
  *                  bitlength of the group order, then the hash is truncated as
  *                  defined in <em>Standards for Efficient Cryptography Group
  *                  (SECG): SEC1 Elliptic Curve Cryptography</em>, section
@@ -228,16 +228,16 @@ int mbedtls_ecdsa_sign_det_ext(mbedtls_ecp_group *grp, mbedtls_mpi *r,
  * \brief               This function computes the ECDSA signature of a
  *                      previously-hashed message, in a restartable way.
  *
- * \note                The deterministic version implemented in
+ * \r\note                The deterministic version implemented in
  *                      mbedtls_ecdsa_sign_det_restartable() is usually
  *                      preferred.
  *
- * \note                This function is like \c mbedtls_ecdsa_sign() but
+ * \r\note                This function is like \c mbedtls_ecdsa_sign() but
  *                      it can return early and restart according to the
  *                      limit set with \c mbedtls_ecp_set_max_ops() to
  *                      reduce blocking.
  *
- * \note                If the bitlength of the message hash is larger
+ * \r\note                If the bitlength of the message hash is larger
  *                      than the bitlength of the group order, then the
  *                      hash is truncated as defined in <em>Standards for
  *                      Efficient Cryptography Group (SECG): SEC1 Elliptic
@@ -297,12 +297,12 @@ int mbedtls_ecdsa_sign_restartable(
  * \brief               This function computes the ECDSA signature of a
  *                      previously-hashed message, in a restartable way.
  *
- * \note                This function is like \c
+ * \r\note                This function is like \c
  *                      mbedtls_ecdsa_sign_det_ext() but it can return
  *                      early and restart according to the limit set with
  *                      \c mbedtls_ecp_set_max_ops() to reduce blocking.
  *
- * \note                If the bitlength of the message hash is larger
+ * \r\note                If the bitlength of the message hash is larger
  *                      than the bitlength of the group order, then the
  *                      hash is truncated as defined in <em>Standards for
  *                      Efficient Cryptography Group (SECG): SEC1 Elliptic
@@ -356,7 +356,7 @@ int mbedtls_ecdsa_sign_det_restartable(
  * \brief           This function verifies the ECDSA signature of a
  *                  previously-hashed message.
  *
- * \note            If the bitlength of the message hash is larger than the
+ * \r\note            If the bitlength of the message hash is larger than the
  *                  bitlength of the group order, then the hash is truncated as
  *                  defined in <em>Standards for Efficient Cryptography Group
  *                  (SECG): SEC1 Elliptic Curve Cryptography</em>, section
@@ -392,7 +392,7 @@ int mbedtls_ecdsa_verify(mbedtls_ecp_group *grp,
  * \brief           This function verifies the ECDSA signature of a
  *                  previously-hashed message, in a restartable manner
  *
- * \note            If the bitlength of the message hash is larger than the
+ * \r\note            If the bitlength of the message hash is larger than the
  *                  bitlength of the group order, then the hash is truncated as
  *                  defined in <em>Standards for Efficient Cryptography Group
  *                  (SECG): SEC1 Elliptic Curve Cryptography</em>, section
@@ -441,13 +441,13 @@ int mbedtls_ecdsa_verify_restartable(mbedtls_ecp_group *grp,
  * \warning         It is not thread-safe to use the same context in
  *                  multiple threads.
  *
- * \note            The deterministic version is used if
+ * \r\note            The deterministic version is used if
  *                  #MBEDTLS_ECDSA_DETERMINISTIC is defined. For more
  *                  information, see <em>RFC-6979: Deterministic Usage
  *                  of the Digital Signature Algorithm (DSA) and Elliptic
  *                  Curve Digital Signature Algorithm (ECDSA)</em>.
  *
- * \note            If the bitlength of the message hash is larger than the
+ * \r\note            If the bitlength of the message hash is larger than the
  *                  bitlength of the group order, then the hash is truncated as
  *                  defined in <em>Standards for Efficient Cryptography Group
  *                  (SECG): SEC1 Elliptic Curve Cryptography</em>, section
@@ -494,7 +494,7 @@ int mbedtls_ecdsa_write_signature(mbedtls_ecdsa_context *ctx,
  *
  * \see             \c mbedtls_ecdsa_write_signature()
  *
- * \note            This function is like \c mbedtls_ecdsa_write_signature()
+ * \r\note            This function is like \c mbedtls_ecdsa_write_signature()
  *                  but it can return early and restart according to the limit
  *                  set with \c mbedtls_ecp_set_max_ops() to reduce blocking.
  *
@@ -539,7 +539,7 @@ int mbedtls_ecdsa_write_signature_restartable(mbedtls_ecdsa_context *ctx,
 /**
  * \brief           This function reads and verifies an ECDSA signature.
  *
- * \note            If the bitlength of the message hash is larger than the
+ * \r\note            If the bitlength of the message hash is larger than the
  *                  bitlength of the group order, then the hash is truncated as
  *                  defined in <em>Standards for Efficient Cryptography Group
  *                  (SECG): SEC1 Elliptic Curve Cryptography</em>, section
@@ -573,7 +573,7 @@ int mbedtls_ecdsa_read_signature(mbedtls_ecdsa_context *ctx,
  *
  * \see             \c mbedtls_ecdsa_read_signature()
  *
- * \note            This function is like \c mbedtls_ecdsa_read_signature()
+ * \r\note            This function is like \c mbedtls_ecdsa_read_signature()
  *                  but it can return early and restart according to the limit
  *                  set with \c mbedtls_ecp_set_max_ops() to reduce blocking.
  *

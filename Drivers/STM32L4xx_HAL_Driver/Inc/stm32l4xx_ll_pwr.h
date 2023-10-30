@@ -580,9 +580,9 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledVddIO2(void)
 
 /**
   * @brief  Enable the Power Voltage Monitoring on a peripheral
-  * @rmtoll CR2          PVME1         LL_PWR_EnablePVM\n
-  *         CR2          PVME2         LL_PWR_EnablePVM\n
-  *         CR2          PVME3         LL_PWR_EnablePVM\n
+  * @rmtoll CR2          PVME1         LL_PWR_EnablePVM\r\n
+  *         CR2          PVME2         LL_PWR_EnablePVM\r\n
+  *         CR2          PVME3         LL_PWR_EnablePVM\r\n
   *         CR2          PVME4         LL_PWR_EnablePVM
   * @param  PeriphVoltage This parameter can be one of the following values:
   *         @arg @ref LL_PWR_PVM_VDDUSB_1_2V (*)
@@ -600,9 +600,9 @@ __STATIC_INLINE void LL_PWR_EnablePVM(uint32_t PeriphVoltage)
 
 /**
   * @brief  Disable the Power Voltage Monitoring on a peripheral
-  * @rmtoll CR2          PVME1         LL_PWR_DisablePVM\n
-  *         CR2          PVME2         LL_PWR_DisablePVM\n
-  *         CR2          PVME3         LL_PWR_DisablePVM\n
+  * @rmtoll CR2          PVME1         LL_PWR_DisablePVM\r\n
+  *         CR2          PVME2         LL_PWR_DisablePVM\r\n
+  *         CR2          PVME3         LL_PWR_DisablePVM\r\n
   *         CR2          PVME4         LL_PWR_DisablePVM
   * @param  PeriphVoltage This parameter can be one of the following values:
   *         @arg @ref LL_PWR_PVM_VDDUSB_1_2V (*)
@@ -620,9 +620,9 @@ __STATIC_INLINE void LL_PWR_DisablePVM(uint32_t PeriphVoltage)
 
 /**
   * @brief  Check if Power Voltage Monitoring is enabled on a peripheral
-  * @rmtoll CR2          PVME1         LL_PWR_IsEnabledPVM\n
-  *         CR2          PVME2         LL_PWR_IsEnabledPVM\n
-  *         CR2          PVME3         LL_PWR_IsEnabledPVM\n
+  * @rmtoll CR2          PVME1         LL_PWR_IsEnabledPVM\r\n
+  *         CR2          PVME2         LL_PWR_IsEnabledPVM\r\n
+  *         CR2          PVME3         LL_PWR_IsEnabledPVM\r\n
   *         CR2          PVME4         LL_PWR_IsEnabledPVM
   * @param  PeriphVoltage This parameter can be one of the following values:
   *         @arg @ref LL_PWR_PVM_VDDUSB_1_2V (*)
@@ -892,11 +892,11 @@ __STATIC_INLINE uint32_t LL_PWR_GetSRAM2ContentRetention(void)
 
 /**
   * @brief  Enable the WakeUp PINx functionality
-  * @rmtoll CR3          EWUP1         LL_PWR_EnableWakeUpPin\n
-  *         CR3          EWUP2         LL_PWR_EnableWakeUpPin\n
-  *         CR3          EWUP3         LL_PWR_EnableWakeUpPin\n
-  *         CR3          EWUP4         LL_PWR_EnableWakeUpPin\n
-  *         CR3          EWUP5         LL_PWR_EnableWakeUpPin\n
+  * @rmtoll CR3          EWUP1         LL_PWR_EnableWakeUpPin\r\n
+  *         CR3          EWUP2         LL_PWR_EnableWakeUpPin\r\n
+  *         CR3          EWUP3         LL_PWR_EnableWakeUpPin\r\n
+  *         CR3          EWUP4         LL_PWR_EnableWakeUpPin\r\n
+  *         CR3          EWUP5         LL_PWR_EnableWakeUpPin\r\n
   * @param  WakeUpPin This parameter can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_PIN1
   *         @arg @ref LL_PWR_WAKEUP_PIN2
@@ -912,11 +912,11 @@ __STATIC_INLINE void LL_PWR_EnableWakeUpPin(uint32_t WakeUpPin)
 
 /**
   * @brief  Disable the WakeUp PINx functionality
-  * @rmtoll CR3          EWUP1         LL_PWR_DisableWakeUpPin\n
-  *         CR3          EWUP2         LL_PWR_DisableWakeUpPin\n
-  *         CR3          EWUP3         LL_PWR_DisableWakeUpPin\n
-  *         CR3          EWUP4         LL_PWR_DisableWakeUpPin\n
-  *         CR3          EWUP5         LL_PWR_DisableWakeUpPin\n
+  * @rmtoll CR3          EWUP1         LL_PWR_DisableWakeUpPin\r\n
+  *         CR3          EWUP2         LL_PWR_DisableWakeUpPin\r\n
+  *         CR3          EWUP3         LL_PWR_DisableWakeUpPin\r\n
+  *         CR3          EWUP4         LL_PWR_DisableWakeUpPin\r\n
+  *         CR3          EWUP5         LL_PWR_DisableWakeUpPin\r\n
   * @param  WakeUpPin This parameter can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_PIN1
   *         @arg @ref LL_PWR_WAKEUP_PIN2
@@ -932,11 +932,11 @@ __STATIC_INLINE void LL_PWR_DisableWakeUpPin(uint32_t WakeUpPin)
 
 /**
   * @brief  Check if the WakeUp PINx functionality is enabled
-  * @rmtoll CR3          EWUP1         LL_PWR_IsEnabledWakeUpPin\n
-  *         CR3          EWUP2         LL_PWR_IsEnabledWakeUpPin\n
-  *         CR3          EWUP3         LL_PWR_IsEnabledWakeUpPin\n
-  *         CR3          EWUP4         LL_PWR_IsEnabledWakeUpPin\n
-  *         CR3          EWUP5         LL_PWR_IsEnabledWakeUpPin\n
+  * @rmtoll CR3          EWUP1         LL_PWR_IsEnabledWakeUpPin\r\n
+  *         CR3          EWUP2         LL_PWR_IsEnabledWakeUpPin\r\n
+  *         CR3          EWUP3         LL_PWR_IsEnabledWakeUpPin\r\n
+  *         CR3          EWUP4         LL_PWR_IsEnabledWakeUpPin\r\n
+  *         CR3          EWUP5         LL_PWR_IsEnabledWakeUpPin\r\n
   * @param  WakeUpPin This parameter can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_PIN1
   *         @arg @ref LL_PWR_WAKEUP_PIN2
@@ -1045,10 +1045,10 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledBatteryCharging(void)
 
 /**
   * @brief  Set the Wake-Up pin polarity low for the event detection
-  * @rmtoll CR4          WP1           LL_PWR_SetWakeUpPinPolarityLow\n
-  *         CR4          WP2           LL_PWR_SetWakeUpPinPolarityLow\n
-  *         CR4          WP3           LL_PWR_SetWakeUpPinPolarityLow\n
-  *         CR4          WP4           LL_PWR_SetWakeUpPinPolarityLow\n
+  * @rmtoll CR4          WP1           LL_PWR_SetWakeUpPinPolarityLow\r\n
+  *         CR4          WP2           LL_PWR_SetWakeUpPinPolarityLow\r\n
+  *         CR4          WP3           LL_PWR_SetWakeUpPinPolarityLow\r\n
+  *         CR4          WP4           LL_PWR_SetWakeUpPinPolarityLow\r\n
   *         CR4          WP5           LL_PWR_SetWakeUpPinPolarityLow
   * @param  WakeUpPin This parameter can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_PIN1
@@ -1065,10 +1065,10 @@ __STATIC_INLINE void LL_PWR_SetWakeUpPinPolarityLow(uint32_t WakeUpPin)
 
 /**
   * @brief  Set the Wake-Up pin polarity high for the event detection
-  * @rmtoll CR4          WP1           LL_PWR_SetWakeUpPinPolarityHigh\n
-  *         CR4          WP2           LL_PWR_SetWakeUpPinPolarityHigh\n
-  *         CR4          WP3           LL_PWR_SetWakeUpPinPolarityHigh\n
-  *         CR4          WP4           LL_PWR_SetWakeUpPinPolarityHigh\n
+  * @rmtoll CR4          WP1           LL_PWR_SetWakeUpPinPolarityHigh\r\n
+  *         CR4          WP2           LL_PWR_SetWakeUpPinPolarityHigh\r\n
+  *         CR4          WP3           LL_PWR_SetWakeUpPinPolarityHigh\r\n
+  *         CR4          WP4           LL_PWR_SetWakeUpPinPolarityHigh\r\n
   *         CR4          WP5           LL_PWR_SetWakeUpPinPolarityHigh
   * @param  WakeUpPin This parameter can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_PIN1
@@ -1085,10 +1085,10 @@ __STATIC_INLINE void LL_PWR_SetWakeUpPinPolarityHigh(uint32_t WakeUpPin)
 
 /**
   * @brief  Get the Wake-Up pin polarity for the event detection
-  * @rmtoll CR4          WP1           LL_PWR_IsWakeUpPinPolarityLow\n
-  *         CR4          WP2           LL_PWR_IsWakeUpPinPolarityLow\n
-  *         CR4          WP3           LL_PWR_IsWakeUpPinPolarityLow\n
-  *         CR4          WP4           LL_PWR_IsWakeUpPinPolarityLow\n
+  * @rmtoll CR4          WP1           LL_PWR_IsWakeUpPinPolarityLow\r\n
+  *         CR4          WP2           LL_PWR_IsWakeUpPinPolarityLow\r\n
+  *         CR4          WP3           LL_PWR_IsWakeUpPinPolarityLow\r\n
+  *         CR4          WP4           LL_PWR_IsWakeUpPinPolarityLow\r\n
   *         CR4          WP5           LL_PWR_IsWakeUpPinPolarityLow
   * @param  WakeUpPin This parameter can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_PIN1
@@ -1105,14 +1105,14 @@ __STATIC_INLINE uint32_t LL_PWR_IsWakeUpPinPolarityLow(uint32_t WakeUpPin)
 
 /**
   * @brief  Enable GPIO pull-up state in Standby and Shutdown modes
-  * @rmtoll PUCRA        PU0-15        LL_PWR_EnableGPIOPullUp\n
-  *         PUCRB        PU0-15        LL_PWR_EnableGPIOPullUp\n
-  *         PUCRC        PU0-15        LL_PWR_EnableGPIOPullUp\n
-  *         PUCRD        PU0-15        LL_PWR_EnableGPIOPullUp\n
-  *         PUCRE        PU0-15        LL_PWR_EnableGPIOPullUp\n
-  *         PUCRF        PU0-15        LL_PWR_EnableGPIOPullUp\n
-  *         PUCRG        PU0-15        LL_PWR_EnableGPIOPullUp\n
-  *         PUCRH        PU0-15        LL_PWR_EnableGPIOPullUp\n
+  * @rmtoll PUCRA        PU0-15        LL_PWR_EnableGPIOPullUp\r\n
+  *         PUCRB        PU0-15        LL_PWR_EnableGPIOPullUp\r\n
+  *         PUCRC        PU0-15        LL_PWR_EnableGPIOPullUp\r\n
+  *         PUCRD        PU0-15        LL_PWR_EnableGPIOPullUp\r\n
+  *         PUCRE        PU0-15        LL_PWR_EnableGPIOPullUp\r\n
+  *         PUCRF        PU0-15        LL_PWR_EnableGPIOPullUp\r\n
+  *         PUCRG        PU0-15        LL_PWR_EnableGPIOPullUp\r\n
+  *         PUCRH        PU0-15        LL_PWR_EnableGPIOPullUp\r\n
   *         PUCRI        PU0-11        LL_PWR_EnableGPIOPullUp
   * @param  GPIO This parameter can be one of the following values:
   *         @arg @ref LL_PWR_GPIO_A
@@ -1152,14 +1152,14 @@ __STATIC_INLINE void LL_PWR_EnableGPIOPullUp(uint32_t GPIO, uint32_t GPIONumber)
 
 /**
   * @brief  Disable GPIO pull-up state in Standby and Shutdown modes
-  * @rmtoll PUCRA        PU0-15        LL_PWR_DisableGPIOPullUp\n
-  *         PUCRB        PU0-15        LL_PWR_DisableGPIOPullUp\n
-  *         PUCRC        PU0-15        LL_PWR_DisableGPIOPullUp\n
-  *         PUCRD        PU0-15        LL_PWR_DisableGPIOPullUp\n
-  *         PUCRE        PU0-15        LL_PWR_DisableGPIOPullUp\n
-  *         PUCRF        PU0-15        LL_PWR_DisableGPIOPullUp\n
-  *         PUCRG        PU0-15        LL_PWR_DisableGPIOPullUp\n
-  *         PUCRH        PU0-15        LL_PWR_DisableGPIOPullUp\n
+  * @rmtoll PUCRA        PU0-15        LL_PWR_DisableGPIOPullUp\r\n
+  *         PUCRB        PU0-15        LL_PWR_DisableGPIOPullUp\r\n
+  *         PUCRC        PU0-15        LL_PWR_DisableGPIOPullUp\r\n
+  *         PUCRD        PU0-15        LL_PWR_DisableGPIOPullUp\r\n
+  *         PUCRE        PU0-15        LL_PWR_DisableGPIOPullUp\r\n
+  *         PUCRF        PU0-15        LL_PWR_DisableGPIOPullUp\r\n
+  *         PUCRG        PU0-15        LL_PWR_DisableGPIOPullUp\r\n
+  *         PUCRH        PU0-15        LL_PWR_DisableGPIOPullUp\r\n
   *         PUCRI        PU0-11        LL_PWR_DisableGPIOPullUp
   * @param  GPIO This parameter can be one of the following values:
   *         @arg @ref LL_PWR_GPIO_A
@@ -1199,14 +1199,14 @@ __STATIC_INLINE void LL_PWR_DisableGPIOPullUp(uint32_t GPIO, uint32_t GPIONumber
 
 /**
   * @brief  Check if GPIO pull-up state is enabled
-  * @rmtoll PUCRA        PU0-15        LL_PWR_IsEnabledGPIOPullUp\n
-  *         PUCRB        PU0-15        LL_PWR_IsEnabledGPIOPullUp\n
-  *         PUCRC        PU0-15        LL_PWR_IsEnabledGPIOPullUp\n
-  *         PUCRD        PU0-15        LL_PWR_IsEnabledGPIOPullUp\n
-  *         PUCRE        PU0-15        LL_PWR_IsEnabledGPIOPullUp\n
-  *         PUCRF        PU0-15        LL_PWR_IsEnabledGPIOPullUp\n
-  *         PUCRG        PU0-15        LL_PWR_IsEnabledGPIOPullUp\n
-  *         PUCRH        PU0-15        LL_PWR_IsEnabledGPIOPullUp\n
+  * @rmtoll PUCRA        PU0-15        LL_PWR_IsEnabledGPIOPullUp\r\n
+  *         PUCRB        PU0-15        LL_PWR_IsEnabledGPIOPullUp\r\n
+  *         PUCRC        PU0-15        LL_PWR_IsEnabledGPIOPullUp\r\n
+  *         PUCRD        PU0-15        LL_PWR_IsEnabledGPIOPullUp\r\n
+  *         PUCRE        PU0-15        LL_PWR_IsEnabledGPIOPullUp\r\n
+  *         PUCRF        PU0-15        LL_PWR_IsEnabledGPIOPullUp\r\n
+  *         PUCRG        PU0-15        LL_PWR_IsEnabledGPIOPullUp\r\n
+  *         PUCRH        PU0-15        LL_PWR_IsEnabledGPIOPullUp\r\n
   *         PUCRI        PU0-11        LL_PWR_IsEnabledGPIOPullUp
   * @param  GPIO This parameter can be one of the following values:
   *         @arg @ref LL_PWR_GPIO_A
@@ -1246,14 +1246,14 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledGPIOPullUp(uint32_t GPIO, uint32_t GPIO
 
 /**
   * @brief  Enable GPIO pull-down state in Standby and Shutdown modes
-  * @rmtoll PDCRA        PD0-15        LL_PWR_EnableGPIOPullDown\n
-  *         PDCRB        PD0-15        LL_PWR_EnableGPIOPullDown\n
-  *         PDCRC        PD0-15        LL_PWR_EnableGPIOPullDown\n
-  *         PDCRD        PD0-15        LL_PWR_EnableGPIOPullDown\n
-  *         PDCRE        PD0-15        LL_PWR_EnableGPIOPullDown\n
-  *         PDCRF        PD0-15        LL_PWR_EnableGPIOPullDown\n
-  *         PDCRG        PD0-15        LL_PWR_EnableGPIOPullDown\n
-  *         PDCRH        PD0-15        LL_PWR_EnableGPIOPullDown\n
+  * @rmtoll PDCRA        PD0-15        LL_PWR_EnableGPIOPullDown\r\n
+  *         PDCRB        PD0-15        LL_PWR_EnableGPIOPullDown\r\n
+  *         PDCRC        PD0-15        LL_PWR_EnableGPIOPullDown\r\n
+  *         PDCRD        PD0-15        LL_PWR_EnableGPIOPullDown\r\n
+  *         PDCRE        PD0-15        LL_PWR_EnableGPIOPullDown\r\n
+  *         PDCRF        PD0-15        LL_PWR_EnableGPIOPullDown\r\n
+  *         PDCRG        PD0-15        LL_PWR_EnableGPIOPullDown\r\n
+  *         PDCRH        PD0-15        LL_PWR_EnableGPIOPullDown\r\n
   *         PDCRI        PD0-11        LL_PWR_EnableGPIOPullDown
   * @param  GPIO This parameter can be one of the following values:
   *         @arg @ref LL_PWR_GPIO_A
@@ -1293,14 +1293,14 @@ __STATIC_INLINE void LL_PWR_EnableGPIOPullDown(uint32_t GPIO, uint32_t GPIONumbe
 
 /**
   * @brief  Disable GPIO pull-down state in Standby and Shutdown modes
-  * @rmtoll PDCRA        PD0-15        LL_PWR_DisableGPIOPullDown\n
-  *         PDCRB        PD0-15        LL_PWR_DisableGPIOPullDown\n
-  *         PDCRC        PD0-15        LL_PWR_DisableGPIOPullDown\n
-  *         PDCRD        PD0-15        LL_PWR_DisableGPIOPullDown\n
-  *         PDCRE        PD0-15        LL_PWR_DisableGPIOPullDown\n
-  *         PDCRF        PD0-15        LL_PWR_DisableGPIOPullDown\n
-  *         PDCRG        PD0-15        LL_PWR_DisableGPIOPullDown\n
-  *         PDCRH        PD0-15        LL_PWR_DisableGPIOPullDown\n
+  * @rmtoll PDCRA        PD0-15        LL_PWR_DisableGPIOPullDown\r\n
+  *         PDCRB        PD0-15        LL_PWR_DisableGPIOPullDown\r\n
+  *         PDCRC        PD0-15        LL_PWR_DisableGPIOPullDown\r\n
+  *         PDCRD        PD0-15        LL_PWR_DisableGPIOPullDown\r\n
+  *         PDCRE        PD0-15        LL_PWR_DisableGPIOPullDown\r\n
+  *         PDCRF        PD0-15        LL_PWR_DisableGPIOPullDown\r\n
+  *         PDCRG        PD0-15        LL_PWR_DisableGPIOPullDown\r\n
+  *         PDCRH        PD0-15        LL_PWR_DisableGPIOPullDown\r\n
   *         PDCRI        PD0-11        LL_PWR_DisableGPIOPullDown
   * @param  GPIO This parameter can be one of the following values:
   *         @arg @ref LL_PWR_GPIO_A
@@ -1340,14 +1340,14 @@ __STATIC_INLINE void LL_PWR_DisableGPIOPullDown(uint32_t GPIO, uint32_t GPIONumb
 
 /**
   * @brief  Check if GPIO pull-down state is enabled
-  * @rmtoll PDCRA        PD0-15        LL_PWR_IsEnabledGPIOPullDown\n
-  *         PDCRB        PD0-15        LL_PWR_IsEnabledGPIOPullDown\n
-  *         PDCRC        PD0-15        LL_PWR_IsEnabledGPIOPullDown\n
-  *         PDCRD        PD0-15        LL_PWR_IsEnabledGPIOPullDown\n
-  *         PDCRE        PD0-15        LL_PWR_IsEnabledGPIOPullDown\n
-  *         PDCRF        PD0-15        LL_PWR_IsEnabledGPIOPullDown\n
-  *         PDCRG        PD0-15        LL_PWR_IsEnabledGPIOPullDown\n
-  *         PDCRH        PD0-15        LL_PWR_IsEnabledGPIOPullDown\n
+  * @rmtoll PDCRA        PD0-15        LL_PWR_IsEnabledGPIOPullDown\r\n
+  *         PDCRB        PD0-15        LL_PWR_IsEnabledGPIOPullDown\r\n
+  *         PDCRC        PD0-15        LL_PWR_IsEnabledGPIOPullDown\r\n
+  *         PDCRD        PD0-15        LL_PWR_IsEnabledGPIOPullDown\r\n
+  *         PDCRE        PD0-15        LL_PWR_IsEnabledGPIOPullDown\r\n
+  *         PDCRF        PD0-15        LL_PWR_IsEnabledGPIOPullDown\r\n
+  *         PDCRG        PD0-15        LL_PWR_IsEnabledGPIOPullDown\r\n
+  *         PDCRH        PD0-15        LL_PWR_IsEnabledGPIOPullDown\r\n
   *         PDCRI        PD0-11        LL_PWR_IsEnabledGPIOPullDown
   * @param  GPIO This parameter can be one of the following values:
   *         @arg @ref LL_PWR_GPIO_A

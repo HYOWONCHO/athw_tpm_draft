@@ -50,7 +50,7 @@
 #endif
 
 /**
- * \name X509 Error codes
+ * \r\name X509 Error codes
  * \{
  */
 /** Unavailable feature, e.g. RSA hashing/encryption combination. */
@@ -96,7 +96,7 @@
 /** \} name X509 Error codes */
 
 /**
- * \name X509 Verify codes
+ * \r\name X509 Verify codes
  * \{
  */
 /* Reminder: update x509_crt_verify_strings[] in library/x509_crt.c */
@@ -218,7 +218,7 @@ extern "C" {
  * \{ */
 
 /**
- * \name Structures for parsing X.509 certificates, CRLs and CSRs
+ * \r\name Structures for parsing X.509 certificates, CRLs and CSRs
  * \{
  */
 
@@ -336,7 +336,7 @@ int mbedtls_x509_dn_gets(char *buf, size_t size, const mbedtls_x509_name *dn);
 /**
  * \brief          Return the next relative DN in an X509 name.
  *
- * \note           Intended use is to compare function result to dn->next
+ * \r\note           Intended use is to compare function result to dn->next
  *                 in order to detect boundaries of multi-valued RDNs.
  *
  * \param dn       Current node in the X509 name
@@ -395,7 +395,7 @@ int mbedtls_x509_time_gmtime(mbedtls_time_t tt, mbedtls_x509_time *now);
  * \brief          Check a given mbedtls_x509_time against the system time
  *                 and tell if it's in the past.
  *
- * \note           Intended usage is "if( is_past( valid_to ) ) ERROR".
+ * \r\note           Intended usage is "if( is_past( valid_to ) ) ERROR".
  *                 Hence the return value of 1 if on internal errors.
  *
  * \param to       mbedtls_x509_time to check
@@ -409,7 +409,7 @@ int mbedtls_x509_time_is_past(const mbedtls_x509_time *to);
  * \brief          Check a given mbedtls_x509_time against the system time
  *                 and tell if it's in the future.
  *
- * \note           Intended usage is "if( is_future( valid_from ) ) ERROR".
+ * \r\note           Intended usage is "if( is_future( valid_from ) ) ERROR".
  *                 Hence the return value of 1 if on internal errors.
  *
  * \param from     mbedtls_x509_time to check
@@ -431,12 +431,12 @@ int mbedtls_x509_time_is_future(const mbedtls_x509_time *from);
  * \param san      The target structure to populate with the parsed presentation
  *                 of the subject alternative name encoded in \p san_buf.
  *
- * \note           Supported GeneralName types, as defined in RFC 5280:
+ * \r\note           Supported GeneralName types, as defined in RFC 5280:
  *                 "rfc822Name", "dnsName", "directoryName",
  *                 "uniformResourceIdentifier" and "hardware_module_name"
  *                 of type "otherName", as defined in RFC 4108.
  *
- * \note           This function should be called on a single raw data of
+ * \r\note           This function should be called on a single raw data of
  *                 subject alternative name. For example, after successful
  *                 certificate parsing, one must iterate on every item in the
  *                 \c crt->subject_alt_names sequence, and pass it to
@@ -538,7 +538,7 @@ int mbedtls_x509_write_set_san_common(mbedtls_asn1_named_data **extensions,
  *                 4-byte aligned if the result will be used as struct in_addr.
  *                 e.g. uint32_t dst[4]
  *
- * \note           \p cn is parsed as an IPv6 address if string contains ':',
+ * \r\note           \p cn is parsed as an IPv6 address if string contains ':',
  *                 else \p cn is parsed as an IPv4 address.
  *
  * \return         Length of binary IP address; num bytes written to target.

@@ -68,7 +68,7 @@ void mbedtls_version_get_string_full(char *string);
  *                  library was for instance compiled with or without
  *                  Multi-threading support.
  *
- * \note            only checks against defines in the sections "System
+ * \r\note            only checks against defines in the sections "System
  *                  support", "Mbed TLS modules" and "Mbed TLS feature
  *                  support" in mbedtls_config.h
  *

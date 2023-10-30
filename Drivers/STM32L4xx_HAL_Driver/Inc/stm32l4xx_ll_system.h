@@ -511,7 +511,7 @@ __STATIC_INLINE void LL_SYSCFG_DisableAnalogBooster(void)
 
 /**
   * @brief  Enable the I2C fast mode plus driving capability.
-  * @rmtoll SYSCFG_CFGR1 I2C_PBx_FMP   LL_SYSCFG_EnableFastModePlus\n
+  * @rmtoll SYSCFG_CFGR1 I2C_PBx_FMP   LL_SYSCFG_EnableFastModePlus\r\n
   *         SYSCFG_CFGR1 I2Cx_FMP      LL_SYSCFG_EnableFastModePlus
   * @param  ConfigFastModePlus This parameter can be a combination of the following values:
   *         @arg @ref LL_SYSCFG_I2C_FASTMODEPLUS_PB6
@@ -533,7 +533,7 @@ __STATIC_INLINE void LL_SYSCFG_EnableFastModePlus(uint32_t ConfigFastModePlus)
 
 /**
   * @brief  Disable the I2C fast mode plus driving capability.
-  * @rmtoll SYSCFG_CFGR1 I2C_PBx_FMP   LL_SYSCFG_DisableFastModePlus\n
+  * @rmtoll SYSCFG_CFGR1 I2C_PBx_FMP   LL_SYSCFG_DisableFastModePlus\r\n
   *         SYSCFG_CFGR1 I2Cx_FMP      LL_SYSCFG_DisableFastModePlus
   * @param  ConfigFastModePlus This parameter can be a combination of the following values:
   *         @arg @ref LL_SYSCFG_I2C_FASTMODEPLUS_PB6
@@ -735,9 +735,9 @@ __STATIC_INLINE uint32_t LL_SYSCFG_IsEnabledIT_FPU_IXC(void)
 
 /**
   * @brief  Configure source input for the EXTI external interrupt.
-  * @rmtoll SYSCFG_EXTICR1 EXTIx         LL_SYSCFG_SetEXTISource\n
-  *         SYSCFG_EXTICR2 EXTIx         LL_SYSCFG_SetEXTISource\n
-  *         SYSCFG_EXTICR3 EXTIx         LL_SYSCFG_SetEXTISource\n
+  * @rmtoll SYSCFG_EXTICR1 EXTIx         LL_SYSCFG_SetEXTISource\r\n
+  *         SYSCFG_EXTICR2 EXTIx         LL_SYSCFG_SetEXTISource\r\n
+  *         SYSCFG_EXTICR3 EXTIx         LL_SYSCFG_SetEXTISource\r\n
   *         SYSCFG_EXTICR4 EXTIx         LL_SYSCFG_SetEXTISource
   * @param  Port This parameter can be one of the following values:
   *         @arg @ref LL_SYSCFG_EXTI_PORTA
@@ -777,9 +777,9 @@ __STATIC_INLINE void LL_SYSCFG_SetEXTISource(uint32_t Port, uint32_t Line)
 
 /**
   * @brief  Get the configured defined for specific EXTI Line
-  * @rmtoll SYSCFG_EXTICR1 EXTIx         LL_SYSCFG_GetEXTISource\n
-  *         SYSCFG_EXTICR2 EXTIx         LL_SYSCFG_GetEXTISource\n
-  *         SYSCFG_EXTICR3 EXTIx         LL_SYSCFG_GetEXTISource\n
+  * @rmtoll SYSCFG_EXTICR1 EXTIx         LL_SYSCFG_GetEXTISource\r\n
+  *         SYSCFG_EXTICR2 EXTIx         LL_SYSCFG_GetEXTISource\r\n
+  *         SYSCFG_EXTICR3 EXTIx         LL_SYSCFG_GetEXTISource\r\n
   *         SYSCFG_EXTICR4 EXTIx         LL_SYSCFG_GetEXTISource
   * @param  Line This parameter can be one of the following values:
   *         @arg @ref LL_SYSCFG_EXTI_LINE0
@@ -843,9 +843,9 @@ __STATIC_INLINE uint32_t LL_SYSCFG_IsSRAM2EraseOngoing(void)
 
 /**
   * @brief  Set connections to TIM1/8/15/16/17 Break inputs
-  * @rmtoll SYSCFG_CFGR2 CLL           LL_SYSCFG_SetTIMBreakInputs\n
-  *         SYSCFG_CFGR2 SPL           LL_SYSCFG_SetTIMBreakInputs\n
-  *         SYSCFG_CFGR2 PVDL          LL_SYSCFG_SetTIMBreakInputs\n
+  * @rmtoll SYSCFG_CFGR2 CLL           LL_SYSCFG_SetTIMBreakInputs\r\n
+  *         SYSCFG_CFGR2 SPL           LL_SYSCFG_SetTIMBreakInputs\r\n
+  *         SYSCFG_CFGR2 PVDL          LL_SYSCFG_SetTIMBreakInputs\r\n
   *         SYSCFG_CFGR2 ECCL          LL_SYSCFG_SetTIMBreakInputs
   * @param  Break This parameter can be a combination of the following values:
   *         @arg @ref LL_SYSCFG_TIMBREAK_ECC
@@ -861,9 +861,9 @@ __STATIC_INLINE void LL_SYSCFG_SetTIMBreakInputs(uint32_t Break)
 
 /**
   * @brief  Get connections to TIM1/8/15/16/17 Break inputs
-  * @rmtoll SYSCFG_CFGR2 CLL           LL_SYSCFG_GetTIMBreakInputs\n
-  *         SYSCFG_CFGR2 SPL           LL_SYSCFG_GetTIMBreakInputs\n
-  *         SYSCFG_CFGR2 PVDL          LL_SYSCFG_GetTIMBreakInputs\n
+  * @rmtoll SYSCFG_CFGR2 CLL           LL_SYSCFG_GetTIMBreakInputs\r\n
+  *         SYSCFG_CFGR2 SPL           LL_SYSCFG_GetTIMBreakInputs\r\n
+  *         SYSCFG_CFGR2 PVDL          LL_SYSCFG_GetTIMBreakInputs\r\n
   *         SYSCFG_CFGR2 ECCL          LL_SYSCFG_GetTIMBreakInputs
   * @retval Returned value can be can be a combination of the following values:
   *         @arg @ref LL_SYSCFG_TIMBREAK_ECC
@@ -1107,7 +1107,7 @@ __STATIC_INLINE void LL_DBGMCU_DisableDBGStandbyMode(void)
 
 /**
   * @brief  Set Trace pin assignment control
-  * @rmtoll DBGMCU_CR    TRACE_IOEN    LL_DBGMCU_SetTracePinAssignment\n
+  * @rmtoll DBGMCU_CR    TRACE_IOEN    LL_DBGMCU_SetTracePinAssignment\r\n
   *         DBGMCU_CR    TRACE_MODE    LL_DBGMCU_SetTracePinAssignment
   * @param  PinAssignment This parameter can be one of the following values:
   *         @arg @ref LL_DBGMCU_TRACE_NONE
@@ -1124,7 +1124,7 @@ __STATIC_INLINE void LL_DBGMCU_SetTracePinAssignment(uint32_t PinAssignment)
 
 /**
   * @brief  Get Trace pin assignment control
-  * @rmtoll DBGMCU_CR    TRACE_IOEN    LL_DBGMCU_GetTracePinAssignment\n
+  * @rmtoll DBGMCU_CR    TRACE_IOEN    LL_DBGMCU_GetTracePinAssignment\r\n
   *         DBGMCU_CR    TRACE_MODE    LL_DBGMCU_GetTracePinAssignment
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_DBGMCU_TRACE_NONE
@@ -1550,8 +1550,8 @@ __STATIC_INLINE void LL_FLASH_DisableDataCacheReset(void)
   * @note Flash must not be accessed when power down is enabled
   * @note Flash must not be put in power-down while a program or an erase operation
   *       is on-going
-  * @rmtoll FLASH_ACR    RUN_PD        LL_FLASH_EnableRunPowerDown\n
-  *         FLASH_PDKEYR PDKEY1        LL_FLASH_EnableRunPowerDown\n
+  * @rmtoll FLASH_ACR    RUN_PD        LL_FLASH_EnableRunPowerDown\r\n
+  *         FLASH_PDKEYR PDKEY1        LL_FLASH_EnableRunPowerDown\r\n
   *         FLASH_PDKEYR PDKEY2        LL_FLASH_EnableRunPowerDown
   * @retval None
   */
@@ -1566,8 +1566,8 @@ __STATIC_INLINE void LL_FLASH_EnableRunPowerDown(void)
 
 /**
   * @brief  Disable Flash Power-down mode during run mode or Low-power run mode
-  * @rmtoll FLASH_ACR    RUN_PD        LL_FLASH_DisableRunPowerDown\n
-  *         FLASH_PDKEYR PDKEY1        LL_FLASH_DisableRunPowerDown\n
+  * @rmtoll FLASH_ACR    RUN_PD        LL_FLASH_DisableRunPowerDown\r\n
+  *         FLASH_PDKEYR PDKEY1        LL_FLASH_DisableRunPowerDown\r\n
   *         FLASH_PDKEYR PDKEY2        LL_FLASH_DisableRunPowerDown
   * @retval None
   */

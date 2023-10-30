@@ -122,9 +122,9 @@ static void athw_tpm_copy_pubt(TPMT_PUBLIC* out, const TPMT_PUBLIC* in)
 //          out->parameters.eccDetail.kdf.details.any.hashAlg =
 //              in->parameters.eccDetail.kdf.details.any.hashAlg;
 //      }
-//      wolfTPM2_CopyEccParam(&out->unique.ecc.x,
+//      ATHW_CopyEccParam(&out->unique.ecc.x,
 //          &in->unique.ecc.x);
-//      wolfTPM2_CopyEccParam(&out->unique.ecc.y,
+//      ATHW_CopyEccParam(&out->unique.ecc.y,
 //          &in->unique.ecc.y);
 //      break;
     default:
@@ -225,7 +225,7 @@ static int  athw_tpm_init_ex(void *ctx, void *iocb, void *userctx, int timeouttr
         return rc;
     }
     
-    printf("TPM2: Caps 0x%08x, Did 0x%04x, Vid 0x%04x, Rid 0x%2x \r\n",
+    printf("TPM2: Caps 0x%08x, Did 0x%04x, Vid 0x%04x, Rid 0x%2x \r\r\n",
         h->caps,
         h->did_vid >> 16,
         h->did_vid & 0xFFFF,
@@ -236,11 +236,11 @@ static int  athw_tpm_init_ex(void *ctx, void *iocb, void *userctx, int timeouttr
     rc = TPM2_Startup(&startupin);
     
     if( rc != TPM_RC_SUCCESS && rc != TPM_RC_INITIALIZE) {
-        tr_log("TPM2_Startup failed %d: %s\n", rc, TPM2_GetRCString(rc));
+        tr_log("TPM2_Startup failed %d: %s\r\n", rc, TPM2_GetRCString(rc));
         return rc;
     }
     
-    tr_log("TPM2_Starup pass \n");
+    tr_log("TPM2_Starup pass \r\n");
     
     // TO DO : Self Test
 #if defined(ATHW_PERFORM_SELFTEST)
@@ -264,13 +264,13 @@ static int  athw_tpm_init_ex(void *ctx, void *iocb, void *userctx, int timeouttr
 int athw_tpm_init(void *dev, void *iocb, void *userctx)
 {
     int rc = ATHW_EOK;
-    WOLFTPM2_DEV *h = NULL;
+    ATHW_DEV *h = NULL;
     
     if( dev == NULL ) {
         return -ATHW_ENULLP;
     }
     
-    h = (WOLFTPM2_DEV *)dev;
+    h = (ATHW_DEV *)dev;
     
     memset(h, 0, sizeof *h);
     
@@ -351,9 +351,9 @@ int athw_tpm_set_auth(void *_dev, int index, TPM_HANDLE session_handle,
 {
     int rc = ATHW_EOK;
     TPM2_AUTH_SESSION *session;
-    WOLFTPM2_DEV *dev = NULL;
+    ATHW_DEV *dev = NULL;
     
-    dev = (WOLFTPM2_DEV *)_dev;
+    dev = (ATHW_DEV *)_dev;
         
     if( dev == NULL || index >= MAX_SESSION_NUM || index < 0 ) {
         rc = -ATHW_EINVAL;
@@ -393,7 +393,7 @@ int athw_tpm_set_auth_handle(void *_dev, int index, const athwtpm2_handle_t *han
     const TPM2B_AUTH *auth = NULL;
     const TPM2B_NAME *name = NULL;
     
-    WOLFTPM2_DEV  *dev = (WOLFTPM2_DEV *)_dev;
+    ATHW_DEV  *dev = (ATHW_DEV *)_dev;
     
     // do not set the auth for this policy session
     if( dev->ctx.session == NULL || handle->policyAuth  ) {
@@ -560,7 +560,7 @@ int athw_tpm_self_test(void *_dev)
     int rc = ATHW_EOK;
     SelfTest_In  test;
     
-    WOLFTPM2_DEV *dev = (WOLFTPM2_DEV *)_dev;
+    ATHW_DEV *dev = (ATHW_DEV *)_dev;
     
     if( dev == NULL ) {
         return -ATHW_ENULLP;
@@ -571,11 +571,11 @@ int athw_tpm_self_test(void *_dev)
     rc = TPM2_SelfTest(&test);
     
     if( rc != ATHW_EOK ) {
-        tr_log("TPM2_SelfTest failed 0x%x: %s \n", rc, TPM2_GetRCString(rc));
+        tr_log("TPM2_SelfTest failed 0x%x: %s \r\n", rc, TPM2_GetRCString(rc));
         return rc;
     }
     
-    tr_log("TPM2_SelfTest pass \n");
+    tr_log("TPM2_SelfTest pass \r\n");
     return rc;
 }
 
@@ -637,7 +637,7 @@ int athw_tpm_createkey(void *handle, const uint8_t *auth, int authsz)
         return rc;
     }
 #ifdef  ATHW_DEBUG_TPM
-    printf("tpm2 creation key: pub %d, priv %d \r\n",
+    printf("tpm2 creation key: pub %d, priv %d \r\r\n",
         outkey.outPublic.size, outkey.outPrivate.size);
     TPM2_PrintPublicArea(&outkey.outPublic); 
 #endif
@@ -722,104 +722,935 @@ exit:
     
 
 }
-    
 
-int athw_tpm_start_session(void *dev, TPM_SE type, int cipheralg)
+int ATHWTPM2_EncryptSecret(WOLFTPM2_DEV* dev, const WOLFTPM2_KEY* tpmKey,
+    TPM2B_DATA *data, TPM2B_ENCRYPTED_SECRET *secret,
+    const char* label)
+{
+    int rc = NOT_COMPILED_IN;
+
+    /* if a tpmKey is not present then we are using an unsalted session */
+    if (dev == NULL || tpmKey == NULL || data == NULL || secret == NULL) {
+        return TPM_RC_SUCCESS;
+    }
+
+#ifdef ATHW_DEBUG_TPM
+    printf("Encrypt secret: Alg %s, Label %s\r\n",
+        TPM2_GetAlgName(tpmKey->pub.publicArea.type), label);
+#endif
+
+#ifndef WOLFTPM2_NO_WOLFCRYPT
+    switch (tpmKey->pub.publicArea.type) {
+    #if defined(HAVE_ECC) && !defined(WC_NO_RNG) && defined(WOLFSSL_PUBLIC_MP)
+        case TPM_ALG_ECC:
+            rc = wolfTPM2_EncryptSecret_ECC(dev, tpmKey, data, secret, label);
+            break;
+    #endif
+    #if !defined(NO_RSA) && !defined(WC_NO_RNG)
+        case TPM_ALG_RSA:
+            rc = wolfTPM2_EncryptSecret_RSA(dev, tpmKey, data, secret, label);
+            break;
+    #endif
+        default:
+            rc = NOT_COMPILED_IN;
+            break;
+    }
+
+#ifdef WOLFTPM_DEBUG_VERBOSE
+    printf("Encrypt Secret %d: %d bytes\r\n", rc, data->size);
+    TPM2_PrintBin(data->buffer, data->size);
+#endif
+#endif /* !WOLFTPM2_NO_WOLFCRYPT */
+
+    (void)label;
+
+    return rc;
+}
+
+int ATHW_TPM2_KDFa(
+    TPM_ALG_ID   hashAlg,   /* IN: hash algorithm used in HMAC */
+    TPM2B_DATA  *keyIn,     /* IN: key */
+    const char  *label,     /* IN: a 0-byte terminated label used in KDF */
+    TPM2B_NONCE *contextU,  /* IN: context U (newer) */
+    TPM2B_NONCE *contextV,  /* IN: context V */
+    BYTE        *key,       /* OUT: key buffer */
+    UINT32       keySz      /* IN: size of generated key in bytes */
+)
+{
+#if !defined(WOLFTPM2_NO_WOLFCRYPT) && !defined(NO_HMAC)
+    int ret, hashType;
+    Hmac hmac_ctx;
+    word32 counter = 0;
+    int hLen, copyLen, lLen = 0;
+    byte uint32Buf[sizeof(UINT32)];
+    UINT32 sizeInBits = keySz * 8, pos;
+    BYTE* keyStream = key;
+    byte hash[WC_MAX_DIGEST_SIZE];
+
+    if (key == NULL)
+        return BAD_FUNC_ARG;
+
+    hashType = TPM2_GetHashType(hashAlg);
+    if (hashType == WC_HASH_TYPE_NONE)
+        return NOT_COMPILED_IN;
+
+    hLen = TPM2_GetHashDigestSize(hashAlg);
+    if ( (hLen <= 0) || (hLen > WC_MAX_DIGEST_SIZE))
+        return NOT_COMPILED_IN;
+
+    /* get label length if provided, including null termination */
+    if (label != NULL) {
+        lLen = (int)XSTRLEN(label) + 1;
+    }
+
+    ret = wc_HmacInit(&hmac_ctx, NULL, INVALID_DEVID);
+    if (ret != 0)
+        return ret;
+
+    /* generate required bytes - blocks sized digest */
+    for (pos = 0; pos < keySz; pos += hLen) {
+        /* KDFa counter starts at 1 */
+        counter++;
+        copyLen = hLen;
+
+        /* start HMAC */
+        if (keyIn) {
+            ret = wc_HmacSetKey(&hmac_ctx, hashType, keyIn->buffer, keyIn->size);
+        }
+        else {
+            ret = wc_HmacSetKey(&hmac_ctx, hashType, NULL, 0);
+        }
+        if (ret != 0)
+            goto exit;
+
+        /* add counter - KDFa i2 */
+        TPM2_Packet_U32ToByteArray(counter, uint32Buf);
+        ret = wc_HmacUpdate(&hmac_ctx, uint32Buf, (word32)sizeof(uint32Buf));
+        if (ret != 0)
+            goto exit;
+
+        /* add label - KDFa label */
+        if (label != NULL) {
+            ret = wc_HmacUpdate(&hmac_ctx, (byte*)label, lLen);
+            if (ret != 0)
+                goto exit;
+        }
+
+        /* add contextU */
+        if (contextU != NULL && contextU->size > 0) {
+            ret = wc_HmacUpdate(&hmac_ctx, contextU->buffer, contextU->size);
+            if (ret != 0)
+                goto exit;
+        }
+
+        /* add contextV */
+        if (contextV != NULL && contextV->size > 0) {
+            ret = wc_HmacUpdate(&hmac_ctx, contextV->buffer, contextV->size);
+            if (ret != 0)
+                goto exit;
+        }
+
+        /* add size in bits */
+        TPM2_Packet_U32ToByteArray(sizeInBits, uint32Buf);
+        ret = wc_HmacUpdate(&hmac_ctx, uint32Buf, (word32)sizeof(uint32Buf));
+        if (ret != 0)
+            goto exit;
+
+        /* get result */
+        ret = wc_HmacFinal(&hmac_ctx, hash);
+        if (ret != 0)
+            goto exit;
+
+        if ((UINT32)hLen > keySz - pos) {
+          copyLen = keySz - pos;
+        }
+
+        XMEMCPY(keyStream, hash, copyLen);
+        keyStream += copyLen;
+    }
+    ret = keySz;
+
+exit:
+    wc_HmacFree(&hmac_ctx);
+
+    /* return length rounded up to nearest 8 multiple */
+    return ret;
+#else
+    (void)hashAlg;
+    (void)keyIn;
+    (void)label;
+    (void)contextU;
+    (void)contextV;
+    (void)key;
+    (void)keySz;
+
+    return NOT_COMPILED_IN;
+#endif
+}
+
+
+int ATHWTPM2_SetAuthSession(WOLFTPM2_DEV* dev, int index,
+    WOLFTPM2_SESSION* tpmSession, TPMA_SESSION sessionAttributes)
 {
     int rc;
-    StartAuthSession_In insession;
-    StartAuthSession_Out outsession;
-    
-    athwtpm2_sessionhndl_t *session = (athwtpm2_sessionhndl_t *)dev;
-    
-    TPM2B_AUTH *bindauth = NULL;
-    TPM2B_DATA keyin;
-    TPMI_ALG_HASH hashauth  =   TPM_ALG_SHA256;
-    int sz_digest = 0L;
-    
-    
-    if (session == NULL || session->dev  == NULL || session->session) {
-        return -ATHW_ENULLP;
+
+    if (dev == NULL || index >= MAX_SESSION_NUM) {
+        return BAD_FUNC_ARG;
     }
-    
-    athw_memzero_s(session->session, sizeof *session->session);
-    athw_memzero_s(&insession, sizeof insession);
-    
-    insession.authHash = hashauth;
-    sz_digest = TPM2_GetHashDigestSize(hashauth);
-    if (sz_digest <= 0) {
-        return -ATHW_EINVAL;
+
+    if (tpmSession == NULL) {
+        /* clearing auth session */
+        XMEMSET(&dev->session[index], 0, sizeof(TPM2_AUTH_SESSION));
+        return TPM_RC_SUCCESS;
     }
-    
-    
-    // set session auth for key
-    if (session->key) {
-        TPMA_SESSION attrsession = 0;
-        
-        if (cipheralg == TPM_ALG_CFB || cipheralg == TPM_ALG_XOR) {
-            attrsession |=  (TPMA_SESSION_decrypt | TPMA_SESSION_encrypt);
+
+    rc = athw_tpm_set_auth(dev, index, tpmSession->handle.hndl,
+        &tpmSession->handle.auth, sessionAttributes, NULL);
+    if (rc == TPM_RC_SUCCESS) {
+        TPM2_AUTH_SESSION* session = &dev->session[index];
+
+        /* save off session attributes */
+        tpmSession->sessionAttributes = sessionAttributes;
+
+        /* define the symmetric algorithm */
+        session->authHash = tpmSession->authHash;
+        XMEMCPY(&session->symmetric, &tpmSession->handle.symmetric,
+            sizeof(TPMT_SYM_DEF));
+
+        /* fresh nonce generated in TPM2_CommandProcess based on this size */
+        session->nonceCaller.size = TPM2_GetHashDigestSize(WOLFTPM2_WRAP_DIGEST);
+
+        /* Capture TPM provided nonce */
+        session->nonceTPM.size = tpmSession->nonceTPM.size;
+        XMEMCPY(session->nonceTPM.buffer, tpmSession->nonceTPM.buffer,
+            session->nonceTPM.size);
+
+        /* Parameter Encryption session will have an hmac added later.
+         * Reserve space, the same way it was done for nonceCaller above.
+         */
+        if (session->sessionHandle != TPM_RS_PW &&
+            ((session->sessionAttributes & TPMA_SESSION_encrypt) ||
+             (session->sessionAttributes & TPMA_SESSION_decrypt))) {
+            session->auth.size = TPM2_GetHashDigestSize(session->authHash);
         }
-        
-        athw_tpm_set_auth(session->dev, session->key->handle.hndl,
-                          &session->key->handle.auth,
-                          attrsession, NULL);
-        insession.tpmKey = session->key->handle.hndl;
+    }
+    return rc;
+}
+
+
+
+int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
+    WOLFTPM2_KEY* tpmKey, WOLFTPM2_HANDLE* bind, TPM_SE sesType,
+    int encDecAlg)
+{
+    int rc;
+    StartAuthSession_In  authSesIn;
+    StartAuthSession_Out authSesOut;
+    TPM2B_AUTH* bindAuth = NULL;
+    TPM2B_DATA keyIn;
+    TPMI_ALG_HASH authHash = WOLFTPM2_WRAP_DIGEST;
+    int hashDigestSz;
+
+    if (dev == NULL || session == NULL)
+        return BAD_FUNC_ARG;
+
+    XMEMSET(session, 0, sizeof(WOLFTPM2_SESSION));
+    XMEMSET(&authSesIn, 0, sizeof(authSesIn));
+
+    authSesIn.authHash = authHash;
+    hashDigestSz = TPM2_GetHashDigestSize(authHash);
+    if (hashDigestSz <= 0) {
+        return NOT_COMPILED_IN;
+    }
+
+    /* set session auth for key */
+    if (tpmKey) {
+        TPMA_SESSION sessionAttributes = 0;
+        if (encDecAlg == TPM_ALG_CFB || encDecAlg == TPM_ALG_XOR) {
+            /* if parameter encryption is enabled and key bind set, enable
+             * encrypt/decrypt by default */
+            sessionAttributes |= (TPMA_SESSION_decrypt | TPMA_SESSION_encrypt);
+        }
+        athw_tpm_set_auth(dev, 0, tpmKey->handle.hndl, &tpmKey->handle.auth,
+            sessionAttributes, NULL);
+        authSesIn.tpmKey = tpmKey->handle.hndl;
     }
     else {
-        athw_tpm_set_auth_password(session->dev, 0, NULL);
-        insession.tpmKey = (TPMI_DH_OBJECT)TPM_RH_NULL;
+        athw_tpm_set_auth_password(dev, 0, NULL);
+        authSesIn.tpmKey = (TPMI_DH_OBJECT)TPM_RH_NULL;
     }
-    
-    // bind-key setup
-    insession.bind = (TPMI_DH_ENTITY)TPM_RH_NULL;
-    if (session->bindhndl) {
-        insession.bind = session->bindhndl;
-        bindauth = &session->bindhndl->auth;
+    /* setup bind key */
+    authSesIn.bind = (TPMI_DH_ENTITY)TPM_RH_NULL;
+    if (bind) {
+        authSesIn.bind = bind->hndl;
+        bindAuth = &bind->auth;
     }
-    
-    insession.sessionType = type;
-    if (cipheralg == TPM_ALG_CFB) {
-        insession.symmetric.algorithm = TPM_ALG_AES;
-        insession.symmetric.keyBits.aes = 128;
-        insession.symmetric.mode.aes = TPM_ALG_CFB;
+
+    authSesIn.sessionType = sesType;
+    if (encDecAlg == TPM_ALG_CFB) {
+        authSesIn.symmetric.algorithm = TPM_ALG_AES;
+        authSesIn.symmetric.keyBits.aes = 128;
+        authSesIn.symmetric.mode.aes = TPM_ALG_CFB;
     }
-    else if (cipheralg == TPM_ALG_XOR) {
-        insession.symmetric.algorithm = TPM_ALG_XOR;
-        insession.symmetric.keyBits.xorr = TPM_ALG_SHA256;
-        insession.symmetric.mode.sym = TPM_ALG_NULL;
+    else if (encDecAlg == TPM_ALG_XOR) {
+        authSesIn.symmetric.algorithm = TPM_ALG_XOR;
+        authSesIn.symmetric.keyBits.xorr = TPM_ALG_SHA256;
+        authSesIn.symmetric.mode.sym = TPM_ALG_NULL;
     }
     else {
-        insession.symmetric.algorithm = TPM_ALG_NULL;
-    }   
-    
-    insession.nonceCaller.size = sz_digest; 
-    
-    rc = TPM2_GetNonce(insession.nonceCaller.buffer, insession.nonceCaller.size);
+        authSesIn.symmetric.algorithm = TPM_ALG_NULL;
+    }
+    authSesIn.nonceCaller.size = hashDigestSz;
+    rc = TPM2_GetNonce(authSesIn.nonceCaller.buffer,
+                       authSesIn.nonceCaller.size);
     if (rc < 0) {
-        tr_log("TPM2_GetNonde failed (0x%x) - %s", rc, TPM2_GetRCString(rc));
+    #ifdef ATHW_DEBUG_TPM
+        printf("TPM2_GetNonce failed %d: %s\r\n", rc, TPM2_GetRCString(rc));
+    #endif
         return rc;
     }
-    
-    if (insession.tpmKey != TPM_RH_NULL) {
-        session->session->salt.size = sz_digest;
-        rc = TPM2_GetNonce(session->session->salt.buffer, session->session->salt.size);
+
+    if (authSesIn.tpmKey != TPM_RH_NULL) {
+        /* Generate random salt */
+        session->salt.size = hashDigestSz;
+        rc = TPM2_GetNonce(session->salt.buffer, session->salt.size);
         if (rc != 0) {
-            tr_log("TPM2_GetNonde failed (0x%x) - %s", rc, TPM2_GetRCString(rc));
             return rc;
         }
-        
-//      if (session->dev == NULL || session->key || &session->session->salt == NULL) {
-//      }
 
-        // Encrypt salt
+        /* Encrypt salt using "SECRET" */
+        rc = ATHWTPM2_EncryptSecret(dev, tpmKey, (TPM2B_DATA*)&session->salt,
+            &authSesIn.encryptedSalt, "SECRET");
+        if (rc != 0) {
+        #ifdef ATHW_DEBUG_TPM
+            printf("Building encrypted salt failed %d: %s!\r\n", rc,
+                wolfTPM2_GetRCString(rc));
+        #endif
+            return rc;
+        }
     }
-    
-    rc = TPM2_StartAuthSession(&insession, &outsession);
-    if (rc != 0) {
-        tr_log("TPM2_StartAuthSession failed (%d) - %s", rc, TPM2_GetRCString(rc));
+
+    rc = TPM2_StartAuthSession(&authSesIn, &authSesOut);
+    if (rc != TPM_RC_SUCCESS) {
+    #ifdef ATHW_DEBUG_TPM
+        printf("TPM2_StartAuthSession failed %d: %s\r\n", rc,
+            wolfTPM2_GetRCString(rc));
+    #endif
         return rc;
     }
+
+    /* Calculate "key" and store into auth */
+    /* key is bindAuthValue || salt */
+    XMEMSET(&keyIn, 0, sizeof(keyIn));
+    if (bindAuth && bindAuth->size > 0) {
+        XMEMCPY(&keyIn.buffer[keyIn.size], bindAuth->buffer, bindAuth->size);
+        keyIn.size += bindAuth->size;
+    }
+    if (session->salt.size > 0) {
+        XMEMCPY(&keyIn.buffer[keyIn.size], session->salt.buffer,
+            session->salt.size);
+        keyIn.size += session->salt.size;
+    }
+
+    if (keyIn.size > 0) {
+        session->handle.auth.size = hashDigestSz;
+        rc = ATHW_TPM2_KDFa(authSesIn.authHash, &keyIn, "ATH",
+            &authSesOut.nonceTPM, &authSesIn.nonceCaller,
+            session->handle.auth.buffer, session->handle.auth.size);
+        if (rc != hashDigestSz) {
+        #ifdef ATHW_DEBUG_TPM
+            printf("KDFa ATH Gen Error %d\r\n", rc);
+        #endif
+            return TPM_RC_FAILURE;
+        }
+        rc = TPM_RC_SUCCESS;
+    }
+
+#ifdef WOLFTPM_DEBUG_VERBOSE
+    printf("Session Key %d\r\n", session->handle.auth.size);
+    TPM2_PrintBin(session->handle.auth.buffer, session->handle.auth.size);
+#endif
+
+    /* return session */
+    session->type = authSesIn.sessionType;
+    session->authHash = authSesIn.authHash;
+    session->handle.hndl = authSesOut.sessionHandle;
+    athw_tpm_copy_symmetric(&session->handle.symmetric, &authSesIn.symmetric);
+    if (bind) {
+        athw_tpm_copyname(&session->handle.name, &bind->name);
+    }
+    session->nonceCaller.size = authSesIn.nonceCaller.size;
+    if (session->nonceCaller.size > (UINT16)sizeof(session->nonceCaller.buffer))
+        session->nonceCaller.size = (UINT16)sizeof(session->nonceCaller.buffer);
+    XMEMCPY(session->nonceCaller.buffer, authSesIn.nonceCaller.buffer,
+        authSesIn.nonceCaller.size);
+    session->nonceTPM.size = authSesOut.nonceTPM.size;
+    if (session->nonceTPM.size > (UINT16)sizeof(session->nonceTPM.buffer))
+        session->nonceTPM.size = (UINT16)sizeof(session->nonceTPM.buffer);
+    XMEMCPY(session->nonceTPM.buffer, authSesOut.nonceTPM.buffer,
+        session->nonceTPM.size);
+
+#ifdef ATHW_DEBUG_TPM
+    printf("TPM2_StartAuthSession: handle 0x%x, algorithm %s\r\r\n",
+        (word32)session->handle.hndl,
+        TPM2_GetAlgName(authSesIn.symmetric.algorithm));
+#endif
+
+    return rc;
 }
+
+    
+
+//int athw_tpm_start_session(void *dev, TPM_SE type, int cipheralg)
+//{
+//    int rc;
+//    StartAuthSession_In insession;
+//    StartAuthSession_Out outsession;
+//
+//    athwtpm2_sessionhndl_t *session = (athwtpm2_sessionhndl_t *)dev;
+//
+//    TPM2B_AUTH *bindauth = NULL;
+//    TPM2B_DATA keyin;
+//    TPMI_ALG_HASH hashauth  =   TPM_ALG_SHA256;
+//    int sz_digest = 0L;
+//
+//
+//    if (session == NULL || session->dev  == NULL || session->session) {
+//        return -ATHW_ENULLP;
+//    }
+//
+//    athw_memzero_s(session->session, sizeof *session->session);
+//    athw_memzero_s(&insession, sizeof insession);
+//
+//    insession.authHash = hashauth;
+//    sz_digest = TPM2_GetHashDigestSize(hashauth);
+//    if (sz_digest <= 0) {
+//        return -ATHW_EINVAL;
+//    }
+//
+//
+//    // set session auth for key
+//    if (session->key) {
+//        TPMA_SESSION attrsession = 0;
+//
+//        if (cipheralg == TPM_ALG_CFB || cipheralg == TPM_ALG_XOR) {
+//            attrsession |=  (TPMA_SESSION_decrypt | TPMA_SESSION_encrypt);
+//        }
+//
+//        athw_tpm_set_auth(session->dev, session->key->handle.hndl,
+//                          &session->key->handle.auth,
+//                          attrsession, NULL);
+//        insession.tpmKey = session->key->handle.hndl;
+//    }
+//    else {
+//        athw_tpm_set_auth_password(session->dev, 0, NULL);
+//        insession.tpmKey = (TPMI_DH_OBJECT)TPM_RH_NULL;
+//    }
+//
+//    // bind-key setup
+//    insession.bind = (TPMI_DH_ENTITY)TPM_RH_NULL;
+//    if (session->bindhndl) {
+//        insession.bind = session->bindhndl;
+//        bindauth = &session->bindhndl->auth;
+//    }
+//
+//    insession.sessionType = type;
+//    if (cipheralg == TPM_ALG_CFB) {
+//        insession.symmetric.algorithm = TPM_ALG_AES;
+//        insession.symmetric.keyBits.aes = 128;
+//        insession.symmetric.mode.aes = TPM_ALG_CFB;
+//    }
+//    else if (cipheralg == TPM_ALG_XOR) {
+//        insession.symmetric.algorithm = TPM_ALG_XOR;
+//        insession.symmetric.keyBits.xorr = TPM_ALG_SHA256;
+//        insession.symmetric.mode.sym = TPM_ALG_NULL;
+//    }
+//    else {
+//        insession.symmetric.algorithm = TPM_ALG_NULL;
+//    }
+//
+//    insession.nonceCaller.size = sz_digest;
+//
+//    rc = TPM2_GetNonce(insession.nonceCaller.buffer, insession.nonceCaller.size);
+//    if (rc < 0) {
+//        tr_log("TPM2_GetNonde failed (0x%x) - %s", rc, TPM2_GetRCString(rc));
+//        return rc;
+//    }
+//
+//    if (insession.tpmKey != TPM_RH_NULL) {
+//        session->session->salt.size = sz_digest;
+//        rc = TPM2_GetNonce(session->session->salt.buffer, session->session->salt.size);
+//        if (rc != 0) {
+//            tr_log("TPM2_GetNonde failed (0x%x) - %s", rc, TPM2_GetRCString(rc));
+//            return rc;
+//        }
+//
+////      if (session->dev == NULL || session->key || &session->session->salt == NULL) {
+////      }
+//
+//        // Encrypt salt
+//    }
+//
+//    rc = TPM2_StartAuthSession(&insession, &outsession);
+//    if (rc != 0) {
+//        tr_log("TPM2_StartAuthSession failed (%d) - %s", rc, TPM2_GetRCString(rc));
+//        return rc;
+//    }
+//
+//    // calculate key
+//    athw_memzero_s(&keyin, sizeof keyin);
+//    if (bindauth && bindauth->size > 0) {
+//        memcpy(&keyin.buffer[keyin.size], bindauth->buffer, bindauth->size);
+//        keyin.size += bindauth->size;
+//    }
+//
+//    if (session->session->salt.size > 0) {
+//        memcpy(&keyin.buffer[keyin.size], session->session->salt.buffer,
+//               session->session->salt.size);
+//        keyin.size += session->session->salt.size;
+//    }
+//
+//    if (keyin.size > 0) {
+//        session->session->handle.auth.size = sz_digest;
+//        //rc = TPM2_KDFa
+//
+//        rc = ATHW_EOK;
+//    }
+//
+//#ifdef ATHW_DEBUG_TPM_VERBOSE
+//    //printf("Session key %d \r\n", session->session->handle.auth.size);
+//    _athw_print_bin("Session key",
+//                    session->session->handle.auth.buffer,
+//                    session->session->handle.auth.size);
+//#endif
+//
+//    //return session
+//    session->session->type =  insession.sessionType;
+//    session->session->authHash = insession.authHash;
+//    session->session->handle.hndl = outsession.sessionHandle;
+//
+//    athw_tpm_copy_symmetric(&session->session->handle.symmetric,
+//                            &insession.symmetric);
+//    if (bind) {
+//        athw_tpm_copyname(&session->session->handle.name,
+//                            &session->bindhndl->name);
+//    }
+//
+//    session->session->nonceCaller.size = insession.nonceCaller.size;
+//    if (session->session->nonceCaller.size >
+//            (UINT16)sizeof(session->session->nonceCaller.buffer))
+//        session->session->nonceCaller.size = (UINT16)sizeof(session->session->nonceCaller.buffer)
+//
+//    memcpy(session->session->nonceCaller.buffer,
+//            insession.nonceCaller.buffer,
+//            insession.nonceCaller.size);
+//    session->session->nonceTPM.size = outsession.nonceTPM.size;
+//
+//    if (session->session->nonceTPM.size > (UINT16)sizeof(session->session->nonceTPM.buffer))
+//        session->session->nonceTPM.size = (UINT16)sizeof(session->session->nonceTPM.buffer);
+//
+//    memcpy(session->session->nonceTPM.buffer,
+//            outsession.nonceTPM.buffer,
+//            session->session->nonceTPM.size);
+//
+//#ifdef ATHW_DEBUG_TPM
+//    printf("TPM2_StartAuthSession: handle 0x%x, algorithm %s\r\n",
+//        (uint32_t)session->session->handle.hndl,
+//        TPM2_GetAlgName(insession.symmetric.algorithm));
+//#endif
+//
+//    return rc;
+//
+//}
+
+int ATHW_ReadPublicKey(ATHW_DEV* dev, ATHW_KEY* key,
+    const TPM_HANDLE handle)
+{
+    int rc;
+    ReadPublic_In  readPubIn;
+    ReadPublic_Out readPubOut;
+
+    if (dev == NULL || key == NULL)
+        return BAD_FUNC_ARG;
+
+    /* Read public key */
+    XMEMSET(&readPubIn, 0, sizeof(readPubIn));
+    readPubIn.objectHandle = handle;
+    rc = TPM2_ReadPublic(&readPubIn, &readPubOut);
+    if (rc != TPM_RC_SUCCESS) {
+    #ifdef ATHW_DEBUG_TPM
+        printf("TPM2_ReadPublic failed %d: %s\r\n", rc, TPM2_GetRCString(rc));
+    #endif
+        return rc;
+    }
+
+    key->handle.hndl = readPubIn.objectHandle;
+    athw_tpm_copy_symmetric(&key->handle.symmetric,
+            &readPubOut.outPublic.publicArea.parameters.asymDetail.symmetric);
+    athw_tpm_copyname(&key->handle.name, &readPubOut.name);
+    athw_tpm_copy_pub(&key->pub, &readPubOut.outPublic);
+
+#ifdef ATHW_DEBUG_TPM
+    printf("TPM2_ReadPublic Handle 0x%x: pub %d, name %d, qualifiedName %d\r\n",
+        (word32)readPubIn.objectHandle,
+        readPubOut.outPublic.size, readPubOut.name.size,
+        readPubOut.qualifiedName.size);
+#endif
+
+    return rc;
+}
+
+static int GetKeyTemplateRSA(TPMT_PUBLIC* publicTemplate,
+    TPM_ALG_ID nameAlg, TPMA_OBJECT objectAttributes, int keyBits, int exponent,
+    TPM_ALG_ID sigScheme, TPM_ALG_ID sigHash)
+{
+    if (publicTemplate == NULL)
+        return BAD_FUNC_ARG;
+
+    XMEMSET(publicTemplate, 0, sizeof(TPMT_PUBLIC));
+    publicTemplate->type = TPM_ALG_RSA;
+    publicTemplate->unique.rsa.size = keyBits / 8;
+    publicTemplate->nameAlg = nameAlg;
+    publicTemplate->objectAttributes = objectAttributes;
+    publicTemplate->parameters.rsaDetail.keyBits = keyBits;
+    publicTemplate->parameters.rsaDetail.exponent = exponent;
+    publicTemplate->parameters.rsaDetail.scheme.scheme = sigScheme;
+    publicTemplate->parameters.rsaDetail.scheme.details.anySig.hashAlg = sigHash;
+    /* For fixedParent or (decrypt and restricted) enable symmetric */
+    if ((objectAttributes & TPMA_OBJECT_fixedParent) ||
+           ((objectAttributes & TPMA_OBJECT_decrypt) &&
+            (objectAttributes & TPMA_OBJECT_restricted))) {
+        publicTemplate->parameters.rsaDetail.symmetric.algorithm = TPM_ALG_AES;
+        publicTemplate->parameters.rsaDetail.symmetric.keyBits.aes = 128;
+        publicTemplate->parameters.rsaDetail.symmetric.mode.aes = TPM_ALG_CFB;
+    }
+    else {
+        publicTemplate->parameters.rsaDetail.symmetric.algorithm = TPM_ALG_NULL;
+    }
+
+    return TPM_RC_SUCCESS;
+}
+
+static int GetKeyTemplateECC(TPMT_PUBLIC* publicTemplate,
+    TPM_ALG_ID nameAlg, TPMA_OBJECT objectAttributes, TPM_ECC_CURVE curve,
+    TPM_ALG_ID sigScheme, TPM_ALG_ID sigHash)
+{
+    int curveSz = TPM2_GetCurveSize(curve);
+
+    if (publicTemplate == NULL || curveSz == 0)
+        return BAD_FUNC_ARG;
+
+#if defined(NO_ECC256) && defined(HAVE_ECC384) && ECC_MIN_KEY_SZ <= 384
+    /* make sure we use a curve that is enabled */
+    if (curve == TPM_ECC_NIST_P256) {
+        curve = TPM_ECC_NIST_P384;
+        nameAlg = TPM_ALG_SHA384;
+        sigHash = TPM_ALG_SHA384;
+    }
+#endif
+
+    XMEMSET(publicTemplate, 0, sizeof(TPMT_PUBLIC));
+    publicTemplate->type = TPM_ALG_ECC;
+    publicTemplate->nameAlg = nameAlg;
+    publicTemplate->unique.ecc.x.size = curveSz;
+    publicTemplate->unique.ecc.y.size = curveSz;
+    publicTemplate->objectAttributes = objectAttributes;
+    /* For fixedParent or (decrypt and restricted) enable symmetric */
+    if ((objectAttributes & TPMA_OBJECT_fixedParent) ||
+           ((objectAttributes & TPMA_OBJECT_decrypt) &&
+            (objectAttributes & TPMA_OBJECT_restricted))) {
+        publicTemplate->parameters.eccDetail.symmetric.algorithm = TPM_ALG_AES;
+        publicTemplate->parameters.eccDetail.symmetric.keyBits.aes = 128;
+        publicTemplate->parameters.eccDetail.symmetric.mode.aes = TPM_ALG_CFB;
+    }
+    else {
+        publicTemplate->parameters.eccDetail.symmetric.algorithm = TPM_ALG_NULL;
+    }
+    /* TPM_ALG_ECDSA or TPM_ALG_ECDH */
+    publicTemplate->parameters.eccDetail.scheme.scheme = sigScheme;
+    publicTemplate->parameters.eccDetail.scheme.details.ecdsa.hashAlg = sigHash;
+    publicTemplate->parameters.eccDetail.curveID = curve;
+    publicTemplate->parameters.eccDetail.kdf.scheme = TPM_ALG_NULL;
+
+    return TPM_RC_SUCCESS;
+}
+
+
+
+int ATHW_CreateSRK(ATHW_DEV* dev, ATHW_KEY* srkKey, TPM_ALG_ID alg,
+    const byte* auth, int authSz)
+{
+    int rc;
+    TPMT_PUBLIC publicTemplate;
+
+    /* Supported algorithms for SRK are only 2048bit RSA & ECC */
+    if (alg == TPM_ALG_RSA) {
+        rc = ATHW_GetKeyTemplate_RSA_SRK(&publicTemplate);
+    }
+    else if (alg == TPM_ALG_ECC) {
+        rc = ATHW_GetKeyTemplate_ECC_SRK(&publicTemplate);
+    }
+    else {
+        /* Supported algorithms for SRK are only RSA 2048-bit & ECC P256 */
+        return BAD_FUNC_ARG;
+    }
+    /* GetKeyTemplate check */
+    if (rc != 0)
+        return rc;
+
+    rc = ATHW_CreatePrimaryKey(dev, srkKey, TPM_RH_OWNER,
+        &publicTemplate, auth, authSz);
+
+    return rc;
+}
+
+int ATHW_GetKeyTemplate_RSA_SRK(TPMT_PUBLIC* publicTemplate)
+{
+    TPMA_OBJECT objectAttributes = (
+        TPMA_OBJECT_fixedTPM | TPMA_OBJECT_fixedParent |
+        TPMA_OBJECT_sensitiveDataOrigin | TPMA_OBJECT_userWithAuth |
+        TPMA_OBJECT_restricted | TPMA_OBJECT_decrypt | TPMA_OBJECT_noDA);
+
+    return GetKeyTemplateRSA(publicTemplate, TPM_ALG_SHA256,
+        objectAttributes, 2048, 0, TPM_ALG_NULL, TPM_ALG_NULL);
+}
+
+int ATHW_GetKeyTemplate_ECC_SRK(TPMT_PUBLIC* publicTemplate)
+{
+    TPMA_OBJECT objectAttributes = (
+        TPMA_OBJECT_fixedTPM | TPMA_OBJECT_fixedParent |
+        TPMA_OBJECT_sensitiveDataOrigin | TPMA_OBJECT_userWithAuth |
+        TPMA_OBJECT_restricted | TPMA_OBJECT_decrypt | TPMA_OBJECT_noDA);
+
+    return GetKeyTemplateECC(publicTemplate, TPM_ALG_SHA256,
+        objectAttributes, TPM_ECC_NIST_P256, TPM_ALG_NULL, TPM_ALG_NULL);
+}
+
+int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
+    TPM_HANDLE primaryHandle, TPMT_PUBLIC* publicTemplate,
+    const byte* auth, int authSz)
+{
+    int rc;
+    CreatePrimary_In  createPriIn;
+    CreatePrimary_Out createPriOut;
+
+    if (dev == NULL || key == NULL || publicTemplate == NULL)
+        return BAD_FUNC_ARG;
+
+    /* set session auth to blank */
+    athw_tpm_set_auth_password(dev, 0, NULL);
+
+    /* clear output key buffer */
+    XMEMSET(key, 0, sizeof(ATHW_KEY));
+
+    /* setup create primary command */
+    XMEMSET(&createPriIn, 0, sizeof(createPriIn));
+    /* TPM_RH_OWNER, TPM_RH_ENDORSEMENT, TPM_RH_PLATFORM or TPM_RH_NULL */
+    createPriIn.primaryHandle = primaryHandle;
+    if (auth && authSz > 0) {
+        int nameAlgDigestSz = TPM2_GetHashDigestSize(publicTemplate->nameAlg);
+        /* truncate if longer than name size */
+        if (nameAlgDigestSz > 0 && authSz > nameAlgDigestSz)
+            authSz = nameAlgDigestSz;
+        XMEMCPY(createPriIn.inSensitive.sensitive.userAuth.buffer, auth, authSz);
+        /* make sure auth is same size as nameAlg digest size */
+        if (nameAlgDigestSz > 0 && authSz < nameAlgDigestSz)
+            authSz = nameAlgDigestSz;
+        createPriIn.inSensitive.sensitive.userAuth.size = authSz;
+    }
+    XMEMCPY(&createPriIn.inPublic.publicArea, publicTemplate,
+        sizeof(TPMT_PUBLIC));
+    rc = TPM2_CreatePrimary(&createPriIn, &createPriOut);
+    if (rc != TPM_RC_SUCCESS) {
+    #ifdef ATHW_DEBUG_TPM
+        printf("TPM2_CreatePrimary: failed %d: %s\r\n", rc,
+            TPM2_GetRCString(rc));
+    #endif
+        return rc;
+    }
+    key->handle.hndl = createPriOut.objectHandle;
+    athw_tpm_copyauth(&key->handle.auth,
+        &createPriIn.inSensitive.sensitive.userAuth);
+    athw_tpm_copyname(&key->handle.name, &createPriOut.name);
+    athw_tpm_copy_symmetric(&key->handle.symmetric,
+        &createPriOut.outPublic.publicArea.parameters.asymDetail.symmetric);
+    athw_tpm_copy_pub(&key->pub, &createPriOut.outPublic);
+
+#ifdef ATHW_DEBUG_TPM
+    printf("TPM2_CreatePrimary: 0x%x (%d bytes)\r\n",
+        (word32)key->handle.hndl, key->pub.size);
+#endif
+
+    return rc;
+}
+
+//
+//int ATHWTPM2_StartSession(ATHW_DEV* dev, ATHW_SESSION* session,
+//    ATHW_KEY* tpmKey, ATHW_HANDLE* bind, TPM_SE sesType,
+//    int encDecAlg)
+//{
+//    int rc;
+//    StartAuthSession_In  authSesIn;
+//    StartAuthSession_Out authSesOut;
+//    TPM2B_AUTH* bindAuth = NULL;
+//    TPM2B_DATA keyIn;
+//    TPMI_ALG_HASH authHash = ATHW_WRAP_DIGEST;
+//    int hashDigestSz;
+//
+//    if (dev == NULL || session == NULL)
+//        return BAD_FUNC_ARG;
+//
+//    XMEMSET(session, 0, sizeof(ATHW_SESSION));
+//    XMEMSET(&authSesIn, 0, sizeof(authSesIn));
+//
+//    authSesIn.authHash = authHash;
+//    hashDigestSz = TPM2_GetHashDigestSize(authHash);
+//    if (hashDigestSz <= 0) {
+//        return NOT_COMPILED_IN;
+//    }
+//
+//    /* set session auth for key */
+//    if (tpmKey) {
+//        TPMA_SESSION sessionAttributes = 0;
+//        if (encDecAlg == TPM_ALG_CFB || encDecAlg == TPM_ALG_XOR) {
+//            /* if parameter encryption is enabled and key bind set, enable
+//             * encrypt/decrypt by default */
+//            sessionAttributes |= (TPMA_SESSION_decrypt | TPMA_SESSION_encrypt);
+//        }
+//        ATHW_SetAuth(dev, 0, tpmKey->handle.hndl, &tpmKey->handle.auth,
+//            sessionAttributes, NULL);
+//        authSesIn.tpmKey = tpmKey->handle.hndl;
+//    }
+//    else {
+//        ATHW_SetAuthPassword(dev, 0, NULL);
+//        authSesIn.tpmKey = (TPMI_DH_OBJECT)TPM_RH_NULL;
+//    }
+//    /* setup bind key */
+//    authSesIn.bind = (TPMI_DH_ENTITY)TPM_RH_NULL;
+//    if (bind) {
+//        authSesIn.bind = bind->hndl;
+//        bindAuth = &bind->auth;
+//    }
+//
+//    authSesIn.sessionType = sesType;
+//    if (encDecAlg == TPM_ALG_CFB) {
+//        authSesIn.symmetric.algorithm = TPM_ALG_AES;
+//        authSesIn.symmetric.keyBits.aes = 128;
+//        authSesIn.symmetric.mode.aes = TPM_ALG_CFB;
+//    }
+//    else if (encDecAlg == TPM_ALG_XOR) {
+//        authSesIn.symmetric.algorithm = TPM_ALG_XOR;
+//        authSesIn.symmetric.keyBits.xorr = TPM_ALG_SHA256;
+//        authSesIn.symmetric.mode.sym = TPM_ALG_NULL;
+//    }
+//    else {
+//        authSesIn.symmetric.algorithm = TPM_ALG_NULL;
+//    }
+//    authSesIn.nonceCaller.size = hashDigestSz;
+//    rc = TPM2_GetNonce(authSesIn.nonceCaller.buffer,
+//                       authSesIn.nonceCaller.size);
+//    if (rc < 0) {
+//    #ifdef ATHW_DEBUG_TPM
+//        printf("TPM2_GetNonce failed %d: %s\r\n", rc, ATHW_GetRCString(rc));
+//    #endif
+//        return rc;
+//    }
+//
+//    if (authSesIn.tpmKey != TPM_RH_NULL) {
+//        /* Generate random salt */
+//        session->salt.size = hashDigestSz;
+//        rc = TPM2_GetNonce(session->salt.buffer, session->salt.size);
+//        if (rc != 0) {
+//            return rc;
+//        }
+//
+//        /* Encrypt salt using "SECRET" */
+//        rc = ATHW_EncryptSecret(dev, tpmKey, (TPM2B_DATA*)&session->salt,
+//            &authSesIn.encryptedSalt, "SECRET");
+//        if (rc != 0) {
+//        #ifdef ATHW_DEBUG_TPM
+//            printf("Building encrypted salt failed %d: %s!\r\n", rc,
+//                ATHW_GetRCString(rc));
+//        #endif
+//            return rc;
+//        }
+//    }
+//
+//    rc = TPM2_StartAuthSession(&authSesIn, &authSesOut);
+//    if (rc != TPM_RC_SUCCESS) {
+//    #ifdef ATHW_DEBUG_TPM
+//        printf("TPM2_StartAuthSession failed %d: %s\r\n", rc,
+//            ATHW_GetRCString(rc));
+//    #endif
+//        return rc;
+//    }
+//
+//    /* Calculate "key" and store into auth */
+//    /* key is bindAuthValue || salt */
+//    XMEMSET(&keyIn, 0, sizeof(keyIn));
+//    if (bindAuth && bindAuth->size > 0) {
+//        XMEMCPY(&keyIn.buffer[keyIn.size], bindAuth->buffer, bindAuth->size);
+//        keyIn.size += bindAuth->size;
+//    }
+//    if (session->salt.size > 0) {
+//        XMEMCPY(&keyIn.buffer[keyIn.size], session->salt.buffer,
+//            session->salt.size);
+//        keyIn.size += session->salt.size;
+//    }
+//
+//    if (keyIn.size > 0) {
+//        session->handle.auth.size = hashDigestSz;
+//        rc = TPM2_KDFa(authSesIn.authHash, &keyIn, "ATH",
+//            &authSesOut.nonceTPM, &authSesIn.nonceCaller,
+//            session->handle.auth.buffer, session->handle.auth.size);
+//        if (rc != hashDigestSz) {
+//        #ifdef ATHW_DEBUG_TPM
+//            printf("KDFa ATH Gen Error %d\r\n", rc);
+//        #endif
+//            return TPM_RC_FAILURE;
+//        }
+//        rc = TPM_RC_SUCCESS;
+//    }
+//
+//#ifdef ATHW_DEBUG_TPM
+//    printf("Session Key %d\r\n", session->handle.auth.size);
+//    TPM2_PrintBin(session->handle.auth.buffer, session->handle.auth.size);
+//#endif
+//
+//    /* return session */
+//    session->type = authSesIn.sessionType;
+//    session->authHash = authSesIn.authHash;
+//    session->handle.hndl = authSesOut.sessionHandle;
+//    athw_tpm_copy_symmetric(&session->handle.symmetric, &authSesIn.symmetric);
+//    if (bind) {
+//        athw_tpm_copyname(&session->handle.name, &bind->name);
+//    }
+//    session->nonceCaller.size = authSesIn.nonceCaller.size;
+//    if (session->nonceCaller.size > (UINT16)sizeof(session->nonceCaller.buffer))
+//        session->nonceCaller.size = (UINT16)sizeof(session->nonceCaller.buffer);
+//    XMEMCPY(session->nonceCaller.buffer, authSesIn.nonceCaller.buffer,
+//        authSesIn.nonceCaller.size);
+//    session->nonceTPM.size = authSesOut.nonceTPM.size;
+//    if (session->nonceTPM.size > (UINT16)sizeof(session->nonceTPM.buffer))
+//        session->nonceTPM.size = (UINT16)sizeof(session->nonceTPM.buffer);
+//    XMEMCPY(session->nonceTPM.buffer, authSesOut.nonceTPM.buffer,
+//        session->nonceTPM.size);
+//
+//#ifdef ATHW_DEBUG_TPM
+//    printf("TPM2_StartAuthSession: handle 0x%x, algorithm %s\r\n",
+//        (word32)session->handle.hndl,
+//        TPM2_GetAlgName(authSesIn.symmetric.algorithm));
+//#endif
+//
+//    return rc;
+//}
+//
+
+
+
+
+
+
 
 
 

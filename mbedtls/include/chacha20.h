@@ -89,7 +89,7 @@ void mbedtls_chacha20_free(mbedtls_chacha20_context *ctx);
 /**
  * \brief           This function sets the encryption/decryption key.
  *
- * \note            After using this function, you must also call
+ * \r\note            After using this function, you must also call
  *                  \c mbedtls_chacha20_starts() to set a nonce before you
  *                  start encrypting/decrypting data with
  *                  \c mbedtls_chacha_update().
@@ -108,7 +108,7 @@ int mbedtls_chacha20_setkey(mbedtls_chacha20_context *ctx,
 /**
  * \brief           This function sets the nonce and initial counter value.
  *
- * \note            A ChaCha20 context can be re-used with the same key by
+ * \r\note            A ChaCha20 context can be re-used with the same key by
  *                  calling this function to change the nonce.
  *
  * \warning         You must never use the same nonce twice with the same key.
@@ -134,14 +134,14 @@ int mbedtls_chacha20_starts(mbedtls_chacha20_context *ctx,
  *                  Since ChaCha20 is a stream cipher, the same operation is
  *                  used for encrypting and decrypting data.
  *
- * \note            The \p input and \p output pointers must either be equal or
+ * \r\note            The \p input and \p output pointers must either be equal or
  *                  point to non-overlapping buffers.
  *
- * \note            \c mbedtls_chacha20_setkey() and
+ * \r\note            \c mbedtls_chacha20_setkey() and
  *                  \c mbedtls_chacha20_starts() must be called at least once
  *                  to setup the context before this function can be called.
  *
- * \note            This function can be called multiple times in a row in
+ * \r\note            This function can be called multiple times in a row in
  *                  order to encrypt of decrypt data piecewise with the same
  *                  key and nonce.
  *
@@ -173,7 +173,7 @@ int mbedtls_chacha20_update(mbedtls_chacha20_context *ctx,
  *                  once. This would void any confidentiality guarantees for
  *                  the messages encrypted with the same nonce and key.
  *
- * \note            The \p input and \p output pointers must either be equal or
+ * \r\note            The \p input and \p output pointers must either be equal or
  *                  point to non-overlapping buffers.
  *
  * \param key       The encryption/decryption key.

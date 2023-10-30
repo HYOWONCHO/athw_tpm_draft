@@ -598,13 +598,13 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannel(DMA_TypeDef *DMAx, uint32_t Cha
 
 /**
   * @brief  Configure all parameters link to DMA transfer.
-  * @rmtoll CCR          DIR           LL_DMA_ConfigTransfer\n
-  *         CCR          MEM2MEM       LL_DMA_ConfigTransfer\n
-  *         CCR          CIRC          LL_DMA_ConfigTransfer\n
-  *         CCR          PINC          LL_DMA_ConfigTransfer\n
-  *         CCR          MINC          LL_DMA_ConfigTransfer\n
-  *         CCR          PSIZE         LL_DMA_ConfigTransfer\n
-  *         CCR          MSIZE         LL_DMA_ConfigTransfer\n
+  * @rmtoll CCR          DIR           LL_DMA_ConfigTransfer\r\n
+  *         CCR          MEM2MEM       LL_DMA_ConfigTransfer\r\n
+  *         CCR          CIRC          LL_DMA_ConfigTransfer\r\n
+  *         CCR          PINC          LL_DMA_ConfigTransfer\r\n
+  *         CCR          MINC          LL_DMA_ConfigTransfer\r\n
+  *         CCR          PSIZE         LL_DMA_ConfigTransfer\r\n
+  *         CCR          MSIZE         LL_DMA_ConfigTransfer\r\n
   *         CCR          PL            LL_DMA_ConfigTransfer
   * @param  DMAx DMAx Instance
   * @param  Channel This parameter can be one of the following values:
@@ -635,7 +635,7 @@ __STATIC_INLINE void LL_DMA_ConfigTransfer(DMA_TypeDef *DMAx, uint32_t Channel, 
 
 /**
   * @brief  Set Data transfer direction (read from peripheral or from memory).
-  * @rmtoll CCR          DIR           LL_DMA_SetDataTransferDirection\n
+  * @rmtoll CCR          DIR           LL_DMA_SetDataTransferDirection\r\n
   *         CCR          MEM2MEM       LL_DMA_SetDataTransferDirection
   * @param  DMAx DMAx Instance
   * @param  Channel This parameter can be one of the following values:
@@ -661,7 +661,7 @@ __STATIC_INLINE void LL_DMA_SetDataTransferDirection(DMA_TypeDef *DMAx, uint32_t
 
 /**
   * @brief  Get Data transfer direction (read from peripheral or from memory).
-  * @rmtoll CCR          DIR           LL_DMA_GetDataTransferDirection\n
+  * @rmtoll CCR          DIR           LL_DMA_GetDataTransferDirection\r\n
   *         CCR          MEM2MEM       LL_DMA_GetDataTransferDirection
   * @param  DMAx DMAx Instance
   * @param  Channel This parameter can be one of the following values:
@@ -1027,7 +1027,7 @@ __STATIC_INLINE uint32_t LL_DMA_GetDataLength(DMA_TypeDef *DMAx, uint32_t Channe
   * @brief  Configure the Source and Destination addresses.
   * @note   This API must not be called when the DMA channel is enabled.
   * @note   Each peripheral using DMA provides an API to get directly the register address (LL_PPP_DMA_GetRegAddr).
-  * @rmtoll CPAR         PA            LL_DMA_ConfigAddresses\n
+  * @rmtoll CPAR         PA            LL_DMA_ConfigAddresses\r\n
   *         CMAR         MA            LL_DMA_ConfigAddresses
   * @param  DMAx DMAx Instance
   * @param  Channel This parameter can be one of the following values:
@@ -1482,12 +1482,12 @@ __STATIC_INLINE uint32_t LL_DMA_GetPeriphRequest(DMA_TypeDef *DMAx, uint32_t Cha
 /**
   * @brief  Set DMA request for DMA instance on Channel x.
   * @note   Please refer to Reference Manual to get the available mapping of Request value link to Channel Selection.
-  * @rmtoll CSELR        C1S           LL_DMA_SetPeriphRequest\n
-  *         CSELR        C2S           LL_DMA_SetPeriphRequest\n
-  *         CSELR        C3S           LL_DMA_SetPeriphRequest\n
-  *         CSELR        C4S           LL_DMA_SetPeriphRequest\n
-  *         CSELR        C5S           LL_DMA_SetPeriphRequest\n
-  *         CSELR        C6S           LL_DMA_SetPeriphRequest\n
+  * @rmtoll CSELR        C1S           LL_DMA_SetPeriphRequest\r\n
+  *         CSELR        C2S           LL_DMA_SetPeriphRequest\r\n
+  *         CSELR        C3S           LL_DMA_SetPeriphRequest\r\n
+  *         CSELR        C4S           LL_DMA_SetPeriphRequest\r\n
+  *         CSELR        C5S           LL_DMA_SetPeriphRequest\r\n
+  *         CSELR        C6S           LL_DMA_SetPeriphRequest\r\n
   *         CSELR        C7S           LL_DMA_SetPeriphRequest
   * @param  DMAx DMAx Instance
   * @param  Channel This parameter can be one of the following values:
@@ -1517,12 +1517,12 @@ __STATIC_INLINE void LL_DMA_SetPeriphRequest(DMA_TypeDef *DMAx, uint32_t Channel
 
 /**
   * @brief  Get DMA request for DMA instance on Channel x.
-  * @rmtoll CSELR        C1S           LL_DMA_GetPeriphRequest\n
-  *         CSELR        C2S           LL_DMA_GetPeriphRequest\n
-  *         CSELR        C3S           LL_DMA_GetPeriphRequest\n
-  *         CSELR        C4S           LL_DMA_GetPeriphRequest\n
-  *         CSELR        C5S           LL_DMA_GetPeriphRequest\n
-  *         CSELR        C6S           LL_DMA_GetPeriphRequest\n
+  * @rmtoll CSELR        C1S           LL_DMA_GetPeriphRequest\r\n
+  *         CSELR        C2S           LL_DMA_GetPeriphRequest\r\n
+  *         CSELR        C3S           LL_DMA_GetPeriphRequest\r\n
+  *         CSELR        C4S           LL_DMA_GetPeriphRequest\r\n
+  *         CSELR        C5S           LL_DMA_GetPeriphRequest\r\n
+  *         CSELR        C6S           LL_DMA_GetPeriphRequest\r\n
   *         CSELR        C7S           LL_DMA_GetPeriphRequest
   * @param  DMAx DMAx Instance
   * @param  Channel This parameter can be one of the following values:

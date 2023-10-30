@@ -48,7 +48,7 @@
 #define MBEDTLS_ERR_HMAC_DRBG_ENTROPY_SOURCE_FAILED        -0x0009
 
 /**
- * \name SECTION: Module settings
+ * \r\name SECTION: Module settings
  *
  * The configuration options you can set for this module are in this section.
  * Either change them in mbedtls_config.h or define them on the compiler command line.
@@ -119,7 +119,7 @@ typedef struct mbedtls_hmac_drbg_context {
  * This function makes the context ready for mbedtls_hmac_drbg_seed(),
  * mbedtls_hmac_drbg_seed_buf() or mbedtls_hmac_drbg_free().
  *
- * \note                The reseed interval is #MBEDTLS_HMAC_DRBG_RESEED_INTERVAL
+ * \r\note                The reseed interval is #MBEDTLS_HMAC_DRBG_RESEED_INTERVAL
  *                      by default. Override this value by calling
  *                      mbedtls_hmac_drbg_set_reseed_interval().
  *
@@ -142,7 +142,7 @@ void mbedtls_hmac_drbg_init(mbedtls_hmac_drbg_context *ctx);
  * You can provide a personalization string in addition to the
  * entropy source, to make this instantiation as unique as possible.
  *
- * \note                By default, the security strength as defined by NIST is:
+ * \r\note                By default, the security strength as defined by NIST is:
  *                      - 128 bits if \p md_info is SHA-1;
  *                      - 192 bits if \p md_info is SHA-224;
  *                      - 256 bits if \p md_info is SHA-256, SHA-384 or SHA-512.
@@ -151,17 +151,17 @@ void mbedtls_hmac_drbg_init(mbedtls_hmac_drbg_context *ctx);
  *                      entropy length is set with
  *                      mbedtls_hmac_drbg_set_entropy_len().
  *
- * \note                The default entropy length is the security strength
+ * \r\note                The default entropy length is the security strength
  *                      (converted from bits to bytes). You can override
  *                      it by calling mbedtls_hmac_drbg_set_entropy_len().
  *
- * \note                During the initial seeding, this function calls
+ * \r\note                During the initial seeding, this function calls
  *                      the entropy source to obtain a nonce
  *                      whose length is half the entropy length.
  */
 #if defined(MBEDTLS_THREADING_C)
 /**
- * \note                When Mbed TLS is built with threading support,
+ * \r\note                When Mbed TLS is built with threading support,
  *                      after this function returns successfully,
  *                      it is safe to call mbedtls_hmac_drbg_random()
  *                      from multiple threads. Other operations, including
@@ -210,7 +210,7 @@ int mbedtls_hmac_drbg_seed(mbedtls_hmac_drbg_context *ctx,
  */
 #if defined(MBEDTLS_THREADING_C)
 /**
- * \note                When Mbed TLS is built with threading support,
+ * \r\note                When Mbed TLS is built with threading support,
  *                      after this function returns successfully,
  *                      it is safe to call mbedtls_hmac_drbg_random()
  *                      from multiple threads. Other operations, including
@@ -238,7 +238,7 @@ int mbedtls_hmac_drbg_seed_buf(mbedtls_hmac_drbg_context *ctx,
  * \brief               This function turns prediction resistance on or off.
  *                      The default value is off.
  *
- * \note                If enabled, entropy is gathered at the beginning of
+ * \r\note                If enabled, entropy is gathered at the beginning of
  *                      every call to mbedtls_hmac_drbg_random_with_add()
  *                      or mbedtls_hmac_drbg_random().
  *                      Only use this if your entropy source has sufficient
@@ -280,7 +280,7 @@ void mbedtls_hmac_drbg_set_reseed_interval(mbedtls_hmac_drbg_context *ctx,
 /**
  * \brief               This function updates the state of the HMAC_DRBG context.
  *
- * \note                This function is not thread-safe. It is not safe
+ * \r\note                This function is not thread-safe. It is not safe
  *                      to call this function if another thread might be
  *                      concurrently obtaining random numbers from the same
  *                      context or updating or reseeding the same context.
@@ -301,7 +301,7 @@ int mbedtls_hmac_drbg_update(mbedtls_hmac_drbg_context *ctx,
  * \brief               This function reseeds the HMAC_DRBG context, that is
  *                      extracts data from the entropy source.
  *
- * \note                This function is not thread-safe. It is not safe
+ * \r\note                This function is not thread-safe. It is not safe
  *                      to call this function if another thread might be
  *                      concurrently obtaining random numbers from the same
  *                      context or updating or reseeding the same context.
@@ -331,7 +331,7 @@ int mbedtls_hmac_drbg_reseed(mbedtls_hmac_drbg_context *ctx,
  * This function automatically reseeds if the reseed counter is exceeded
  * or prediction resistance is enabled.
  *
- * \note                This function is not thread-safe. It is not safe
+ * \r\note                This function is not thread-safe. It is not safe
  *                      to call this function if another thread might be
  *                      concurrently obtaining random numbers from the same
  *                      context or updating or reseeding the same context.
@@ -368,7 +368,7 @@ int mbedtls_hmac_drbg_random_with_add(void *p_rng,
  */
 #if defined(MBEDTLS_THREADING_C)
 /**
- * \note                When Mbed TLS is built with threading support,
+ * \r\note                When Mbed TLS is built with threading support,
  *                      it is safe to call mbedtls_ctr_drbg_random()
  *                      from multiple threads. Other operations, including
  *                      reseeding, are not thread-safe.

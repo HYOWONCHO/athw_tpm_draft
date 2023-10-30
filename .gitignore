@@ -166,3 +166,17 @@ Debug/util/source/util_time.d
 Debug/util/source/util_time.o
 Debug/util/source/util_time.su
 athw_evk_bringup.launch
+.settings/com.st.stm32cube.ide.mcu.sfrview.prefs
+athw_tpm_draft.vpj
+athw_tpm_draft.vpw
+athw_tpm_draft.vpwhist
+athw_tpm_draft.vtg
+Debug/example/bench_aes.cyclo
+Debug/example/bench_aes.d
+Debug/example/bench_aes.o
+Debug/example/bench_aes.su
+Debug/example/subdir.mk
+Debug/util/source/athw_mem.cyclo
+Debug/util/source/athw_mem.d
+Debug/util/source/athw_mem.o
+Debug/util/source/athw_mem.su

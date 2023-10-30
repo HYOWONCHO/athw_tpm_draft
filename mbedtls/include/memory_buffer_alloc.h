@@ -27,7 +27,7 @@
 #include <stddef.h>
 
 /**
- * \name SECTION: Module settings
+ * \r\name SECTION: Module settings
  *
  * The configuration options you can set for this module are in this section.
  * Either change them in mbedtls_config.h or define them on the compiler command line.
@@ -59,7 +59,7 @@ extern "C" {
  *          (Provided mbedtls_calloc() and mbedtls_free() are thread-safe if
  *           MBEDTLS_THREADING_C is defined)
  *
- * \note    This code is not optimized and provides a straight-forward
+ * \r\note    This code is not optimized and provides a straight-forward
  *          implementation of a stack-based memory allocator.
  *
  * \param buf   buffer to use as heap

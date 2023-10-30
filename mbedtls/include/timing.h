@@ -69,7 +69,7 @@ unsigned long mbedtls_timing_get_timer(struct mbedtls_timing_hr_time *val, int r
  * \param fin_ms   Second (final) delay in milliseconds.
  *                 Pass 0 to cancel the current delay.
  *
- * \note           To set a single delay, either use \c mbedtls_timing_set_timer
+ * \r\note           To set a single delay, either use \c mbedtls_timing_set_timer
  *                 directly or use this function with int_ms == fin_ms.
  */
 void mbedtls_timing_set_delay(void *data, uint32_t int_ms, uint32_t fin_ms);

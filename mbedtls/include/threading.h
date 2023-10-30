@@ -59,7 +59,7 @@ typedef struct mbedtls_threading_mutex_t {
  *                  mbedtls_threading_free_alt() must be called once in the main
  *                  thread after all other Mbed TLS functions.
  *
- * \note            mutex_init() and mutex_free() don't return a status code.
+ * \r\note            mutex_init() and mutex_free() don't return a status code.
  *                  If mutex_init() fails, it should leave its argument (the
  *                  mutex) in a state such that mutex_lock() will fail when
  *                  called with this argument.

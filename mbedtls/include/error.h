@@ -143,7 +143,7 @@ extern void (*mbedtls_test_hook_error_add)(int, int, const char *, int);
  *        error code (that denotes success) and can be combined with both a
  *        negative error code or another value of zero.
  *
- * \note  When invasive testing is enabled via #MBEDTLS_TEST_HOOKS, also try to
+ * \r\note  When invasive testing is enabled via #MBEDTLS_TEST_HOOKS, also try to
  *        call \link mbedtls_test_hook_error_add \endlink.
  *
  * \param high      high-level error code. See error.h for more details.

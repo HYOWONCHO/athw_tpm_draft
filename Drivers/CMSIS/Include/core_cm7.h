@@ -1897,7 +1897,7 @@ __STATIC_INLINE uint32_t __NVIC_GetPriorityGrouping(void)
   \brief   Enable Interrupt
   \details Enables a device specific interrupt in the NVIC interrupt controller.
   \param [in]      IRQn  Device specific interrupt number.
-  \note    IRQn must not be negative.
+  \r\note    IRQn must not be negative.
  */
 __STATIC_INLINE void __NVIC_EnableIRQ(IRQn_Type IRQn)
 {
@@ -1916,7 +1916,7 @@ __STATIC_INLINE void __NVIC_EnableIRQ(IRQn_Type IRQn)
   \param [in]      IRQn  Device specific interrupt number.
   \return             0  Interrupt is not enabled.
   \return             1  Interrupt is enabled.
-  \note    IRQn must not be negative.
+  \r\note    IRQn must not be negative.
  */
 __STATIC_INLINE uint32_t __NVIC_GetEnableIRQ(IRQn_Type IRQn)
 {
@@ -1935,7 +1935,7 @@ __STATIC_INLINE uint32_t __NVIC_GetEnableIRQ(IRQn_Type IRQn)
   \brief   Disable Interrupt
   \details Disables a device specific interrupt in the NVIC interrupt controller.
   \param [in]      IRQn  Device specific interrupt number.
-  \note    IRQn must not be negative.
+  \r\note    IRQn must not be negative.
  */
 __STATIC_INLINE void __NVIC_DisableIRQ(IRQn_Type IRQn)
 {
@@ -1954,7 +1954,7 @@ __STATIC_INLINE void __NVIC_DisableIRQ(IRQn_Type IRQn)
   \param [in]      IRQn  Device specific interrupt number.
   \return             0  Interrupt status is not pending.
   \return             1  Interrupt status is pending.
-  \note    IRQn must not be negative.
+  \r\note    IRQn must not be negative.
  */
 __STATIC_INLINE uint32_t __NVIC_GetPendingIRQ(IRQn_Type IRQn)
 {
@@ -1973,7 +1973,7 @@ __STATIC_INLINE uint32_t __NVIC_GetPendingIRQ(IRQn_Type IRQn)
   \brief   Set Pending Interrupt
   \details Sets the pending bit of a device specific interrupt in the NVIC pending register.
   \param [in]      IRQn  Device specific interrupt number.
-  \note    IRQn must not be negative.
+  \r\note    IRQn must not be negative.
  */
 __STATIC_INLINE void __NVIC_SetPendingIRQ(IRQn_Type IRQn)
 {
@@ -1988,7 +1988,7 @@ __STATIC_INLINE void __NVIC_SetPendingIRQ(IRQn_Type IRQn)
   \brief   Clear Pending Interrupt
   \details Clears the pending bit of a device specific interrupt in the NVIC pending register.
   \param [in]      IRQn  Device specific interrupt number.
-  \note    IRQn must not be negative.
+  \r\note    IRQn must not be negative.
  */
 __STATIC_INLINE void __NVIC_ClearPendingIRQ(IRQn_Type IRQn)
 {
@@ -2005,7 +2005,7 @@ __STATIC_INLINE void __NVIC_ClearPendingIRQ(IRQn_Type IRQn)
   \param [in]      IRQn  Device specific interrupt number.
   \return             0  Interrupt status is not active.
   \return             1  Interrupt status is active.
-  \note    IRQn must not be negative.
+  \r\note    IRQn must not be negative.
  */
 __STATIC_INLINE uint32_t __NVIC_GetActive(IRQn_Type IRQn)
 {
@@ -2027,7 +2027,7 @@ __STATIC_INLINE uint32_t __NVIC_GetActive(IRQn_Type IRQn)
            or negative to specify a processor exception.
   \param [in]      IRQn  Interrupt number.
   \param [in]  priority  Priority to set.
-  \note    The priority cannot be set for every processor exception.
+  \r\note    The priority cannot be set for every processor exception.
  */
 __STATIC_INLINE void __NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
 {
@@ -2611,7 +2611,7 @@ __STATIC_FORCEINLINE void SCB_CleanInvalidateDCache_by_Addr (uint32_t *addr, int
   \param [in]  ticks  Number of ticks between two interrupts.
   \return          0  Function succeeded.
   \return          1  Function failed.
-  \note    When the variable <b>__Vendor_SysTickConfig</b> is set to 1, then the
+  \r\note    When the variable <b>__Vendor_SysTickConfig</b> is set to 1, then the
            function <b>SysTick_Config</b> is not included. In this case, the file <b><i>device</i>.h</b>
            must contain a vendor-specific implementation of this function.
  */

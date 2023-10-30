@@ -124,7 +124,7 @@ void mbedtls_net_init(mbedtls_net_context *ctx);
  *                      MBEDTLS_ERR_NET_UNKNOWN_HOST,
  *                      MBEDTLS_ERR_NET_CONNECT_FAILED
  *
- * \note           Sets the socket in connected mode even with UDP.
+ * \r\note           Sets the socket in connected mode even with UDP.
  */
 int mbedtls_net_connect(mbedtls_net_context *ctx, const char *host, const char *port, int proto);
 
@@ -143,7 +143,7 @@ int mbedtls_net_connect(mbedtls_net_context *ctx, const char *host, const char *
  *                      MBEDTLS_ERR_NET_BIND_FAILED,
  *                      MBEDTLS_ERR_NET_LISTEN_FAILED
  *
- * \note           Regardless of the protocol, opens the sockets and binds it.
+ * \r\note           Regardless of the protocol, opens the sockets and binds it.
  *                 In addition, make the socket listening if protocol is TCP.
  */
 int mbedtls_net_bind(mbedtls_net_context *ctx, const char *bind_ip, const char *port, int proto);
@@ -173,7 +173,7 @@ int mbedtls_net_accept(mbedtls_net_context *bind_ctx,
 /**
  * \brief          Check and wait for the context to be ready for read/write
  *
- * \note           The current implementation of this function uses
+ * \r\note           The current implementation of this function uses
  *                 select() and returns an error if the file descriptor
  *                 is \c FD_SETSIZE or greater.
  *
@@ -220,7 +220,7 @@ int mbedtls_net_set_nonblock(mbedtls_net_context *ctx);
  *
  * \param usec     Amount of microseconds to sleep
  *
- * \note           Real amount of time slept will not be less than
+ * \r\note           Real amount of time slept will not be less than
  *                 select()'s timeout granularity (typically, 10ms).
  */
 void mbedtls_net_usleep(unsigned long usec);
@@ -258,7 +258,7 @@ int mbedtls_net_send(void *ctx, const unsigned char *buf, size_t len);
  *                 'timeout' seconds. If no error occurs, the actual amount
  *                 read is returned.
  *
- * \note           The current implementation of this function uses
+ * \r\note           The current implementation of this function uses
  *                 select() and returns an error if the file descriptor
  *                 is \c FD_SETSIZE or greater.
  *
@@ -274,7 +274,7 @@ int mbedtls_net_send(void *ctx, const unsigned char *buf, size_t len);
  *                 Another negative error code (MBEDTLS_ERR_NET_xxx)
  *                 for other failures.
  *
- * \note           This function will block (until data becomes available or
+ * \r\note           This function will block (until data becomes available or
  *                 timeout is reached) even if the socket is set to
  *                 non-blocking. Handling timeouts with non-blocking reads
  *                 requires a different strategy.
@@ -287,7 +287,7 @@ int mbedtls_net_recv_timeout(void *ctx, unsigned char *buf, size_t len,
  *
  * \param ctx      The context to close
  *
- * \note           This function frees and clears data associated with the
+ * \r\note           This function frees and clears data associated with the
  *                 context but does not free the memory pointed to by \p ctx.
  *                 This memory is the responsibility of the caller.
  */
@@ -298,7 +298,7 @@ void mbedtls_net_close(mbedtls_net_context *ctx);
  *
  * \param ctx      The context to free
  *
- * \note           This function frees and clears data associated with the
+ * \r\note           This function frees and clears data associated with the
  *                 context but does not free the memory pointed to by \p ctx.
  *                 This memory is the responsibility of the caller.
  */

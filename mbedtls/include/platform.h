@@ -50,7 +50,7 @@ extern "C" {
 #endif
 
 /**
- * \name SECTION: Module settings
+ * \r\name SECTION: Module settings
  *
  * The configuration options you can set for this module are in this section.
  * Either change them in mbedtls_config.h or define them on the compiler command line.
@@ -314,7 +314,7 @@ int mbedtls_platform_set_vsnprintf(int (*vsnprintf_func)(char *s, size_t n,
  * \brief                  Function pointer to call for `setbuf()` functionality
  *                         (changing the internal buffering on stdio calls).
  *
- * \note                   The library calls this function to disable
+ * \r\note                   The library calls this function to disable
  *                         buffering when reading or writing sensitive data,
  *                         to avoid having extra copies of sensitive data
  *                         remaining in stdio buffers after the file is
@@ -347,7 +347,7 @@ int mbedtls_platform_set_setbuf(void (*setbuf_func)(
  *                         call for `setbuf` functionality (changing the
  *                         internal buffering on stdio calls).
  *
- * \note                   See extra comments on the mbedtls_setbuf() function
+ * \r\note                   See extra comments on the mbedtls_setbuf() function
  *                         pointer above.
  *
  * \return                 \c 0 on success, negative on error.
@@ -446,7 +446,7 @@ int mbedtls_platform_set_nv_seed(
 /**
  * \brief   The platform context structure.
  *
- * \note    This structure may be used to assist platform-specific
+ * \r\note    This structure may be used to assist platform-specific
  *          setup or teardown operations.
  */
 typedef struct mbedtls_platform_context {
@@ -462,12 +462,12 @@ mbedtls_platform_context;
  * \brief   This function performs any platform-specific initialization
  *          operations.
  *
- * \note    This function should be called before any other library functions.
+ * \r\note    This function should be called before any other library functions.
  *
  *          Its implementation is platform-specific, and unless
  *          platform-specific code is provided, it does nothing.
  *
- * \note    The usage and necessity of this function is dependent on the platform.
+ * \r\note    The usage and necessity of this function is dependent on the platform.
  *
  * \param   ctx     The platform context.
  *
@@ -477,13 +477,13 @@ int mbedtls_platform_setup(mbedtls_platform_context *ctx);
 /**
  * \brief   This function performs any platform teardown operations.
  *
- * \note    This function should be called after every other Mbed TLS module
+ * \r\note    This function should be called after every other Mbed TLS module
  *          has been correctly freed using the appropriate free function.
  *
  *          Its implementation is platform-specific, and unless
  *          platform-specific code is provided, it does nothing.
  *
- * \note    The usage and necessity of this function is dependent on the platform.
+ * \r\note    The usage and necessity of this function is dependent on the platform.
  *
  * \param   ctx     The platform context.
  *

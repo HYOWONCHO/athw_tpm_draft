@@ -91,7 +91,7 @@
             ret = TPM_RC_SUCCESS;
         }
         else {
-            printf("I2C Read failure %d (tries %d)\r\n",
+            printf("I2C Read failure %d (tries %d)\r\r\n",
                 status, TPM_I2C_TRIES - timeout);
         }
         return ret;
@@ -126,7 +126,7 @@
             ret = TPM_RC_SUCCESS;
         }
         else {
-            printf("I2C Write failure %d\r\n", status);
+            printf("I2C Write failure %d\r\r\n", status);
         }
         return ret;
     }
@@ -187,7 +187,7 @@
                     break;
             } while (status == HAL_OK && --timeout > 0);
         #ifdef WOLFTPM_DEBUG_TIMEOUT
-            printf("SPI Ready Wait %d\r\n", TPM_SPI_WAIT_RETRY - timeout);
+            printf("SPI Ready Wait %d\r\r\n", TPM_SPI_WAIT_RETRY - timeout);
         #endif
             if (timeout <= 0) {
             #ifndef USE_HW_SPI_CS

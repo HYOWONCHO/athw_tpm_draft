@@ -36,7 +36,7 @@ extern "C" {
  * \{ */
 
 /**
- * \name Structures and functions for X.509 Certificate Signing Requests (CSR)
+ * \r\name Structures and functions for X.509 Certificate Signing Requests (CSR)
  * \{
  */
 
@@ -87,9 +87,9 @@ mbedtls_x509write_csr;
 /**
  * \brief          Load a Certificate Signing Request (CSR) in DER format
  *
- * \note           CSR attributes (if any) are currently silently ignored.
+ * \r\note           CSR attributes (if any) are currently silently ignored.
  *
- * \note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                 subsystem must have been initialized by calling
  *                 psa_crypto_init() before calling this function.
  *
@@ -105,9 +105,9 @@ int mbedtls_x509_csr_parse_der(mbedtls_x509_csr *csr,
 /**
  * \brief          Load a Certificate Signing Request (CSR), DER or PEM format
  *
- * \note           See notes for \c mbedtls_x509_csr_parse_der()
+ * \r\note           See notes for \c mbedtls_x509_csr_parse_der()
  *
- * \note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                 subsystem must have been initialized by calling
  *                 psa_crypto_init() before calling this function.
  *
@@ -124,7 +124,7 @@ int mbedtls_x509_csr_parse(mbedtls_x509_csr *csr, const unsigned char *buf, size
 /**
  * \brief          Load a Certificate Signing Request (CSR)
  *
- * \note           See notes for \c mbedtls_x509_csr_parse()
+ * \r\note           See notes for \c mbedtls_x509_csr_parse()
  *
  * \param csr      CSR context to fill
  * \param path     filename to read the CSR from
@@ -218,7 +218,7 @@ void mbedtls_x509write_csr_set_md_alg(mbedtls_x509write_csr *ctx, mbedtls_md_typ
  *
  * \return          0 if successful, or MBEDTLS_ERR_X509_ALLOC_FAILED
  *
- * \note            The <code>decipherOnly</code> flag from the Key Usage
+ * \r\note            The <code>decipherOnly</code> flag from the Key Usage
  *                  extension is represented by bit 8 (i.e.
  *                  <code>0x8000</code>), which cannot typically be represented
  *                  in an unsigned char. Therefore, the flag
@@ -236,7 +236,7 @@ int mbedtls_x509write_csr_set_key_usage(mbedtls_x509write_csr *ctx, unsigned cha
  *
  * \return          0 if successful, or MBEDTLS_ERR_X509_ALLOC_FAILED
  *
- * \note            Only "dnsName", "uniformResourceIdentifier" and "otherName",
+ * \r\note            Only "dnsName", "uniformResourceIdentifier" and "otherName",
  *                  as defined in RFC 5280, are supported.
  */
 int mbedtls_x509write_csr_set_subject_alternative_name(mbedtls_x509write_csr *ctx,
@@ -295,7 +295,7 @@ void mbedtls_x509write_csr_free(mbedtls_x509write_csr *ctx);
  * \return          length of data written if successful, or a specific
  *                  error code
  *
- * \note            \p f_rng is used for the signature operation.
+ * \r\note            \p f_rng is used for the signature operation.
  */
 int mbedtls_x509write_csr_der(mbedtls_x509write_csr *ctx, unsigned char *buf, size_t size,
                               int (*f_rng)(void *, unsigned char *, size_t),
@@ -314,7 +314,7 @@ int mbedtls_x509write_csr_der(mbedtls_x509write_csr *ctx, unsigned char *buf, si
  *
  * \return          0 if successful, or a specific error code
  *
- * \note            \p f_rng is used for the signature operation.
+ * \r\note            \p f_rng is used for the signature operation.
  */
 int mbedtls_x509write_csr_pem(mbedtls_x509write_csr *ctx, unsigned char *buf, size_t size,
                               int (*f_rng)(void *, unsigned char *, size_t),

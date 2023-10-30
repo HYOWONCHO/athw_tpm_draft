@@ -140,7 +140,7 @@ void mbedtls_dhm_init(mbedtls_dhm_context *ctx);
  *                 TLS ServerKeyExchange handshake message
  *                 (DHM modulus, generator, and public key).
  *
- * \note           In a TLS handshake, this is the how the client
+ * \r\note           In a TLS handshake, this is the how the client
  *                 sets up its DHM context from the server's public
  *                 DHM key material.
  *
@@ -166,12 +166,12 @@ int mbedtls_dhm_read_params(mbedtls_dhm_context *ctx,
  *                 public part together with the DHM parameters in the format
  *                 used in a TLS ServerKeyExchange handshake message.
  *
- * \note           This function assumes that the DHM parameters \c ctx->P
+ * \r\note           This function assumes that the DHM parameters \c ctx->P
  *                 and \c ctx->G have already been properly set. For that, use
  *                 mbedtls_dhm_set_group() below in conjunction with
  *                 mbedtls_mpi_read_binary() and mbedtls_mpi_read_string().
  *
- * \note           In a TLS handshake, this is the how the server generates
+ * \r\note           In a TLS handshake, this is the how the server generates
  *                 and exports its DHM key material.
  *
  * \param ctx      The DHM context to use. This must be initialized
@@ -201,7 +201,7 @@ int mbedtls_dhm_make_params(mbedtls_dhm_context *ctx, int x_size,
 /**
  * \brief          This function sets the prime modulus and generator.
  *
- * \note           This function can be used to set \c ctx->P, \c ctx->G
+ * \r\note           This function can be used to set \c ctx->P, \c ctx->G
  *                 in preparation for mbedtls_dhm_make_params().
  *
  * \param ctx      The DHM context to configure. This must be initialized.
@@ -220,7 +220,7 @@ int mbedtls_dhm_set_group(mbedtls_dhm_context *ctx,
 /**
  * \brief          This function imports the raw public value of the peer.
  *
- * \note           In a TLS handshake, this is the how the server imports
+ * \r\note           In a TLS handshake, this is the how the server imports
  *                 the Client's public DHM key.
  *
  * \param ctx      The DHM context to use. This must be initialized and have
@@ -240,7 +240,7 @@ int mbedtls_dhm_read_public(mbedtls_dhm_context *ctx,
  * \brief          This function creates a DHM key pair and exports
  *                 the raw public key in big-endian format.
  *
- * \note           The destination buffer is always fully written
+ * \r\note           The destination buffer is always fully written
  *                 so as to contain a big-endian representation of G^X mod P.
  *                 If it is larger than \c ctx->len, it is padded accordingly
  *                 with zero-bytes at the beginning.
@@ -269,7 +269,7 @@ int mbedtls_dhm_make_public(mbedtls_dhm_context *ctx, int x_size,
  * \brief          This function derives and exports the shared secret
  *                 \c (G^Y)^X mod \c P.
  *
- * \note           If \p f_rng is not \c NULL, it is used to blind the input as
+ * \r\note           If \p f_rng is not \c NULL, it is used to blind the input as
  *                 a countermeasure against timing attacks. Blinding is used
  *                 only if our private key \c X is re-used, and not used
  *                 otherwise. We recommend always passing a non-NULL

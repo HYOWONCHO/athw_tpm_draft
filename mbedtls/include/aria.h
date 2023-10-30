@@ -167,10 +167,10 @@ int mbedtls_aria_crypt_ecb(mbedtls_aria_context *ctx,
  *         mbedtls_aria_setkey_enc() or mbedtls_aria_setkey_dec() must be called
  *         before the first call to this API with the same context.
  *
- * \note   This function operates on aligned blocks, that is, the input size
+ * \r\note   This function operates on aligned blocks, that is, the input size
  *         must be a multiple of the ARIA block size of 16 Bytes.
  *
- * \note   Upon exit, the content of the IV is updated so that you can
+ * \r\note   Upon exit, the content of the IV is updated so that you can
  *         call the same function again on the next
  *         block(s) of data and get the same result as if it was
  *         encrypted in one call. This allows a "streaming" usage.
@@ -218,7 +218,7 @@ int mbedtls_aria_crypt_cbc(mbedtls_aria_context *ctx,
  *        because CFB mode uses the same key schedule for encryption and
  *        decryption.
  *
- * \note  Upon exit, the content of the IV is updated so that you can
+ * \r\note  Upon exit, the content of the IV is updated so that you can
  *        call the same function again on the next
  *        block(s) of data and get the same result as if it was
  *        encrypted in one call. This allows a "streaming" usage.

@@ -141,7 +141,7 @@ void mbedtls_ccm_free(mbedtls_ccm_context *ctx);
 /**
  * \brief           This function encrypts a buffer using CCM.
  *
- * \note            The tag is written to a separate buffer. To concatenate
+ * \r\note            The tag is written to a separate buffer. To concatenate
  *                  the \p tag with the \p output, as done in <em>RFC-3610:
  *                  Counter with CBC-MAC (CCM)</em>, use
  *                  \p tag = \p output + \p length, and make sure that the
@@ -183,13 +183,13 @@ int mbedtls_ccm_encrypt_and_tag(mbedtls_ccm_context *ctx, size_t length,
 /**
  * \brief           This function encrypts a buffer using CCM*.
  *
- * \note            The tag is written to a separate buffer. To concatenate
+ * \r\note            The tag is written to a separate buffer. To concatenate
  *                  the \p tag with the \p output, as done in <em>RFC-3610:
  *                  Counter with CBC-MAC (CCM)</em>, use
  *                  \p tag = \p output + \p length, and make sure that the
  *                  output buffer is at least \p length + \p tag_len wide.
  *
- * \note            When using this function in a variable tag length context,
+ * \r\note            When using this function in a variable tag length context,
  *                  the tag length has to be encoded into the \p iv passed to
  *                  this function.
  *
@@ -270,7 +270,7 @@ int mbedtls_ccm_auth_decrypt(mbedtls_ccm_context *ctx, size_t length,
  * \brief           This function performs a CCM* authenticated decryption of a
  *                  buffer.
  *
- * \note            When using this function in a variable tag length context,
+ * \r\note            When using this function in a variable tag length context,
  *                  the tag length has to be decoded from \p iv and passed to
  *                  this function as \p tag_len. (\p tag needs to be adjusted
  *                  accordingly.)
@@ -321,7 +321,7 @@ int mbedtls_ccm_star_auth_decrypt(mbedtls_ccm_context *ctx, size_t length,
  *                  mbedtls_ccm_update(). This function can be called before
  *                  or after mbedtls_ccm_set_lengths().
  *
- * \note            This function is not implemented in Mbed TLS yet.
+ * \r\note            This function is not implemented in Mbed TLS yet.
  *
  * \param ctx       The CCM context. This must be initialized.
  * \param mode      The operation to perform: #MBEDTLS_CCM_ENCRYPT or
@@ -355,7 +355,7 @@ int mbedtls_ccm_starts(mbedtls_ccm_context *ctx,
  *                  mbedtls_ccm_update(). This function can be called before
  *                  or after mbedtls_ccm_starts().
  *
- * \note            This function is not implemented in Mbed TLS yet.
+ * \r\note            This function is not implemented in Mbed TLS yet.
  *
  * \param ctx       The CCM context. This must be initialized.
  * \param total_ad_len   The total length of additional data in bytes.
@@ -390,7 +390,7 @@ int mbedtls_ccm_set_lengths(mbedtls_ccm_context *ctx,
  *                  may not call this function after calling
  *                  mbedtls_ccm_update().
  *
- * \note            This function is not implemented in Mbed TLS yet.
+ * \r\note            This function is not implemented in Mbed TLS yet.
  *
  * \param ctx       The CCM context. This must have been started with
  *                  mbedtls_ccm_starts(), the lengths of the message and
@@ -448,7 +448,7 @@ int mbedtls_ccm_update_ad(mbedtls_ccm_context *ctx,
  *                    the last one) then it is correct to use \p output_size
  *                    =\p input_len.
  *
- * \note            This function is not implemented in Mbed TLS yet.
+ * \r\note            This function is not implemented in Mbed TLS yet.
  *
  * \param ctx           The CCM context. This must have been started with
  *                      mbedtls_ccm_starts() and the lengths of the message and
@@ -486,7 +486,7 @@ int mbedtls_ccm_update(mbedtls_ccm_context *ctx,
  *                  It wraps up the CCM stream, and generates the
  *                  tag. The tag can have a maximum length of 16 Bytes.
  *
- * \note            This function is not implemented in Mbed TLS yet.
+ * \r\note            This function is not implemented in Mbed TLS yet.
  *
  * \param ctx       The CCM context. This must have been started with
  *                  mbedtls_ccm_starts() and the lengths of the message and

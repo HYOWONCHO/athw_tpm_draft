@@ -113,7 +113,7 @@ int mbedtls_gcm_setkey(mbedtls_gcm_context *ctx,
 /**
  * \brief           This function performs GCM encryption or decryption of a buffer.
  *
- * \note            For encryption, the output buffer can be the same as the
+ * \r\note            For encryption, the output buffer can be the same as the
  *                  input buffer. For decryption, the output buffer cannot be
  *                  the same as input buffer. If the buffers overlap, the output
  *                  buffer must trail at least 8 Bytes behind the input buffer.
@@ -177,7 +177,7 @@ int mbedtls_gcm_crypt_and_tag(mbedtls_gcm_context *ctx,
  * \brief           This function performs a GCM authenticated decryption of a
  *                  buffer.
  *
- * \note            For decryption, the output buffer cannot be the same as
+ * \r\note            For decryption, the output buffer cannot be the same as
  *                  input buffer. If the buffers overlap, the output buffer
  *                  must trail at least 8 Bytes behind the input buffer.
  *
@@ -285,7 +285,7 @@ int mbedtls_gcm_update_ad(mbedtls_gcm_context *ctx,
  *                    to this function during an operation, then it is
  *                    correct to use \p output_size = \p input_length.
  *
- * \note            For decryption, the output buffer cannot be the same as
+ * \r\note            For decryption, the output buffer cannot be the same as
  *                  input buffer. If the buffers overlap, the output buffer
  *                  must trail at least 8 Bytes behind the input buffer.
  *

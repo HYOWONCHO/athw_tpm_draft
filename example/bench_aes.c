@@ -101,10 +101,10 @@ void bench_stats_sym_finish(const char* desc, int count, int countSz,
     }
 
 //  /* format and print to terminal */
-//  printf("%-16s %d %s took %d ms, %d %s/s\r\n",
+//  printf("%-16s %d %s took %d ms, %d %s/s\r\r\n",
 //      desc, blocks, blockType, total, persec, blockType);
     
-    printf("%-16s %5.0f %s took %5.3f seconds, %8.3f %s/s \r\n",
+    printf("%-16s %5.0f %s took %5.3f seconds, %8.3f %s/s \r\r\n",
         desc, blocks, blockType, total, persec, blockType);
 }
 
@@ -117,7 +117,9 @@ int bench_sym_aes(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* storageKey,
     int count = 0L;
     uint32_t start;
     TPMT_PUBLIC pub_template;
-    WOLFTPM2_KEY aeskey;
+    ATHW_KEY aeskey;
+        
+    TPM_ALG_ID paramEncAlg = TPM_ALG_CFB;
     
     athwtpm2_keyhnd_t hndl = {
         .dev = dev,
@@ -141,7 +143,7 @@ int bench_sym_aes(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* storageKey,
     
     
     if ((rc & TPM_RC_MODE) == TPM_RC_MODE || (rc & TPM_RC_VALUE) == TPM_RC_VALUE) {
-        tr_log("Benchmark symmetric %s not supported!\n", desc);
+        tr_log("Benchmark symmetric %s not supported!\r\n", desc);
         rc = 0; goto exit;
     }
     else if (rc != 0)  {

@@ -200,7 +200,7 @@ int mbedtls_ecdh_gen_public(mbedtls_ecp_group *grp, mbedtls_mpi *d, mbedtls_ecp_
  *
  * \see             ecp.h
  *
- * \note            If \p f_rng is not NULL, it is used to implement
+ * \r\note            If \p f_rng is not NULL, it is used to implement
  *                  countermeasures against side-channel attacks.
  *                  For more information, see mbedtls_ecp_mul().
  *
@@ -296,7 +296,7 @@ int mbedtls_ecdh_make_params(mbedtls_ecdh_context *ctx, size_t *olen,
  * \brief           This function parses the ECDHE parameters in a
  *                  TLS ServerKeyExchange handshake message.
  *
- * \note            In a TLS handshake, this is the how the client
+ * \r\note            In a TLS handshake, this is the how the client
  *                  sets up its ECDHE context from the server's public
  *                  ECDHE key material.
  *
@@ -402,7 +402,7 @@ int mbedtls_ecdh_read_public(mbedtls_ecdh_context *ctx,
  *                  This is the last function used by both TLS client
  *                  and servers.
  *
- * \note            If \p f_rng is not NULL, it is used to implement
+ * \r\note            If \p f_rng is not NULL, it is used to implement
  *                  countermeasures against side-channel attacks.
  *                  For more information, see mbedtls_ecp_mul().
  *
@@ -437,7 +437,7 @@ int mbedtls_ecdh_calc_secret(mbedtls_ecdh_context *ctx, size_t *olen,
  *
  * \see             \c mbedtls_ecp_set_max_ops()
  *
- * \note            It is not possible to safely disable restartable
+ * \r\note            It is not possible to safely disable restartable
  *                  computations once enabled, except by free-ing the context,
  *                  which cancels possible in-progress operations.
  *

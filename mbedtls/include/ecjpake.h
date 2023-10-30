@@ -102,7 +102,7 @@ void mbedtls_ecjpake_init(mbedtls_ecjpake_context *ctx);
 /**
  * \brief           Set up an ECJPAKE context for use.
  *
- * \note            Currently the only values for hash/curve allowed by the
+ * \r\note            Currently the only values for hash/curve allowed by the
  *                  standard are #MBEDTLS_MD_SHA256/#MBEDTLS_ECP_DP_SECP256R1.
  *
  * \param ctx       The ECJPAKE context to set up. This must be initialized.

@@ -98,7 +98,7 @@ void mbedtls_sha512_clone(mbedtls_sha512_context *dst,
  * \param is384    Determines which function to use. This must be
  *                 either \c 0 for SHA-512, or \c 1 for SHA-384.
  *
- * \note           is384 must be defined accordingly to the enabled
+ * \r\note           is384 must be defined accordingly to the enabled
  *                 MBEDTLS_SHA384_C/MBEDTLS_SHA512_C symbols otherwise the
  *                 function will return #MBEDTLS_ERR_SHA512_BAD_INPUT_DATA.
  *
@@ -174,7 +174,7 @@ int mbedtls_internal_sha512_process(mbedtls_sha512_context *ctx,
  * \param is384    Determines which function to use. This must be either
  *                 \c 0 for SHA-512, or \c 1 for SHA-384.
  *
- * \note           is384 must be defined accordingly with the supported
+ * \r\note           is384 must be defined accordingly with the supported
  *                 symbols in the config file. If:
  *                 - is384 is 0, but \c MBEDTLS_SHA384_C is not defined, or
  *                 - is384 is 1, but \c MBEDTLS_SHA512_C is not defined

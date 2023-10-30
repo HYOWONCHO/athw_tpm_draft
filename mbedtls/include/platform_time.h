@@ -52,7 +52,7 @@ typedef int64_t mbedtls_ms_time_t;
  *
  * \return Monotonically-increasing current time in milliseconds.
  *
- * \note Define MBEDTLS_PLATFORM_MS_TIME_ALT to be able to provide an
+ * \r\note Define MBEDTLS_PLATFORM_MS_TIME_ALT to be able to provide an
  *       alternative implementation
  *
  * \warning This function returns a monotonically-increasing time value from a

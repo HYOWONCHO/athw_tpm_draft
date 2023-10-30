@@ -264,14 +264,14 @@ typedef struct mbedtls_cmac_context_t mbedtls_cmac_context_t;
  * Cipher information. Allows calling cipher functions
  * in a generic way.
  *
- * \note        The library does not support custom cipher info structures,
+ * \r\note        The library does not support custom cipher info structures,
  *              only built-in structures returned by the functions
  *              mbedtls_cipher_info_from_string(),
  *              mbedtls_cipher_info_from_type(),
  *              mbedtls_cipher_info_from_values(),
  *              mbedtls_cipher_info_from_psa().
  *
- * \note        Some fields store a value that has been right-shifted to save
+ * \r\note        Some fields store a value that has been right-shifted to save
  *              code-size, so should not be used directly. The accessor
  *              functions adjust for this and return the "natural" value.
  */
@@ -618,7 +618,7 @@ void mbedtls_cipher_free(mbedtls_cipher_context_t *ctx);
  * \brief               This function prepares a cipher context for
  *                      use with the given cipher primitive.
  *
- * \note                After calling this function, you should call
+ * \r\note                After calling this function, you should call
  *                      mbedtls_cipher_setkey() and, if the mode uses padding,
  *                      mbedtls_cipher_set_padding_mode(), then for each
  *                      message to encrypt or decrypt with this key, either:
@@ -654,7 +654,7 @@ int mbedtls_cipher_setup(mbedtls_cipher_context_t *ctx,
  *                      Please use psa_aead_xxx() / psa_cipher_xxx() directly
  *                      instead.
  *
- * \note                See #MBEDTLS_USE_PSA_CRYPTO for information on PSA.
+ * \r\note                See #MBEDTLS_USE_PSA_CRYPTO for information on PSA.
  *
  * \param ctx           The context to initialize. May not be \c NULL.
  * \param cipher_info   The cipher to use.
@@ -872,13 +872,13 @@ int mbedtls_cipher_set_padding_mode(mbedtls_cipher_context_t *ctx,
  * \brief           This function sets the initialization vector (IV)
  *                  or nonce.
  *
- * \note            Some ciphers do not use IVs nor nonce. For these
+ * \r\note            Some ciphers do not use IVs nor nonce. For these
  *                  ciphers, this function has no effect.
  *
- * \note            For #MBEDTLS_CIPHER_CHACHA20, the nonce length must
+ * \r\note            For #MBEDTLS_CIPHER_CHACHA20, the nonce length must
  *                  be 12, and the initial counter value is 0.
  *
- * \note            For #MBEDTLS_CIPHER_CHACHA20_POLY1305, the nonce length
+ * \r\note            For #MBEDTLS_CIPHER_CHACHA20_POLY1305, the nonce length
  *                  must be 12.
  *
  * \param ctx       The generic cipher context. This must be initialized and
@@ -899,7 +899,7 @@ int mbedtls_cipher_set_iv(mbedtls_cipher_context_t *ctx,
 /**
  * \brief         This function resets the cipher state.
  *
- * \note          With non-AEAD ciphers, the order of calls for each message
+ * \r\note          With non-AEAD ciphers, the order of calls for each message
  *                is as follows:
  *                1. mbedtls_cipher_set_iv() if the mode uses an IV/nonce.
  *                2. mbedtls_cipher_reset()
@@ -909,7 +909,7 @@ int mbedtls_cipher_set_iv(mbedtls_cipher_context_t *ctx,
  *                This sequence can be repeated to encrypt or decrypt multiple
  *                messages with the same key.
  *
- * \note          With AEAD ciphers, the order of calls for each message
+ * \r\note          With AEAD ciphers, the order of calls for each message
  *                is as follows:
  *                1. mbedtls_cipher_set_iv() if the mode uses an IV/nonce.
  *                2. mbedtls_cipher_reset()
@@ -1064,7 +1064,7 @@ int mbedtls_cipher_check_tag(mbedtls_cipher_context_t *ctx,
  *                      actual number of Bytes written. This must not be
  *                      \c NULL.
  *
- * \note                Some ciphers do not use IVs nor nonce. For these
+ * \r\note                Some ciphers do not use IVs nor nonce. For these
  *                      ciphers, use \p iv = NULL and \p iv_len = 0.
  *
  * \return              \c 0 on success.
@@ -1085,7 +1085,7 @@ int mbedtls_cipher_crypt(mbedtls_cipher_context_t *ctx,
 /**
  * \brief               The authenticated encryption (AEAD/NIST_KW) function.
  *
- * \note                For AEAD modes, the tag will be appended to the
+ * \r\note                For AEAD modes, the tag will be appended to the
  *                      ciphertext, as recommended by RFC 5116.
  *                      (NIST_KW doesn't have a separate tag.)
  *
@@ -1136,11 +1136,11 @@ int mbedtls_cipher_auth_encrypt_ext(mbedtls_cipher_context_t *ctx,
 /**
  * \brief               The authenticated encryption (AEAD/NIST_KW) function.
  *
- * \note                If the data is not authentic, then the output buffer
+ * \r\note                If the data is not authentic, then the output buffer
  *                      is zeroed out to prevent the unauthentic plaintext being
  *                      used, making this interface safer.
  *
- * \note                For AEAD modes, the tag must be appended to the
+ * \r\note                For AEAD modes, the tag must be appended to the
  *                      ciphertext, as recommended by RFC 5116.
  *                      (NIST_KW doesn't have a separate tag.)
  *

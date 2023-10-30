@@ -57,7 +57,7 @@
 #include "mbedtls/x509_crt.h"
 
 /**
- * \name PKCS #7 Module Error codes
+ * \r\name PKCS #7 Module Error codes
  * \{
  */
 #define MBEDTLS_ERR_PKCS7_INVALID_FORMAT                   -0x5300  /**< The format is invalid, e.g. different type expected. */
@@ -75,7 +75,7 @@
 /* \} name */
 
 /**
- * \name PKCS #7 Supported Version
+ * \r\name PKCS #7 Supported Version
  * \{
  */
 #define MBEDTLS_PKCS7_SUPPORTED_VERSION                           0x01
@@ -169,10 +169,10 @@ void mbedtls_pkcs7_init(mbedtls_pkcs7 *pkcs7);
  * \param buflen   The size in bytes of \p buf. The size must be exactly the
  *                 length of the DER encoded PKCS #7 content.
  *
- * \note           This function makes an internal copy of the PKCS #7 buffer
+ * \r\note           This function makes an internal copy of the PKCS #7 buffer
  *                 \p buf. In particular, \p buf may be destroyed or reused
  *                 after this call returns.
- * \note           Signatures with internal data are not supported.
+ * \r\note           Signatures with internal data are not supported.
  *
  * \return         The \c mbedtls_pkcs7_type of \p buf, if successful.
  * \return         A negative error code on failure.
@@ -200,7 +200,7 @@ int mbedtls_pkcs7_parse_der(mbedtls_pkcs7 *pkcs7, const unsigned char *buf,
  * \param data     Plain data on which signature has to be verified.
  * \param datalen  Length of the data.
  *
- * \note           This function internally calculates the hash on the supplied
+ * \r\note           This function internally calculates the hash on the supplied
  *                 plain data for signature verification.
  *
  * \return         0 if the signature verifies, or a negative error code on failure.
@@ -229,7 +229,7 @@ int mbedtls_pkcs7_signed_data_verify(mbedtls_pkcs7 *pkcs7,
  * \param hash     Hash of the plain data on which signature has to be verified.
  * \param hashlen  Length of the hash.
  *
- * \note           This function is different from mbedtls_pkcs7_signed_data_verify()
+ * \r\note           This function is different from mbedtls_pkcs7_signed_data_verify()
  *                 in that it is directly passed the hash of the data.
  *
  * \return         0 if the signature verifies, or a negative error code on failure.

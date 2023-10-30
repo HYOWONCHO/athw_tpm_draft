@@ -38,7 +38,7 @@
  */
 
 /**
- * \name ASN1 Error codes
+ * \r\name ASN1 Error codes
  * These error codes are combined with other error codes for
  * higher error granularity.
  * e.g. X.509 and PKCS #7 error codes
@@ -63,10 +63,10 @@
 /** \} name ASN1 Error codes */
 
 /**
- * \name DER constants
+ * \r\name DER constants
  * These constants comply with the DER encoded ASN.1 type tags.
  * DER encoding uses hexadecimal representation.
- * An example DER sequence is:\n
+ * An example DER sequence is:\r\n
  * - 0x02 -- tag indicating INTEGER
  * - 0x01 -- length in octets
  * - 0x05 -- value
@@ -143,7 +143,7 @@ extern "C" {
 #endif
 
 /**
- * \name Functions to parse ASN.1 data structures
+ * \r\name Functions to parse ASN.1 data structures
  * \{
  */
 
@@ -369,12 +369,12 @@ int mbedtls_asn1_get_bitstring_null(unsigned char **p,
  * This function allocates memory for the sequence elements. You can free
  * the allocated memory with mbedtls_asn1_sequence_free().
  *
- * \note        On error, this function may return a partial list in \p cur.
+ * \r\note        On error, this function may return a partial list in \p cur.
  *              You must set `cur->next = NULL` before calling this function!
  *              Otherwise it is impossible to distinguish a previously non-null
  *              pointer from a pointer to an object allocated by this function.
  *
- * \note        If the sequence is empty, this function does not modify
+ * \r\note        If the sequence is empty, this function does not modify
  *              \c *cur. If the sequence is valid and non-empty, this
  *              function sets `cur->buf.tag` to \p tag. This allows
  *              callers to distinguish between an empty sequence and

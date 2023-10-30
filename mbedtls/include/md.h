@@ -326,10 +326,10 @@ int mbedtls_md_setup(mbedtls_md_context_t *ctx, const mbedtls_md_info_t *md_info
  * \brief           This function clones the state of a message-digest
  *                  context.
  *
- * \note            You must call mbedtls_md_setup() on \c dst before calling
+ * \r\note            You must call mbedtls_md_setup() on \c dst before calling
  *                  this function.
  *
- * \note            The two contexts must have the same type,
+ * \r\note            The two contexts must have the same type,
  *                  for example, both are SHA-256.
  *
  * \warning         This function clones the message-digest state, not the
@@ -467,7 +467,7 @@ int mbedtls_md(const mbedtls_md_info_t *md_info, const unsigned char *input, siz
  * \brief           This function returns the list of digests supported by the
  *                  generic digest module.
  *
- * \note            The list starts with the strongest available hashes.
+ * \r\note            The list starts with the strongest available hashes.
  *
  * \return          A statically allocated array of digests. Each element
  *                  in the returned list is an integer belonging to the

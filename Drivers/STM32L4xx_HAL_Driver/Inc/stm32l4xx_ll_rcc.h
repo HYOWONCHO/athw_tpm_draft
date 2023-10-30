@@ -2892,7 +2892,7 @@ __STATIC_INLINE uint32_t LL_RCC_GetClkAfterWakeFromStop(void)
 
 /**
   * @brief  Configure MCOx
-  * @rmtoll CFGR         MCOSEL        LL_RCC_ConfigMCO\n
+  * @rmtoll CFGR         MCOSEL        LL_RCC_ConfigMCO\r\n
   *         CFGR         MCOPRE        LL_RCC_ConfigMCO
   * @param  MCOxSource This parameter can be one of the following values:
   *         @arg @ref LL_RCC_MCO1SOURCE_NOCLOCK
@@ -3759,9 +3759,9 @@ __STATIC_INLINE uint32_t LL_RCC_PLL_IsReady(void)
   * @note PLL Source and PLLM Divider can be written only when PLL,
   *       PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLN/PLLR can be written only when PLL is disabled.
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLL_ConfigDomain_SYS\n
-  *         PLLCFGR      PLLM          LL_RCC_PLL_ConfigDomain_SYS\n
-  *         PLLCFGR      PLLN          LL_RCC_PLL_ConfigDomain_SYS\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLL_ConfigDomain_SYS\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLL_ConfigDomain_SYS\r\n
+  *         PLLCFGR      PLLN          LL_RCC_PLL_ConfigDomain_SYS\r\n
   *         PLLCFGR      PLLR          LL_RCC_PLL_ConfigDomain_SYS
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -3809,9 +3809,9 @@ __STATIC_INLINE void LL_RCC_PLL_ConfigDomain_SYS(uint32_t Source, uint32_t PLLM,
   *       PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLN/PLLP can be written only when PLL is disabled.
   * @note This  can be selected for SAI1 or SAI2 (*)
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLL_ConfigDomain_SAI\n
-  *         PLLCFGR      PLLM          LL_RCC_PLL_ConfigDomain_SAI\n
-  *         PLLCFGR      PLLN          LL_RCC_PLL_ConfigDomain_SAI\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLL_ConfigDomain_SAI\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLL_ConfigDomain_SAI\r\n
+  *         PLLCFGR      PLLN          LL_RCC_PLL_ConfigDomain_SAI\r\n
   *         PLLCFGR      PLLPDIV       LL_RCC_PLL_ConfigDomain_SAI
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -3878,9 +3878,9 @@ __STATIC_INLINE void LL_RCC_PLL_ConfigDomain_SYS(uint32_t Source, uint32_t PLLM,
   *         PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note   PLLN/PLLP can be written only when PLL is disabled.
   * @note   This  can be selected for SAI1 or SAI2 (*)
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLL_ConfigDomain_SAI\n
-  *         PLLCFGR      PLLM          LL_RCC_PLL_ConfigDomain_SAI\n
-  *         PLLCFGR      PLLN          LL_RCC_PLL_ConfigDomain_SAI\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLL_ConfigDomain_SAI\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLL_ConfigDomain_SAI\r\n
+  *         PLLCFGR      PLLN          LL_RCC_PLL_ConfigDomain_SAI\r\n
   *         PLLCFGR      PLLP          LL_RCC_PLL_ConfigDomain_SAI
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -3921,9 +3921,9 @@ __STATIC_INLINE void LL_RCC_PLL_ConfigDomain_SAI(uint32_t Source, uint32_t PLLM,
   *       PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLN/PLLQ can be written only when PLL is disabled.
   * @note This  can be selected for USB, RNG, SDMMC
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLL_ConfigDomain_48M\n
-  *         PLLCFGR      PLLM          LL_RCC_PLL_ConfigDomain_48M\n
-  *         PLLCFGR      PLLN          LL_RCC_PLL_ConfigDomain_48M\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLL_ConfigDomain_48M\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLL_ConfigDomain_48M\r\n
+  *         PLLCFGR      PLLN          LL_RCC_PLL_ConfigDomain_48M\r\n
   *         PLLCFGR      PLLQ          LL_RCC_PLL_ConfigDomain_48M
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -4268,9 +4268,9 @@ __STATIC_INLINE uint32_t LL_RCC_PLLSAI1_IsReady(void)
   * @note PLL Source can be written only when PLL, PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLSAI1M/PLLSAI1N/PLLSAI1Q can be written only when PLLSAI1 is disabled.
   * @note This  can be selected for USB, RNG, SDMMC
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_48M\n
-  *         PLLSAI1CFGR  PLLSAI1M      LL_RCC_PLLSAI1_ConfigDomain_48M\n
-  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_48M\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_48M\r\n
+  *         PLLSAI1CFGR  PLLSAI1M      LL_RCC_PLLSAI1_ConfigDomain_48M\r\n
+  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_48M\r\n
   *         PLLSAI1CFGR  PLLSAI1Q      LL_RCC_PLLSAI1_ConfigDomain_48M
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -4315,9 +4315,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI1_ConfigDomain_48M(uint32_t Source, uint32_t P
   *       PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLSAI1N/PLLSAI1Q can be written only when PLLSAI1 is disabled.
   * @note This  can be selected for USB, RNG, SDMMC
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_48M\n
-  *         PLLCFGR      PLLM          LL_RCC_PLLSAI1_ConfigDomain_48M\n
-  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_48M\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_48M\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLLSAI1_ConfigDomain_48M\r\n
+  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_48M\r\n
   *         PLLSAI1CFGR  PLLSAI1Q      LL_RCC_PLLSAI1_ConfigDomain_48M
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -4354,9 +4354,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI1_ConfigDomain_48M(uint32_t Source, uint32_t P
   * @note PLL Source can be written only when PLL, PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLSAI1M/PLLSAI1N/PLLSAI1PDIV can be written only when PLLSAI1 is disabled.
   * @note This  can be selected for SAI1 or SAI2
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_SAI\n
-  *         PLLSAI1CFGR  PLLSAI1M      LL_RCC_PLLSAI1_ConfigDomain_SAI\n
-  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_SAI\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_SAI\r\n
+  *         PLLSAI1CFGR  PLLSAI1M      LL_RCC_PLLSAI1_ConfigDomain_SAI\r\n
+  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_SAI\r\n
   *         PLLSAI1CFGR  PLLSAI1PDIV   LL_RCC_PLLSAI1_ConfigDomain_SAI
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -4427,9 +4427,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI1_ConfigDomain_SAI(uint32_t Source, uint32_t P
   *       PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLSAI1N/PLLSAI1PDIV can be written only when PLLSAI1 is disabled.
   * @note This  can be selected for SAI1 or SAI2 (*)
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_SAI\n
-  *         PLLCFGR      PLLM          LL_RCC_PLLSAI1_ConfigDomain_SAI\n
-  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_SAI\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_SAI\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLLSAI1_ConfigDomain_SAI\r\n
+  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_SAI\r\n
   *         PLLSAI1CFGR  PLLSAI1PDIV   LL_RCC_PLLSAI1_ConfigDomain_SAI
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -4492,9 +4492,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI1_ConfigDomain_SAI(uint32_t Source, uint32_t P
   *       PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLSAI1N/PLLSAI1P can be written only when PLLSAI1 is disabled.
   * @note This  can be selected for SAI1 or SAI2 (*)
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_SAI\n
-  *         PLLCFGR      PLLM          LL_RCC_PLLSAI1_ConfigDomain_SAI\n
-  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_SAI\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_SAI\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLLSAI1_ConfigDomain_SAI\r\n
+  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_SAI\r\n
   *         PLLSAI1CFGR  PLLSAI1P      LL_RCC_PLLSAI1_ConfigDomain_SAI
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -4529,9 +4529,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI1_ConfigDomain_SAI(uint32_t Source, uint32_t P
   * @note PLL Source can be written only when PLL, PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLSAI1M/PLLSAI1N/PLLSAI1R can be written only when PLLSAI1 is disabled.
   * @note This  can be selected for ADC
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_ADC\n
-  *         PLLSAI1CFGR  PLLSAI1M      LL_RCC_PLLSAI1_ConfigDomain_ADC\n
-  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_ADC\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_ADC\r\n
+  *         PLLSAI1CFGR  PLLSAI1M      LL_RCC_PLLSAI1_ConfigDomain_ADC\r\n
+  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_ADC\r\n
   *         PLLSAI1CFGR  PLLSAI1R      LL_RCC_PLLSAI1_ConfigDomain_ADC
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -4576,9 +4576,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI1_ConfigDomain_ADC(uint32_t Source, uint32_t P
   *       PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLN/PLLR can be written only when PLLSAI1 is disabled.
   * @note This  can be selected for ADC
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_ADC\n
-  *         PLLCFGR      PLLM          LL_RCC_PLLSAI1_ConfigDomain_ADC\n
-  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_ADC\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI1_ConfigDomain_ADC\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLLSAI1_ConfigDomain_ADC\r\n
+  *         PLLSAI1CFGR  PLLSAI1N      LL_RCC_PLLSAI1_ConfigDomain_ADC\r\n
   *         PLLSAI1CFGR  PLLSAI1R      LL_RCC_PLLSAI1_ConfigDomain_ADC
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -4875,9 +4875,9 @@ __STATIC_INLINE uint32_t LL_RCC_PLLSAI2_IsReady(void)
   * @note PLL Source can be written only when PLL, PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLSAI2M/PLLSAI2N/PLLSAI2PDIV can be written only when PLLSAI2 is disabled.
   * @note This  can be selected for SAI1 or SAI2
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_SAI\n
-  *         PLLSAI2CFGR  PLLSAI2M      LL_RCC_PLLSAI2_ConfigDomain_SAI\n
-  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_SAI\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_SAI\r\n
+  *         PLLSAI2CFGR  PLLSAI2M      LL_RCC_PLLSAI2_ConfigDomain_SAI\r\n
+  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_SAI\r\n
   *         PLLSAI2CFGR  PLLSAI2PDIV   LL_RCC_PLLSAI2_ConfigDomain_SAI
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -4948,9 +4948,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI2_ConfigDomain_SAI(uint32_t Source, uint32_t P
   *       PLLSAI1 and PLLSAI2 are disabled.
   * @note PLLSAI2N/PLLSAI2PDIV can be written only when PLLSAI2 is disabled.
   * @note This  can be selected for SAI1 or SAI2
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_SAI\n
-  *         PLLCFGR      PLLM          LL_RCC_PLLSAI2_ConfigDomain_SAI\n
-  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_SAI\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_SAI\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLLSAI2_ConfigDomain_SAI\r\n
+  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_SAI\r\n
   *         PLLSAI2CFGR  PLLSAI2PDIV   LL_RCC_PLLSAI2_ConfigDomain_SAI
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -5012,9 +5012,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI2_ConfigDomain_SAI(uint32_t Source, uint32_t P
   *       PLLSAI2 and PLLSAI2 are disabled.
   * @note PLLSAI2N/PLLSAI2P can be written only when PLLSAI2 is disabled.
   * @note This  can be selected for SAI1 or SAI2
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_SAI\n
-  *         PLLCFGR      PLLM          LL_RCC_PLLSAI2_ConfigDomain_SAI\n
-  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_SAI\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_SAI\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLLSAI2_ConfigDomain_SAI\r\n
+  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_SAI\r\n
   *         PLLSAI2CFGR  PLLSAI2P      LL_RCC_PLLSAI2_ConfigDomain_SAI
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -5049,9 +5049,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI2_ConfigDomain_SAI(uint32_t Source, uint32_t P
   * @note PLL Source can be written only when PLL, PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLSAI2M/PLLSAI2N/PLLSAI2Q can be written only when PLLSAI2 is disabled.
   * @note This  can be selected for DSI
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_DSI\n
-  *         PLLSAI2CFGR  PLLSAI2M      LL_RCC_PLLSAI2_ConfigDomain_DSI\n
-  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_DSI\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_DSI\r\n
+  *         PLLSAI2CFGR  PLLSAI2M      LL_RCC_PLLSAI2_ConfigDomain_DSI\r\n
+  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_DSI\r\n
   *         PLLSAI2CFGR  PLLSAI2Q      LL_RCC_PLLSAI2_ConfigDomain_DSI
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -5097,10 +5097,10 @@ __STATIC_INLINE void LL_RCC_PLLSAI2_ConfigDomain_DSI(uint32_t Source, uint32_t P
   * @note PLL Source can be written only when PLL, PLLSAI1 and PLLSAI2 (*) are disabled.
   * @note PLLSAI2M/PLLSAI2N/PLLSAI2R can be written only when PLLSAI2 is disabled.
   * @note This  can be selected for LTDC
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_LTDC\n
-  *         PLLSAI2CFGR  PLLSAI2M      LL_RCC_PLLSAI2_ConfigDomain_LTDC\n
-  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_LTDC\n
-  *         PLLSAI2CFGR  PLLSAI2R      LL_RCC_PLLSAI2_ConfigDomain_LTDC\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_LTDC\r\n
+  *         PLLSAI2CFGR  PLLSAI2M      LL_RCC_PLLSAI2_ConfigDomain_LTDC\r\n
+  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_LTDC\r\n
+  *         PLLSAI2CFGR  PLLSAI2R      LL_RCC_PLLSAI2_ConfigDomain_LTDC\r\n
   *         CCIPR2       PLLSAI2DIVR   LL_RCC_PLLSAI2_ConfigDomain_LTDC
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE
@@ -5151,9 +5151,9 @@ __STATIC_INLINE void LL_RCC_PLLSAI2_ConfigDomain_LTDC(uint32_t Source, uint32_t 
   *       PLLSAI2 and PLLSAI2 are disabled.
   * @note PLLSAI2N/PLLSAI2R can be written only when PLLSAI2 is disabled.
   * @note This  can be selected for ADC
-  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_ADC\n
-  *         PLLCFGR      PLLM          LL_RCC_PLLSAI2_ConfigDomain_ADC\n
-  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_ADC\n
+  * @rmtoll PLLCFGR      PLLSRC        LL_RCC_PLLSAI2_ConfigDomain_ADC\r\n
+  *         PLLCFGR      PLLM          LL_RCC_PLLSAI2_ConfigDomain_ADC\r\n
+  *         PLLSAI2CFGR  PLLSAI2N      LL_RCC_PLLSAI2_ConfigDomain_ADC\r\n
   *         PLLSAI2CFGR  PLLSAI2R      LL_RCC_PLLSAI2_ConfigDomain_ADC
   * @param  Source This parameter can be one of the following values:
   *         @arg @ref LL_RCC_PLLSOURCE_NONE

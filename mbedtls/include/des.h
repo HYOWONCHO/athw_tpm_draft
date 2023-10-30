@@ -283,7 +283,7 @@ int mbedtls_des_crypt_ecb(mbedtls_des_context *ctx,
 /**
  * \brief          DES-CBC buffer encryption/decryption
  *
- * \note           Upon exit, the content of the IV is updated so that you can
+ * \r\note           Upon exit, the content of the IV is updated so that you can
  *                 call the function same function again on the following
  *                 block(s) of data and get the same result as if it was
  *                 encrypted in one call. This allows a "streaming" usage.
@@ -333,7 +333,7 @@ int mbedtls_des3_crypt_ecb(mbedtls_des3_context *ctx,
 /**
  * \brief          3DES-CBC buffer encryption/decryption
  *
- * \note           Upon exit, the content of the IV is updated so that you can
+ * \r\note           Upon exit, the content of the IV is updated so that you can
  *                 call the function same function again on the following
  *                 block(s) of data and get the same result as if it was
  *                 encrypted in one call. This allows a "streaming" usage.

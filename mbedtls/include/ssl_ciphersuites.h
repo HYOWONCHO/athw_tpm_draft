@@ -453,7 +453,7 @@ typedef struct mbedtls_ssl_ciphersuite_t mbedtls_ssl_ciphersuite_t;
 /**
  * \brief   This structure is used for storing ciphersuite information
  *
- * \note    members are defined using integral types instead of enums
+ * \r\note    members are defined using integral types instead of enums
  *          in order to pack structure and reduce memory usage by internal
  *          \c ciphersuite_definitions[]
  */

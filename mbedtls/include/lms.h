@@ -264,10 +264,10 @@ void mbedtls_lms_public_free(mbedtls_lms_public_t *ctx);
  * \brief                    This function imports an LMS public key into a
  *                           public LMS context.
  *
- * \note                     Before this function is called, the context must
+ * \r\note                     Before this function is called, the context must
  *                           have been initialized.
  *
- * \note                     See IETF RFC8554 for details of the encoding of
+ * \r\note                     See IETF RFC8554 for details of the encoding of
  *                           this public key.
  *
  * \param ctx                The initialized LMS context store the key in.
@@ -287,11 +287,11 @@ int mbedtls_lms_import_public_key(mbedtls_lms_public_t *ctx,
  *                           LMS public context that already contains a public
  *                           key.
  *
- * \note                     Before this function is called, the context must
+ * \r\note                     Before this function is called, the context must
  *                           have been initialized and the context must contain
  *                           a public key.
  *
- * \note                     See IETF RFC8554 for details of the encoding of
+ * \r\note                     See IETF RFC8554 for details of the encoding of
  *                           this public key.
  *
  * \param ctx                The initialized LMS public context that contains
@@ -313,7 +313,7 @@ int mbedtls_lms_export_public_key(const mbedtls_lms_public_t *ctx,
  * \brief                    This function verifies a LMS signature, using a
  *                           LMS context that contains a public key.
  *
- * \note                     Before this function is called, the context must
+ * \r\note                     Before this function is called, the context must
  *                           have been initialized and must contain a public key
  *                           (either by import or generation).
  *
@@ -358,7 +358,7 @@ void mbedtls_lms_private_free(mbedtls_lms_private_t *ctx);
  *                           handling stateful keys. The API for this function
  *                           may change considerably in future versions.
  *
- * \note                     The seed must have at least 256 bits of entropy.
+ * \r\note                     The seed must have at least 256 bits of entropy.
  *
  * \param ctx                The initialized LMOTS context to generate the key
  *                           into.
@@ -384,7 +384,7 @@ int mbedtls_lms_generate_private_key(mbedtls_lms_private_t *ctx,
  * \brief                    This function calculates an LMS public key from a
  *                           LMS context that already contains a private key.
  *
- * \note                     Before this function is called, the context must
+ * \r\note                     Before this function is called, the context must
  *                           have been initialized and the context must contain
  *                           a private key.
  *
@@ -410,11 +410,11 @@ int mbedtls_lms_calculate_public_key(mbedtls_lms_public_t *ctx,
  *                           handling stateful keys. The API for this function
  *                           may change considerably in future versions.
  *
- * \note                     Before this function is called, the context must
+ * \r\note                     Before this function is called, the context must
  *                           have been initialized and must contain a private
  *                           key.
  *
- * \note                     Each of the LMOTS private keys inside a LMS private
+ * \r\note                     Each of the LMOTS private keys inside a LMS private
  *                           key can only be used once. If they are reused, then
  *                           attackers may be able to forge signatures with that
  *                           key. This is all handled transparently, but it is

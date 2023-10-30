@@ -134,13 +134,26 @@ int main(void)
   TPM2_CTX      ctx;
   int           ret;
   //uint8_t       message[1024] = {0, };
-  WOLFTPM2_DEV  dev;
+  ATHW_DEV  dev;
+  //WOLFTPM2_SESSION tpmSession;
+
   athwtpm2_key_t storageKey;
-  athwtpm2_buf_t message;
+    athwtpm2_buf_t message;
   athwtpm2_buf_t cipher;
   athwtpm2_buf_t plain;
   
-  int count = 0L;
+  athwtpm2_sessionhndl_t sesnhndl;
+  athwtpm2_session_t tpmsesn;
+  
+  ATHW_KEY aeskey;
+  ATHW_KEY rsaKey;
+  ATHW_KEY eccKey;
+  WOLFTPM2_SESSION tpmSession;
+  TPM_ALG_ID paramEncAlg = TPM_ALG_CFB;
+
+
+
+     int count = 0L;
   uint32_t start;
 
   
@@ -190,23 +203,61 @@ int main(void)
 //}
 //tr_log("TPM2 Init result %x", -ret);
   
+  XMEMSET(&storageKey, 0, sizeof(storageKey));
+  XMEMSET(&eccKey, 0, sizeof(eccKey));
+  XMEMSET(&rsaKey, 0, sizeof(rsaKey));
+  
+
+  printf("TPM2 Benchmark using Wrapper API's\r\n");
+  printf("\tUse Parameter Encryption: %s\r\n", TPM2_GetAlgName(paramEncAlg));
+
+
+
+
+
   ret = athw_tpm_init(&dev, (void *)TPM2_IoCb, &hspi1);
   if (ret != TPM_RC_SUCCESS) {
     tr_log("TPM Init failedn 0x%x: %s", ret, TPM2_GetRCString(ret));
     
   }
+  
+      /* See if primary storage key already exists */
+  ret = getPrimaryStoragekey(&dev, &storageKey, TPM_ALG_RSA);
+  if (ret != 0) 
+    goto exit;
+  
+  if (paramEncAlg != TPM_ALG_NULL) {
+          /* Start an authenticated session (salted / unbound) with parameter encryption */
+        ret = ATHWTPM2_StartSession(&dev, &tpmSession, &storageKey, NULL,
+            TPM_SE_HMAC, paramEncAlg);
+        if (ret != 0) goto exit;
+        printf("TPM2_StartAuthSession: sessionHandle 0x%x\r\n",
+            (word32)tpmSession.handle.hndl);
+
+        /* set session for authorization of the storage key */
+        ret = ATHWTPM2_SetAuthSession(&dev, 1, &tpmSession,
+            (TPMA_SESSION_decrypt | TPMA_SESSION_encrypt | TPMA_SESSION_continueSession));
+        if (ret != 0) goto exit;
+  }
                          // RNG Benchmark
   bench_stats_start(&count, &start);
   do
-  {
+  {                              
     ret = athw_tpm_getrandom((void *)&ctx, message.buffer, sizeof message.buffer);
     if (ret == ATHW_EOK)
     {
-      printf("\r\n");
+      printf("\r\r\n");
 //_athw_print_bin("TPM2 GetRandom", message.buffer, sizeof message.buffer);
     }
   } while (bench_stats_check(start,&count, 1));
   bench_stats_sym_finish("RNG", count, sizeof(message), start);
+  
+  sesnhndl.dev =  &dev;
+  sesnhndl.session =  &tpmsesn;
+  sesnhndl.key =  &storageKey;
+  sesnhndl.bindhndl = NULL;
+  
+  
   
   ret = bench_sym_aes(&dev, &storageKey, "AES-128-CBC-end", TPM_ALG_CBC, 128,
                       message.buffer, cipher.buffer, sizeof message.buffer,
@@ -230,7 +281,7 @@ int main(void)
 
   //athw_tpm_dev_init(&udev);
   /* USER CODE END 2 */
-
+exit:
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -574,7 +625,7 @@ void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+     ex: printf("Wrong parameters value: file %s on line %d\r\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

@@ -133,7 +133,7 @@ int mbedtls_camellia_crypt_ecb(mbedtls_camellia_context *ctx,
 /**
  * \brief          Perform a CAMELLIA-CBC buffer encryption/decryption operation.
  *
- * \note           Upon exit, the content of the IV is updated so that you can
+ * \r\note           Upon exit, the content of the IV is updated so that you can
  *                 call the function same function again on the following
  *                 block(s) of data and get the same result as if it was
  *                 encrypted in one call. This allows a "streaming" usage.
@@ -171,13 +171,13 @@ int mbedtls_camellia_crypt_cbc(mbedtls_camellia_context *ctx,
  * \brief          Perform a CAMELLIA-CFB128 buffer encryption/decryption
  *                 operation.
  *
- * \note           Due to the nature of CFB mode, you should use the same
+ * \r\note           Due to the nature of CFB mode, you should use the same
  *                 key for both encryption and decryption. In particular, calls
  *                 to this function should be preceded by a key-schedule via
  *                 mbedtls_camellia_setkey_enc() regardless of whether \p mode
  *                 is #MBEDTLS_CAMELLIA_ENCRYPT or #MBEDTLS_CAMELLIA_DECRYPT.
  *
- * \note           Upon exit, the content of the IV is updated so that you can
+ * \r\note           Upon exit, the content of the IV is updated so that you can
  *                 call the function same function again on the following
  *                 block(s) of data and get the same result as if it was
  *                 encrypted in one call. This allows a "streaming" usage.

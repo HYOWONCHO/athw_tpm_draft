@@ -460,7 +460,7 @@ __STATIC_INLINE uint32_t LL_I2C_IsEnabled(const I2C_TypeDef *I2Cx)
   * @brief  Configure Noise Filters (Analog and Digital).
   * @note   If the analog filter is also enabled, the digital filter is added to analog filter.
   *         The filters can only be programmed when the I2C is disabled (PE = 0).
-  * @rmtoll CR1          ANFOFF        LL_I2C_ConfigFilters\n
+  * @rmtoll CR1          ANFOFF        LL_I2C_ConfigFilters\r\n
   *         CR1          DNF           LL_I2C_ConfigFilters
   * @param  I2Cx I2C Instance.
   * @param  AnalogFilter This parameter can be one of the following values:
@@ -608,7 +608,7 @@ __STATIC_INLINE uint32_t LL_I2C_IsEnabledDMAReq_RX(const I2C_TypeDef *I2Cx)
 
 /**
   * @brief  Get the data register address used for DMA transfer
-  * @rmtoll TXDR         TXDATA        LL_I2C_DMA_GetRegAddr\n
+  * @rmtoll TXDR         TXDATA        LL_I2C_DMA_GetRegAddr\r\n
   *         RXDR         RXDATA        LL_I2C_DMA_GetRegAddr
   * @param  I2Cx I2C Instance
   * @param  Direction This parameter can be one of the following values:
@@ -807,7 +807,7 @@ __STATIC_INLINE uint32_t LL_I2C_GetMasterAddressingMode(const I2C_TypeDef *I2Cx)
 
 /**
   * @brief  Set the Own Address1.
-  * @rmtoll OAR1         OA1           LL_I2C_SetOwnAddress1\n
+  * @rmtoll OAR1         OA1           LL_I2C_SetOwnAddress1\r\n
   *         OAR1         OA1MODE       LL_I2C_SetOwnAddress1
   * @param  I2Cx I2C Instance.
   * @param  OwnAddress1 This parameter must be a value between Min_Data=0 and Max_Data=0x3FF.
@@ -857,7 +857,7 @@ __STATIC_INLINE uint32_t LL_I2C_IsEnabledOwnAddress1(const I2C_TypeDef *I2Cx)
 /**
   * @brief  Set the 7bits Own Address2.
   * @note   This action has no effect if own address2 is enabled.
-  * @rmtoll OAR2         OA2           LL_I2C_SetOwnAddress2\n
+  * @rmtoll OAR2         OA2           LL_I2C_SetOwnAddress2\r\n
   *         OAR2         OA2MSK        LL_I2C_SetOwnAddress2
   * @param  I2Cx I2C Instance.
   * @param  OwnAddress2 Value between Min_Data=0 and Max_Data=0x7F.
@@ -983,7 +983,7 @@ __STATIC_INLINE uint32_t LL_I2C_GetDataSetupTime(const I2C_TypeDef *I2Cx)
   * @brief  Configure peripheral mode.
   * @note   The macro IS_SMBUS_ALL_INSTANCE(I2Cx) can be used to check whether or not
   *         SMBus feature is supported by the I2Cx Instance.
-  * @rmtoll CR1          SMBHEN        LL_I2C_SetMode\n
+  * @rmtoll CR1          SMBHEN        LL_I2C_SetMode\r\n
   *         CR1          SMBDEN        LL_I2C_SetMode
   * @param  I2Cx I2C Instance.
   * @param  PeripheralMode This parameter can be one of the following values:
@@ -1002,7 +1002,7 @@ __STATIC_INLINE void LL_I2C_SetMode(I2C_TypeDef *I2Cx, uint32_t PeripheralMode)
   * @brief  Get peripheral mode.
   * @note   The macro IS_SMBUS_ALL_INSTANCE(I2Cx) can be used to check whether or not
   *         SMBus feature is supported by the I2Cx Instance.
-  * @rmtoll CR1          SMBHEN        LL_I2C_GetMode\n
+  * @rmtoll CR1          SMBHEN        LL_I2C_GetMode\r\n
   *         CR1          SMBDEN        LL_I2C_GetMode
   * @param  I2Cx I2C Instance.
   * @retval Returned value can be one of the following values:
@@ -1109,8 +1109,8 @@ __STATIC_INLINE uint32_t LL_I2C_IsEnabledSMBusPEC(const I2C_TypeDef *I2Cx)
   * @note   The macro IS_SMBUS_ALL_INSTANCE(I2Cx) can be used to check whether or not
   *         SMBus feature is supported by the I2Cx Instance.
   * @note   This configuration can only be programmed when associated Timeout is disabled (TimeoutA and/orTimeoutB).
-  * @rmtoll TIMEOUTR     TIMEOUTA      LL_I2C_ConfigSMBusTimeout\n
-  *         TIMEOUTR     TIDLE         LL_I2C_ConfigSMBusTimeout\n
+  * @rmtoll TIMEOUTR     TIMEOUTA      LL_I2C_ConfigSMBusTimeout\r\n
+  *         TIMEOUTR     TIDLE         LL_I2C_ConfigSMBusTimeout\r\n
   *         TIMEOUTR     TIMEOUTB      LL_I2C_ConfigSMBusTimeout
   * @param  I2Cx I2C Instance.
   * @param  TimeoutA This parameter must be a value between  Min_Data=0 and Max_Data=0xFFF.
@@ -1219,7 +1219,7 @@ __STATIC_INLINE uint32_t LL_I2C_GetSMBusTimeoutB(const I2C_TypeDef *I2Cx)
   * @brief  Enable the SMBus Clock Timeout.
   * @note   The macro IS_SMBUS_ALL_INSTANCE(I2Cx) can be used to check whether or not
   *         SMBus feature is supported by the I2Cx Instance.
-  * @rmtoll TIMEOUTR     TIMOUTEN      LL_I2C_EnableSMBusTimeout\n
+  * @rmtoll TIMEOUTR     TIMOUTEN      LL_I2C_EnableSMBusTimeout\r\n
   *         TIMEOUTR     TEXTEN        LL_I2C_EnableSMBusTimeout
   * @param  I2Cx I2C Instance.
   * @param  ClockTimeout This parameter can be one of the following values:
@@ -1237,7 +1237,7 @@ __STATIC_INLINE void LL_I2C_EnableSMBusTimeout(I2C_TypeDef *I2Cx, uint32_t Clock
   * @brief  Disable the SMBus Clock Timeout.
   * @note   The macro IS_SMBUS_ALL_INSTANCE(I2Cx) can be used to check whether or not
   *         SMBus feature is supported by the I2Cx Instance.
-  * @rmtoll TIMEOUTR     TIMOUTEN      LL_I2C_DisableSMBusTimeout\n
+  * @rmtoll TIMEOUTR     TIMOUTEN      LL_I2C_DisableSMBusTimeout\r\n
   *         TIMEOUTR     TEXTEN        LL_I2C_DisableSMBusTimeout
   * @param  I2Cx I2C Instance.
   * @param  ClockTimeout This parameter can be one of the following values:
@@ -1255,7 +1255,7 @@ __STATIC_INLINE void LL_I2C_DisableSMBusTimeout(I2C_TypeDef *I2Cx, uint32_t Cloc
   * @brief  Check if the SMBus Clock Timeout is enabled or disabled.
   * @note   The macro IS_SMBUS_ALL_INSTANCE(I2Cx) can be used to check whether or not
   *         SMBus feature is supported by the I2Cx Instance.
-  * @rmtoll TIMEOUTR     TIMOUTEN      LL_I2C_IsEnabledSMBusTimeout\n
+  * @rmtoll TIMEOUTR     TIMOUTEN      LL_I2C_IsEnabledSMBusTimeout\r\n
   *         TIMEOUTR     TEXTEN        LL_I2C_IsEnabledSMBusTimeout
   * @param  I2Cx I2C Instance.
   * @param  ClockTimeout This parameter can be one of the following values:
@@ -2094,14 +2094,14 @@ __STATIC_INLINE uint32_t LL_I2C_GetSlaveAddr(const I2C_TypeDef *I2Cx)
 
 /**
   * @brief  Handles I2Cx communication when starting transfer or during transfer (TC or TCR flag are set).
-  * @rmtoll CR2          SADD          LL_I2C_HandleTransfer\n
-  *         CR2          ADD10         LL_I2C_HandleTransfer\n
-  *         CR2          RD_WRN        LL_I2C_HandleTransfer\n
-  *         CR2          START         LL_I2C_HandleTransfer\n
-  *         CR2          STOP          LL_I2C_HandleTransfer\n
-  *         CR2          RELOAD        LL_I2C_HandleTransfer\n
-  *         CR2          NBYTES        LL_I2C_HandleTransfer\n
-  *         CR2          AUTOEND       LL_I2C_HandleTransfer\n
+  * @rmtoll CR2          SADD          LL_I2C_HandleTransfer\r\n
+  *         CR2          ADD10         LL_I2C_HandleTransfer\r\n
+  *         CR2          RD_WRN        LL_I2C_HandleTransfer\r\n
+  *         CR2          START         LL_I2C_HandleTransfer\r\n
+  *         CR2          STOP          LL_I2C_HandleTransfer\r\n
+  *         CR2          RELOAD        LL_I2C_HandleTransfer\r\n
+  *         CR2          NBYTES        LL_I2C_HandleTransfer\r\n
+  *         CR2          AUTOEND       LL_I2C_HandleTransfer\r\n
   *         CR2          HEAD10R       LL_I2C_HandleTransfer
   * @param  I2Cx I2C Instance.
   * @param  SlaveAddr Specifies the slave address to be programmed.

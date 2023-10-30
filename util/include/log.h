@@ -33,7 +33,7 @@
     int _l = (int)_level;                               \
     if(_LOG_DEBUG != 0 || _l <= LOG_INFO ||             \
        (_DEBUG && _L == LOGL_DEBUG))                    \
-       printf("[LOG (%d) %s:%d]"_fmt,"\r\n",            \
+       printf("[LOG (%d) %s:%d]"_fmt,"\r\r\n",            \
            _l, __FUNCTION__, __LINE__, ##_VA_ARGS__);   \
 })
 
@@ -49,24 +49,24 @@
     debug_cond(_DEBUG, fmt, ##args)
 
 
-#define tr_log(fmt,...) printf("[%s:%u] "fmt "\r\n",__FUNCTION__,__LINE__,##__VA_ARGS__)
+#define tr_log(fmt,...) printf("[%s:%u] "fmt "\r\r\n",__FUNCTION__,__LINE__,##__VA_ARGS__)
 #define tr_print        printf
-//#define tr_log(...) printf("%s:%d \r\n",__FUNCTION__,__LINE__,##__VA_ARGS__);printf("\r\n")
+//#define tr_log(...) printf("%s:%d \r\r\n",__FUNCTION__,__LINE__,##__VA_ARGS__);printf("\r\r\n")
 
 #define _buf_dump(P,T,L) \
     ({  \
-        tr_print("\r\n[HEX]");  \
+        tr_print("\r\r\n[HEX]");  \
         if((void *)T != NULL) tr_print("%-16.16s(%04d): ", (char *)T, (int)L);  \
         \
-        tr_print("\r\n%-10s", "Offset(h)"); \
+        tr_print("\r\r\n%-10s", "Offset(h)"); \
         for(int i = 0; i < 0x10; i++) tr_print("%02x ",i);  \
         \
         for(int i = 0; i < (int)L; i++) {   \
-            if (i%0x10 == 0) tr_print("\r\n%08X  ", i); \
+            if (i%0x10 == 0) tr_print("\r\r\n%08X  ", i); \
             tr_print("%02x ", ((char *)P)[i] & 0xFF);   \
         }\
         \
-        tr_print("\r\n");   \
+        tr_print("\r\r\n");   \
      })
 
 
@@ -76,11 +76,11 @@ static inline void _athw_print_bin(const uint8_t *title, const uint8_t* buffer, 
     uint32_t i, sz;
     
     if(title) {
-        printf("----  %s (length of buffer: %d) \r\n", title, length) ;
+        printf("----  %s (length of buffer: %d) \r\r\n", title, length) ;
     }
 
     if (!buffer) {
-        printf("\tNULL\n");
+        printf("\tNULL\r\n");
         return;
     }
 
@@ -103,7 +103,7 @@ static inline void _athw_print_bin(const uint8_t *title, const uint8_t* buffer, 
             else
                 printf(".");
         }
-        printf("\r\n");
+        printf("\r\r\n");
 
 
         buffer += sz;

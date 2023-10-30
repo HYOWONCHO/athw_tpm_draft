@@ -2975,7 +2975,7 @@ WOLFTPM_API TPM_RC TPM2_NV_Certify(NV_Certify_In* in, NV_Certify_Out* out);
     \ingroup TPM2_Proprietary
     \brief Initializes a TPM with HAL IO callback and user supplied context.
     When using wolfTPM with --enable-devtpm or --enable-swtpm configuration, the ioCb and userCtx are not used.
-    \note TPM2_Init_minimal() calls TPM2_Init_ex() with both ioCb and userCtx set to NULL.
+    \r\note TPM2_Init_minimal() calls TPM2_Init_ex() with both ioCb and userCtx set to NULL.
     In other modes, the ioCb shall be set in order to use TIS.
     Example ioCB for baremetal and RTOS applications are provided in hal/tpm_io.c
 
@@ -3009,7 +3009,7 @@ WOLFTPM_API TPM_RC TPM2_Init(TPM2_CTX* ctx, TPM2HalIoCb ioCb, void* userCtx);
 /*!
     \ingroup TPM2_Proprietary
     \brief Initializes a TPM with timeoutTries, HAL IO callback and user supplied context.
-    \note It is recommended to use TPM2_Init instead of using TPM2_Init_ex directly.
+    \r\note It is recommended to use TPM2_Init instead of using TPM2_Init_ex directly.
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: general error (possibly IO)
@@ -3032,7 +3032,7 @@ WOLFTPM_API TPM_RC TPM2_Init_ex(TPM2_CTX* ctx, TPM2HalIoCb ioCb, void* userCtx,
     \ingroup TPM2_Proprietary
     \brief Initializes a TPM and sets the wolfTPM2 context that will be used.
     This function is typically used for rich operating systems, like Windows.
-    \note It is recommended to use TPM2_Init instead of using TPM2_Init_minimal directly.
+    \r\note It is recommended to use TPM2_Init instead of using TPM2_Init_minimal directly.
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: general error (possibly IO)
@@ -3077,7 +3077,7 @@ WOLFTPM_API TPM_RC TPM2_Cleanup(TPM2_CTX* ctx);
 /*!
     \ingroup TPM2_Proprietary
     \brief Makes sure the TPM2 startup has completed and extracts the TPM device information
-    \note This function is used in TPM2_Init_ex
+    \r\note This function is used in TPM2_Init_ex
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: general error (possibly IO)
@@ -3099,7 +3099,7 @@ WOLFTPM_API TPM_RC TPM2_ChipStartup(TPM2_CTX* ctx, int timeoutTries);
     \ingroup TPM2_Proprietary
     \brief Sets the user's context and IO callbacks needed for TPM communication
     \brief Typically, TPM2_Init or wolfTPM2_Init are used to set the HAL IO.
-    \note SetHalIoCb will fail if built with devtpm or swtpm as the callback
+    \r\note SetHalIoCb will fail if built with devtpm or swtpm as the callback
     is not used for TPM. For other configuration builds, ioCb must be
     set to a non-NULL function pointer and userCtx is optional.
 
@@ -3259,7 +3259,7 @@ WOLFTPM_API int TPM2_GetHashType(TPMI_ALG_HASH hashAlg);
 /*!
     \ingroup TPM2_Proprietary
     \brief Generate a fresh nonce of random numbers
-    \note Can use the TPM random number generator if WOLFTPM2_USE_HW_RNG is defined
+    \r\note Can use the TPM random number generator if WOLFTPM2_USE_HW_RNG is defined
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: generic failure (TPM IO issue or wolfcrypt configuration)
@@ -3346,7 +3346,7 @@ WOLFTPM_API void TPM2_SetupPCRSelArray(TPML_PCR_SELECTION* pcr, TPM_ALG_ID alg,
 
     rc = wolfTPM2_Init(&dev, TPM2_IoCb, userCtx);
     if (rc != TPM_RC_SUCCESS) {
-        printf("wolfTPM2_Init failed 0x%x: %s\n", rc, TPM2_GetRCString(rc));
+        printf("wolfTPM2_Init failed 0x%x: %s\r\n", rc, TPM2_GetRCString(rc));
         return rc;
     }
     \endcode
@@ -3365,7 +3365,7 @@ WOLFTPM_API const char* TPM2_GetRCString(int rc);
     \code
     int paramEncAlg = TPM_ALG_CFB;
 
-    printf("\tUse Parameter Encryption: %s\n", TPM2_GetAlgName(paramEncAlg));
+    printf("\tUse Parameter Encryption: %s\r\n", TPM2_GetAlgName(paramEncAlg));
     \endcode
 */
 WOLFTPM_API const char* TPM2_GetAlgName(TPM_ALG_ID alg);
@@ -3445,7 +3445,7 @@ WOLFTPM_API int TPM2_GetWolfCurve(int curve_id);
 /*!
     \ingroup TPM2_Proprietary
     \brief Parses TPM2B_ATTEST and populates the data in TPMS_ATTEST structure
-    \note This is public API of the helper function TPM2_Packet_ParseAttest
+    \r\note This is public API of the helper function TPM2_Packet_ParseAttest
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -3496,7 +3496,7 @@ WOLFTPM_API int TPM2_HashNvPublic(TPMS_NV_PUBLIC* nvPublic, byte* buffer, UINT16
 /*!
     \ingroup TPM2_Proprietary
     \brief Populates TPM2B_PUBLIC structure based on a user provided buffer
-    \note Public API of the helper function TPM2_Packet_AppendPublic
+    \r\note Public API of the helper function TPM2_Packet_AppendPublic
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: insufficient buffer size
@@ -3527,7 +3527,7 @@ WOLFTPM_API int TPM2_AppendPublic(byte* buf, word32 size, int* sizeUsed, TPM2B_P
 /*!
     \ingroup TPM2_Proprietary
     \brief Parses TPM2B_PUBLIC structure and stores in a user provided buffer
-    \note Public API of the helper function TPM2_Packet_ParsePublic
+    \r\note Public API of the helper function TPM2_Packet_ParsePublic
 
     \return TPM_RC_SUCCESS: successful
     \return TPM_RC_FAILURE: insufficient buffer size
@@ -3558,7 +3558,7 @@ WOLFTPM_API int TPM2_ParsePublic(TPM2B_PUBLIC* pub, byte* buf, word32 size, int*
 /*!
     \ingroup TPM2_Proprietary
     \brief Provides the Name of a TPM object
-    \note The object is reference by its TPM handle and session index
+    \r\note The object is reference by its TPM handle and session index
 
     \return TPM_RC_SUCCESS: successful
     \return BAD_FUNC_ARG: check the provided arguments
@@ -3602,7 +3602,7 @@ typedef enum {
 /*!
     \ingroup TPM2_Proprietary
     \brief Provides the vendorID of the active TPM2 context
-    \note Depends on correctly read TPM device info during TPM Init
+    \r\note Depends on correctly read TPM device info during TPM Init
 
     \return integer value of UINT16 type, specifying the vendor ID
     \return 0 if TPM2 context is invalid or NULL
@@ -3628,7 +3628,7 @@ WOLFTPM_LOCAL void TPM2_ForceZero(void* mem, word32 len);
 /*!
     \ingroup TPM2_Proprietary
     \brief Helper function to print a binary buffer in a formatted way
-    \note Requires DEBUG_WOLFTPM to be defined
+    \r\note Requires DEBUG_WOLFTPM to be defined
 
     \param buffer pointer to a buffer of BYTE type
     \param length integer value of word32 type, containing the size of the buffer
@@ -3649,7 +3649,7 @@ WOLFTPM_API void TPM2_PrintBin(const byte* buffer, word32 length);
 /*!
     \ingroup TPM2_Proprietary
     \brief Helper function to print a structure of TPMS_AUTH_COMMAND type in a human readable way
-    \note Requires DEBUG_WOLFTPM to be defined
+    \r\note Requires DEBUG_WOLFTPM to be defined
 
     \param authCmd pointer to a populated structure of TPMS_AUTH_COMMAND type
 
@@ -3668,7 +3668,7 @@ WOLFTPM_API void TPM2_PrintAuth(const TPMS_AUTH_COMMAND* authCmd);
 /*!
     \ingroup TPM2_Proprietary
     \brief Helper function to print a structure of TPM2B_PUBLIC type in a human readable way
-    \note Requires DEBUG_WOLFTPM to be defined
+    \r\note Requires DEBUG_WOLFTPM to be defined
 
     \param pub pointer to a populated structure of TPM2B_PUBLIC type
 

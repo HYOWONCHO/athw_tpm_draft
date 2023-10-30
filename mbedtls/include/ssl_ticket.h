@@ -112,11 +112,11 @@ void mbedtls_ssl_ticket_init(mbedtls_ssl_ticket_context *ctx);
  * \param lifetime  Tickets lifetime in seconds
  *                  Recommended value: 86400 (one day).
  *
- * \note            It is highly recommended to select a cipher that is at
+ * \r\note            It is highly recommended to select a cipher that is at
  *                  least as strong as the strongest ciphersuite
  *                  supported. Usually that means a 256-bit key.
  *
- * \note            The lifetime of the keys is twice the lifetime of tickets.
+ * \r\note            The lifetime of the keys is twice the lifetime of tickets.
  *                  It is recommended to pick a reasonable lifetime so as not
  *                  to negate the benefits of forward secrecy.
  *
@@ -145,15 +145,15 @@ int mbedtls_ssl_ticket_setup(mbedtls_ssl_ticket_context *ctx,
  * \param lifetime  Tickets lifetime in seconds
  *                  Recommended value: 86400 (one day).
  *
- * \note            \c name and \c k are recommended to be cryptographically
+ * \r\note            \c name and \c k are recommended to be cryptographically
  *                  random data.
  *
- * \note            \c nlength must match sizeof( ctx->name )
+ * \r\note            \c nlength must match sizeof( ctx->name )
  *
- * \note            \c klength must be sufficient for use by cipher specified
+ * \r\note            \c klength must be sufficient for use by cipher specified
  *                  to \c mbedtls_ssl_ticket_setup
  *
- * \note            The lifetime of the keys is twice the lifetime of tickets.
+ * \r\note            The lifetime of the keys is twice the lifetime of tickets.
  *                  It is recommended to pick a reasonable lifetime so as not
  *                  to negate the benefits of forward secrecy.
  *
@@ -168,14 +168,14 @@ int mbedtls_ssl_ticket_rotate(mbedtls_ssl_ticket_context *ctx,
 /**
  * \brief           Implementation of the ticket write callback
  *
- * \note            See \c mbedtls_ssl_ticket_write_t for description
+ * \r\note            See \c mbedtls_ssl_ticket_write_t for description
  */
 mbedtls_ssl_ticket_write_t mbedtls_ssl_ticket_write;
 
 /**
  * \brief           Implementation of the ticket parse callback
  *
- * \note            See \c mbedtls_ssl_ticket_parse_t for description
+ * \r\note            See \c mbedtls_ssl_ticket_parse_t for description
  */
 mbedtls_ssl_ticket_parse_t mbedtls_ssl_ticket_parse;
 

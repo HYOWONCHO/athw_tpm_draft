@@ -272,7 +272,7 @@ void mbedtls_mpi_free(mbedtls_mpi *X);
 /**
  * \brief          Enlarge an MPI to the specified number of limbs.
  *
- * \note           This function does nothing if the MPI is
+ * \r\note           This function does nothing if the MPI is
  *                 already large enough.
  *
  * \param X        The MPI to grow. It must be initialized.
@@ -307,7 +307,7 @@ int mbedtls_mpi_shrink(mbedtls_mpi *X, size_t nblimbs);
  * \param X        The destination MPI. This must point to an initialized MPI.
  * \param Y        The source MPI. This must point to an initialized MPI.
  *
- * \note           The limb-buffer in the destination MPI is enlarged
+ * \r\note           The limb-buffer in the destination MPI is enlarged
  *                 if necessary to hold the value in the source MPI.
  *
  * \return         \c 0 if successful.
@@ -337,7 +337,7 @@ void mbedtls_mpi_swap(mbedtls_mpi *X, mbedtls_mpi *Y);
  *                 * \c 1: Perform the assignment `X = Y`.
  *                 * \c 0: Keep the original value of \p X.
  *
- * \note           This function is equivalent to
+ * \r\note           This function is equivalent to
  *                      `if( assign ) mbedtls_mpi_copy( X, Y );`
  *                 except that it avoids leaking any information about whether
  *                 the assignment was done or not (the above code may leak
@@ -365,7 +365,7 @@ int mbedtls_mpi_safe_cond_assign(mbedtls_mpi *X, const mbedtls_mpi *Y, unsigned 
  *                 * \c 1: Swap the values of \p X and \p Y.
  *                 * \c 0: Keep the original values of \p X and \p Y.
  *
- * \note           This function is equivalent to
+ * \r\note           This function is equivalent to
  *                      if( swap ) mbedtls_mpi_swap( X, Y );
  *                 except that it avoids leaking any information about whether
  *                 the swap was done or not (the above code may leak
@@ -410,7 +410,7 @@ int mbedtls_mpi_get_bit(const mbedtls_mpi *X, size_t pos);
 /**
  * \brief          Modify a specific bit in an MPI.
  *
- * \note           This function will grow the target MPI if necessary to set a
+ * \r\note           This function will grow the target MPI if necessary to set a
  *                 bit to \c 1 in a not yet existing limb. It will not grow if
  *                 the bit should be set to \c 0.
  *
@@ -428,7 +428,7 @@ int mbedtls_mpi_set_bit(mbedtls_mpi *X, size_t pos, unsigned char val);
  * \brief          Return the number of bits of value \c 0 before the
  *                 least significant bit of value \c 1.
  *
- * \note           This is the same as the zero-based index of
+ * \r\note           This is the same as the zero-based index of
  *                 the least significant bit of value \c 1.
  *
  * \param X        The MPI to query.
@@ -442,7 +442,7 @@ size_t mbedtls_mpi_lsb(const mbedtls_mpi *X);
  * \brief          Return the number of bits up to and including the most
  *                 significant bit of value \c 1.
  *
- * * \note         This is same as the one-based index of the most
+ * * \r\note         This is same as the one-based index of the most
  *                 significant bit of value \c 1.
  *
  * \param X        The MPI to query. This must point to an initialized MPI.
@@ -457,7 +457,7 @@ size_t mbedtls_mpi_bitlen(const mbedtls_mpi *X);
  *
  * \param X        The MPI to use. This must point to an initialized MPI.
  *
- * \note           The value returned by this function may be less than
+ * \r\note           The value returned by this function may be less than
  *                 the number of bytes used to store \p X internally.
  *                 This happens if and only if there are trailing bytes
  *                 of value zero.
@@ -491,7 +491,7 @@ int mbedtls_mpi_read_string(mbedtls_mpi *X, int radix, const char *s);
  *                 written, including the  final \c NULL byte. This must
  *                 not be \c NULL.
  *
- * \note           You can call this function with `buflen == 0` to obtain the
+ * \r\note           You can call this function with `buflen == 0` to obtain the
  *                 minimum required buffer size in `*olen`.
  *
  * \return         \c 0 if successful.
@@ -513,7 +513,7 @@ int mbedtls_mpi_write_string(const mbedtls_mpi *X, int radix,
  *                 in the source line.
  * \param fin      The input file handle to use. This must not be \c NULL.
  *
- * \note           On success, this function advances the file stream
+ * \r\note           On success, this function advances the file stream
  *                 to the end of the current line or to EOF.
  *
  *                 The function returns \c 0 on an empty line.
@@ -935,7 +935,7 @@ int mbedtls_mpi_exp_mod(mbedtls_mpi *X, const mbedtls_mpi *A,
  * \return         #MBEDTLS_ERR_MPI_ALLOC_FAILED if a memory allocation failed.
  * \return         Another negative error code on failure.
  *
- * \note           The bytes obtained from the RNG are interpreted
+ * \r\note           The bytes obtained from the RNG are interpreted
  *                 as a big-endian representation of an MPI; this can
  *                 be relevant in applications like deterministic ECDSA.
  */
@@ -952,7 +952,7 @@ int mbedtls_mpi_fill_random(mbedtls_mpi *X, size_t size,
  * when the RNG is a suitably parametrized instance of HMAC_DRBG
  * and \p min is \c 1.
  *
- * \note           There are `N - min` possible outputs. The lower bound
+ * \r\note           There are `N - min` possible outputs. The lower bound
  *                 \p min can be reached, but the upper bound \p N cannot.
  *
  * \param X        The destination MPI. This must point to an initialized MPI.

@@ -82,7 +82,7 @@ MBEDTLS_DEPRECATED typedef int mbedtls_deprecated_numeric_constant_t;
  * and will result in a compile-time warning if #MBEDTLS_CHECK_RETURN
  * is implemented for the compiler in use.
  *
- * \note  The use of this macro is a work in progress.
+ * \r\note  The use of this macro is a work in progress.
  *        This macro may be added to more functions in the future.
  *        Such an extension is not considered an API break, provided that
  *        there are near-unavoidable circumstances under which the function
@@ -103,7 +103,7 @@ MBEDTLS_DEPRECATED typedef int mbedtls_deprecated_numeric_constant_t;
  * You can use #MBEDTLS_IGNORE_RETURN to explicitly ignore the return value
  * of a function that is annotated with #MBEDTLS_CHECK_RETURN.
  *
- * \note  The use of this macro is a work in progress.
+ * \r\note  The use of this macro is a work in progress.
  *        This macro will be added to more functions in the future.
  *        Eventually this should appear before most functions returning
  *        an error code (as \c int in the \c mbedtls_xxx API or

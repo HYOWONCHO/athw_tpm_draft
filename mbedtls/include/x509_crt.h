@@ -39,7 +39,7 @@ extern "C" {
 #endif
 
 /**
- * \name Structures and functions for parsing and writing X.509 certificates
+ * \r\name Structures and functions for parsing and writing X.509 certificates
  * \{
  */
 
@@ -249,7 +249,7 @@ mbedtls_x509write_cert;
  *
  * \return          0 if successful, or MBEDTLS_ERR_X509_ALLOC_FAILED
  *
- * \note            "dnsName", "uniformResourceIdentifier", "IP address",
+ * \r\note            "dnsName", "uniformResourceIdentifier", "IP address",
  *                  "otherName", and "DirectoryName", as defined in RFC 5280,
  *                  are supported.
  */
@@ -357,7 +357,7 @@ extern const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_none;
  * \brief          Parse a single DER formatted certificate and add it
  *                 to the end of the provided chained list.
  *
- * \note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                 subsystem must have been initialized by calling
  *                 psa_crypto_init() before calling this function.
  *
@@ -368,7 +368,7 @@ extern const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_none;
  * \param buf      The buffer holding the DER encoded certificate.
  * \param buflen   The size in Bytes of \p buf.
  *
- * \note           This function makes an internal copy of the CRT buffer
+ * \r\note           This function makes an internal copy of the CRT buffer
  *                 \p buf. In particular, \p buf may be destroyed or reused
  *                 after this call returns. To avoid duplicating the CRT
  *                 buffer (at the cost of stricter lifetime constraints),
@@ -400,7 +400,7 @@ int mbedtls_x509_crt_parse_der(mbedtls_x509_crt *chain,
  *                 (the content of the OCTET STRING).
  * \param end      End of extension value.
  *
- * \note           The callback must fail and return a negative error code
+ * \r\note           The callback must fail and return a negative error code
  *                 if it can not parse or does not support the extension.
  *                 When the callback fails to parse a critical extension
  *                 mbedtls_x509_crt_parse_der_with_ext_cb() also fails.
@@ -422,7 +422,7 @@ typedef int (*mbedtls_x509_crt_ext_cb_t)(void *p_ctx,
  * \brief            Parse a single DER formatted certificate and add it
  *                   to the end of the provided chained list.
  *
- * \note             If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note             If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                   subsystem must have been initialized by calling
  *                   psa_crypto_init() before calling this function.
  *
@@ -442,7 +442,7 @@ typedef int (*mbedtls_x509_crt_ext_cb_t)(void *p_ctx,
  *                   extension.
  * \param p_ctx      An opaque context passed to the callback.
  *
- * \note             This call is functionally equivalent to
+ * \r\note             This call is functionally equivalent to
  *                   mbedtls_x509_crt_parse_der(), and/or
  *                   mbedtls_x509_crt_parse_der_nocopy()
  *                   but it calls the callback with every unsupported
@@ -476,7 +476,7 @@ int mbedtls_x509_crt_parse_der_with_ext_cb(mbedtls_x509_crt *chain,
  *                 temporary ownership of the CRT buffer until the CRT
  *                 is destroyed.
  *
- * \note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                 subsystem must have been initialized by calling
  *                 psa_crypto_init() before calling this function.
  *
@@ -491,7 +491,7 @@ int mbedtls_x509_crt_parse_der_with_ext_cb(mbedtls_x509_crt *chain,
  *                 through a call to mbedtls_x509_crt_free().
  * \param buflen   The size in Bytes of \p buf.
  *
- * \note           This call is functionally equivalent to
+ * \r\note           This call is functionally equivalent to
  *                 mbedtls_x509_crt_parse_der(), but it avoids creating a
  *                 copy of the input buffer at the cost of stronger lifetime
  *                 constraints. This is useful in constrained environments
@@ -520,7 +520,7 @@ int mbedtls_x509_crt_parse_der_nocopy(mbedtls_x509_crt *chain,
  *                 long as the certificates are enclosed in the PEM specific
  *                 '-----{BEGIN/END} CERTIFICATE-----' delimiters.
  *
- * \note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                 subsystem must have been initialized by calling
  *                 psa_crypto_init() before calling this function.
  *
@@ -548,7 +548,7 @@ int mbedtls_x509_crt_parse(mbedtls_x509_crt *chain, const unsigned char *buf, si
  *                 of failed certificates it encountered. If none complete
  *                 correctly, the first error is returned.
  *
- * \note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
+ * \r\note           If #MBEDTLS_USE_PSA_CRYPTO is enabled, the PSA crypto
  *                 subsystem must have been initialized by calling
  *                 psa_crypto_init() before calling this function.
  *
@@ -632,18 +632,18 @@ int mbedtls_x509_crt_verify_info(char *buf, size_t size, const char *prefix,
  *                 be returned at this point), or MBEDTLS_ERR_X509_FATAL_ERROR
  *                 can be used if no better code is available.
  *
- * \note           In case verification failed, the results can be displayed
+ * \r\note           In case verification failed, the results can be displayed
  *                 using \c mbedtls_x509_crt_verify_info()
  *
- * \note           Same as \c mbedtls_x509_crt_verify_with_profile() with the
+ * \r\note           Same as \c mbedtls_x509_crt_verify_with_profile() with the
  *                 default security profile.
  *
- * \note           It is your responsibility to provide up-to-date CRLs for
+ * \r\note           It is your responsibility to provide up-to-date CRLs for
  *                 all trusted CAs. If no CRL is provided for the CA that was
  *                 used to sign the certificate, CRL verification is skipped
  *                 silently, that is *without* setting any flag.
  *
- * \note           The \c trust_ca list can contain two types of certificates:
+ * \r\note           The \c trust_ca list can contain two types of certificates:
  *                 (1) those of trusted root CAs, so that certificates
  *                 chaining up to those CAs will be trusted, and (2)
  *                 self-signed end-entity certificates to be trusted (for
@@ -690,10 +690,10 @@ int mbedtls_x509_crt_verify(mbedtls_x509_crt *crt,
  * \brief          Verify a chain of certificates with respect to
  *                 a configurable security profile.
  *
- * \note           Same as \c mbedtls_x509_crt_verify(), but with explicit
+ * \r\note           Same as \c mbedtls_x509_crt_verify(), but with explicit
  *                 security profile.
  *
- * \note           The restrictions on keys (RSA minimum size, allowed curves
+ * \r\note           The restrictions on keys (RSA minimum size, allowed curves
  *                 for ECDSA) apply to all certificates: trusted root,
  *                 intermediate CAs if any, and end entity certificate.
  *
@@ -731,7 +731,7 @@ int mbedtls_x509_crt_verify_with_profile(mbedtls_x509_crt *crt,
 /**
  * \brief          Restartable version of \c mbedtls_crt_verify_with_profile()
  *
- * \note           Performs the same job as \c mbedtls_crt_verify_with_profile()
+ * \r\note           Performs the same job as \c mbedtls_crt_verify_with_profile()
  *                 but can return early and restart according to the limit
  *                 set with \c mbedtls_ecp_set_max_ops() to reduce blocking.
  *
@@ -781,7 +781,7 @@ int mbedtls_x509_crt_verify_restartable(mbedtls_x509_crt *crt,
  *                      entry in the generated linked list of candidate signers.
  *                      This will not be \c NULL.
  *
- * \note                The callback must only return a non-zero value on a
+ * \r\note                The callback must only return a non-zero value on a
  *                      fatal error. If, in contrast, the search for a potential
  *                      signer completes without a single candidate, the
  *                      callback must return \c 0 and set \c *candidate_cas
@@ -838,7 +838,7 @@ int mbedtls_x509_crt_verify_with_ca_cb(mbedtls_x509_crt *crt,
  *                 before using the certificate to perform an RSA key
  *                 exchange).
  *
- * \note           Except for decipherOnly and encipherOnly, a bit set in the
+ * \r\note           Except for decipherOnly and encipherOnly, a bit set in the
  *                 usage argument means this bit MUST be set in the
  *                 certificate. For decipherOnly and encipherOnly, it means
  *                 that bit MAY be set.
@@ -847,7 +847,7 @@ int mbedtls_x509_crt_verify_with_ca_cb(mbedtls_x509_crt *crt,
  *                 MBEDTLS_ERR_X509_BAD_INPUT_DATA if the keyUsage extension
  *                 is present but does not match the usage argument.
  *
- * \note           You should only call this function on leaf certificates, on
+ * \r\note           You should only call this function on leaf certificates, on
  *                 (intermediate) CAs the keyUsage extension is automatically
  *                 checked by \c mbedtls_x509_crt_verify().
  */
@@ -865,7 +865,7 @@ int mbedtls_x509_crt_check_key_usage(const mbedtls_x509_crt *crt,
  * \return          0 if this use of the certificate is allowed,
  *                  MBEDTLS_ERR_X509_BAD_INPUT_DATA if not.
  *
- * \note            Usually only makes sense on leaf certificates.
+ * \r\note            Usually only makes sense on leaf certificates.
  */
 int mbedtls_x509_crt_check_extended_key_usage(const mbedtls_x509_crt *crt,
                                               const char *usage_oid,
@@ -956,7 +956,7 @@ void mbedtls_x509write_crt_set_version(mbedtls_x509write_cert *ctx, int version)
  *                  future version of the library. Please use
  *                  mbedtls_x509write_crt_set_serial_raw() instead.
  *
- * \note            Even though the MBEDTLS_BIGNUM_C guard looks redundant since
+ * \r\note            Even though the MBEDTLS_BIGNUM_C guard looks redundant since
  *                  X509 depends on PK and PK depends on BIGNUM, this emphasizes
  *                  a direct dependency between X509 and BIGNUM which is going
  *                  to be deprecated in the future.
@@ -1173,7 +1173,7 @@ void mbedtls_x509write_crt_free(mbedtls_x509write_cert *ctx);
  * \return          length of data written if successful, or a specific
  *                  error code
  *
- * \note            \p f_rng is used for the signature operation.
+ * \r\note            \p f_rng is used for the signature operation.
  */
 int mbedtls_x509write_crt_der(mbedtls_x509write_cert *ctx, unsigned char *buf, size_t size,
                               int (*f_rng)(void *, unsigned char *, size_t),
@@ -1191,7 +1191,7 @@ int mbedtls_x509write_crt_der(mbedtls_x509write_cert *ctx, unsigned char *buf, s
  *
  * \return          0 if successful, or a specific error code
  *
- * \note            \p f_rng is used for the signature operation.
+ * \r\note            \p f_rng is used for the signature operation.
  */
 int mbedtls_x509write_crt_pem(mbedtls_x509write_cert *ctx, unsigned char *buf, size_t size,
                               int (*f_rng)(void *, unsigned char *, size_t),
