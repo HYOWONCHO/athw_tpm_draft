@@ -114,8 +114,8 @@ enum tpm_tis_int_flags {
                 /* open semaphore and create if not found */
                 sem = sem_open(SEM_NAME, O_CREAT | O_RDWR, SEM_PERMS, INITIAL_VALUE);
                 if (sem == SEM_FAILED) {
-                #ifdef DEBUG_WOLFTPM
-                    printf("TPM2_TIS_Lock: Semaphore %s open failed! %d\n",
+                #ifdef ATHW_DEBUG_TPM
+                    printf("TPM2_TIS_Lock: Semaphore %s open failed! %d\r\n",
                         SEM_NAME, errno);
                 #endif
                     return BAD_MUTEX_E;
@@ -123,8 +123,8 @@ enum tpm_tis_int_flags {
 
                 /* Try and decrement semaphore */
                 if (sem_timedwait(sem, &timeoutTime) != 0) {
-                #ifdef DEBUG_WOLFTPM
-                    printf("TPM2_TIS_Lock: Semaphore %s timeout! %d\n",
+                #ifdef ATHW_DEBUG_TPM
+                    printf("TPM2_TIS_Lock: Semaphore %s timeout! %d\r\n",
                         SEM_NAME, errno);
                 #endif
                     ret = WC_TIMEOUT_E;
@@ -147,8 +147,8 @@ enum tpm_tis_int_flags {
             if (gLockCount == 0) {
                 sem_t *sem = sem_open(SEM_NAME, O_RDWR);
                 if (sem == SEM_FAILED) {
-                #ifdef DEBUG_WOLFTPM
-                    printf("TPM2_TIS_Unlock: Semaphore %s open failed! %d\n",
+                #ifdef ATHW_DEBUG_TPM
+                    printf("TPM2_TIS_Unlock: Semaphore %s open failed! %d\r\n",
                         SEM_NAME, errno);
                 #endif
                     return;
@@ -204,7 +204,7 @@ int TPM2_TIS_Read(TPM2_CTX* ctx, word32 addr, byte* result,
 #endif
     TPM2_TIS_UNLOCK();
 #ifdef WOLFTPM_DEBUG_IO
-    printf("TIS Read addr %x, len %d\n", addr, len);
+    printf("TIS Read addr %x, len %d\r\n", addr, len);
     TPM2_PrintBin(result, len);
 #endif
     return rc;
@@ -242,7 +242,7 @@ int TPM2_TIS_Write(TPM2_CTX* ctx, word32 addr, const byte* value,
 #endif
     TPM2_TIS_UNLOCK();
 #ifdef WOLFTPM_DEBUG_IO
-    printf("TIS write addr %x, len %d\n", addr, len);
+    printf("TIS write addr %x, len %d\r\n", addr, len);
     TPM2_PrintBin(value, len);
 #endif
     return rc;
@@ -263,7 +263,7 @@ int TPM2_TIS_StartupWait(TPM2_CTX* ctx, int timeout)
         XTPM_WAIT();
     } while (rc == TPM_RC_SUCCESS && --timeout > 0);
 #ifdef WOLFTPM_DEBUG_TIMEOUT
-    printf("TIS_StartupWait: Timeout %d\n", TPM_TIMEOUT_TRIES - timeout);
+    printf("TIS_StartupWait: Timeout %d\r\n", TPM_TIMEOUT_TRIES - timeout);
 #endif
     if (timeout <= 0)
         return TPM_RC_TIMEOUT;
@@ -313,7 +313,7 @@ int TPM2_TIS_RequestLocality(TPM2_CTX* ctx, int timeout)
             XTPM_WAIT();
         } while (rc < 0 && --timeout > 0);
 #ifdef WOLFTPM_DEBUG_TIMEOUT
-        printf("TIS_RequestLocality: Timeout %d\n", TPM_TIMEOUT_TRIES - timeout);
+        printf("TIS_RequestLocality: Timeout %d\r\n", TPM_TIMEOUT_TRIES - timeout);
 #endif
         if (timeout <= 0)
             return TPM_RC_TIMEOUT;
@@ -376,7 +376,7 @@ int TPM2_TIS_WaitForStatus(TPM2_CTX* ctx, byte status, byte status_mask)
         XTPM_WAIT();
     } while (rc == TPM_RC_SUCCESS && --timeout > 0);
 #ifdef WOLFTPM_DEBUG_TIMEOUT
-    printf("TIS_WaitForStatus: Timeout %d\n", TPM_TIMEOUT_TRIES - timeout);
+    printf("TIS_WaitForStatus: Timeout %d\r\n", TPM_TIMEOUT_TRIES - timeout);
 #endif
     if (timeout <= 0)
         return TPM_RC_TIMEOUT;
@@ -417,7 +417,7 @@ int TPM2_TIS_GetBurstCount(TPM2_CTX* ctx, word16* burstCount)
         } while (rc == TPM_RC_SUCCESS && --timeout > 0);
 
     #ifdef WOLFTPM_DEBUG_TIMEOUT
-        printf("TIS_GetBurstCount: Timeout %d\n", TPM_TIMEOUT_TRIES - timeout);
+        printf("TIS_GetBurstCount: Timeout %d\r\n", TPM_TIMEOUT_TRIES - timeout);
     #endif
 
         if (*burstCount > MAX_SPI_FRAMESIZE)
@@ -441,8 +441,8 @@ int TPM2_TIS_SendCommand(TPM2_CTX* ctx, TPM2_Packet* packet)
     if (rc != 0)
         return rc;
 
-#ifdef WOLFTPM_DEBUG_VERBOSE
-    printf("Command: %d\n", packet->pos);
+#ifdef ATHW_DEBUG_TPM_
+    printf("Command: %d\r\n", packet->pos);
     TPM2_PrintBin(packet->buf, packet->pos);
 #endif
 
@@ -485,8 +485,8 @@ int TPM2_TIS_SendCommand(TPM2_CTX* ctx, TPM2_Packet* packet)
             rc = TPM2_TIS_WaitForStatus(ctx, TPM_STS_DATA_EXPECT,
                                              TPM_STS_DATA_EXPECT);
             if (rc != TPM_RC_SUCCESS) {
-            #ifdef DEBUG_WOLFTPM
-                printf("TPM2_TIS_SendCommand write expected more data!\n");
+            #ifdef ATHW_DEBUG_TPM
+                printf("TPM2_TIS_SendCommand write expected more data!\r\n");
             #endif
                 goto exit;
             }
@@ -501,8 +501,8 @@ int TPM2_TIS_SendCommand(TPM2_CTX* ctx, TPM2_Packet* packet)
         rc = TPM2_TIS_WaitForStatus(ctx, TPM_STS_DATA_EXPECT | TPM_STS_VALID,
                                         TPM_STS_VALID);
         if (rc != TPM_RC_SUCCESS) {
-        #ifdef DEBUG_WOLFTPM
-            printf("TPM2_TIS_SendCommand status valid timeout!\n");
+        #ifdef ATHW_DEBUG_TPM
+            printf("TPM2_TIS_SendCommand status valid timeout!\r\n");
         #endif
             goto exit;
         }
@@ -523,8 +523,8 @@ int TPM2_TIS_SendCommand(TPM2_CTX* ctx, TPM2_Packet* packet)
         rc = TPM2_TIS_WaitForStatus(ctx, TPM_STS_DATA_AVAIL,
                                          TPM_STS_DATA_AVAIL);
         if (rc != TPM_RC_SUCCESS) {
-        #ifdef DEBUG_WOLFTPM
-            printf("TPM2_TIS_SendCommand read no data available!\n");
+        #ifdef ATHW_DEBUG_TPM
+            printf("TPM2_TIS_SendCommand read no data available!\r\n");
         #endif
             goto exit;
         }
@@ -559,9 +559,9 @@ int TPM2_TIS_SendCommand(TPM2_CTX* ctx, TPM2_Packet* packet)
         }
     }
 
-#ifdef WOLFTPM_DEBUG_VERBOSE
+#ifdef ATHW_DEBUG_TPM_
     if (rspSz > 0) {
-        printf("Response: %d\n", rspSz);
+        printf("Response: %d\r\n", rspSz);
         TPM2_PrintBin(packet->buf, rspSz);
     }
 #endif

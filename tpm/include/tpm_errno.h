@@ -14,6 +14,7 @@ extern "C" {
 #define ATHW_ESZEROL      301    /// length of zero 
 #define ATHW_ESLMIN       302    /// length is below min
 #define ATHW_ESLMAX       303    /// length exceeds max 
+#define ATHW_ESOVRLP      404    /// overlap undefines
 
 #define ATHW_EPERM        1  /* Operation not permitted */
 #define ATHW_ENOENT       2  /* No such file or directory */

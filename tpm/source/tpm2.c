@@ -29,6 +29,7 @@
 //#include <tpm2_param_enc.h>
 
 #include <tpm_io.h>
+#include "log.h"
 
 /******************************************************************************/
 /* --- Local Variables -- */
@@ -65,7 +66,7 @@ static TPM_RC TPM2_AcquireLock(TPM2_CTX* ctx)
 
     if (!ctx->hwLockInit) {
         if (wc_InitMutex(&ctx->hwLock) != 0) {
-        #ifdef DEBUG_WOLFTPM
+        #ifdef ATHW_DEBUG_TPM
             printf("TPM Mutex Init failed\r\n");
         #endif
             return TPM_RC_FAILURE;
@@ -141,7 +142,7 @@ static int TPM2_CommandProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
         encParamSz = tempSz;
     }
 
-#ifdef WOLFTPM_DEBUG_VERBOSE
+#ifdef ATHW_DEBUG_TPM
     printf("CommandProcess: Handles (Auth %d, In %d), CmdSz %d, AuthSz %d, ParamSz %d, EncSz %d\r\n",
         info->authCnt, info->inHandleCnt, cmdSz, authSz, paramSz, encParamSz);
 #else
@@ -193,14 +194,18 @@ static int TPM2_CommandProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
 
             /* Handle session request for encryption */
             if (encParam && authCmd.sessionAttributes & TPMA_SESSION_decrypt) {
+#if 0
                 /* Encrypt the first command parameter */
                 rc = TPM2_ParamEnc_CmdRequest(session, encParam, encParamSz);
                 if (rc != TPM_RC_SUCCESS) {
-            #ifdef DEBUG_WOLFTPM
+            #ifdef ATHW_DEBUG_TPM
                     printf("Command parameter encryption failed\r\n");
             #endif
                     return rc;
                 }
+#else
+                tr_log("Handle session encryption request not support");
+#endif                
             }
 
         #if !defined(WOLFTPM2_NO_WOLFCRYPT) && !defined(NO_HMAC)
@@ -208,7 +213,7 @@ static int TPM2_CommandProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
             rc |= TPM2_GetName(ctx, handleValue2, info->inHandleCnt, 1, &name2);
             rc |= TPM2_GetName(ctx, handleValue3, info->inHandleCnt, 2, &name3);
             if (rc != TPM_RC_SUCCESS) {
-            #ifdef DEBUG_WOLFTPM
+            #ifdef ATHW_DEBUG_TPM
                 printf("Error getting names for cpHash!\r\n");
             #endif
                 return BAD_FUNC_ARG;
@@ -218,7 +223,7 @@ static int TPM2_CommandProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
             rc = TPM2_CalcCpHash(session->authHash, cmdCode, &name1,
                 &name2, &name3, param, paramSz, &hash);
             if (rc != TPM_RC_SUCCESS) {
-            #ifdef DEBUG_WOLFTPM
+            #ifdef ATHW_DEBUG_TPM
                 printf("Error calculating cpHash!\r\n");
             #endif
                 return rc;
@@ -229,7 +234,7 @@ static int TPM2_CommandProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
                 &session->nonceCaller, &session->nonceTPM,
                 authCmd.sessionAttributes, &authCmd.hmac);
             if (rc != TPM_RC_SUCCESS) {
-            #ifdef DEBUG_WOLFTPM
+            #ifdef ATHW_DEBUG_TPM
                 printf("Error calculating command HMAC!\r\n");
             #endif
                 return rc;
@@ -280,8 +285,8 @@ static int TPM2_ResponseProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
         decParamSz = tempSz;
     }
 
-#ifdef WOLFTPM_DEBUG_VERBOSE
-    printf("ResponseProcess: Handles (Out %d), RespSz %d, ParamSz %d, DecSz %d, AuthSz %d\r\n",
+#ifdef ATHW_DEBUG_TPM
+    tr_log("ResponseProcess: Handles (Out %d), RespSz %d, ParamSz %d, DecSz %d, AuthSz %d\r\n",
         info->outHandleCnt, respSz, paramSz, decParamSz, respSz - authPos);
 #endif
 
@@ -314,7 +319,7 @@ static int TPM2_ResponseProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
                 rc = TPM2_CalcRpHash(session->authHash, cmdCode, param, paramSz,
                     &hash);
                 if (rc != TPM_RC_SUCCESS) {
-                #ifdef DEBUG_WOLFTPM
+                #ifdef ATHW_DEBUG_TPM
                     printf("Error calculating rpHash!\r\n");
                 #endif
                     return rc;
@@ -325,7 +330,7 @@ static int TPM2_ResponseProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
                     &session->nonceTPM, &session->nonceCaller,
                     authRsp.sessionAttributes, &hmac);
                 if (rc != TPM_RC_SUCCESS) {
-                #ifdef DEBUG_WOLFTPM
+                #ifdef ATHW_DEBUG_TPM
                     printf("Error calculating response HMAC!\r\n");
                 #endif
                     return rc;
@@ -334,7 +339,7 @@ static int TPM2_ResponseProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
                 /* Verify HMAC */
                 if (hmac.size != authRsp.hmac.size ||
                     XMEMCMP(hmac.buffer, authRsp.hmac.buffer, hmac.size) != 0) {
-                #ifdef DEBUG_WOLFTPM
+                #ifdef ATHW_DEBUG_TPM
                     printf("Response HMAC verification failed!\r\n");
                 #endif
                     return TPM_RC_HMAC;
@@ -348,13 +353,19 @@ static int TPM2_ResponseProcess(TPM2_CTX* ctx, TPM2_Packet* packet,
             /* If the response supports decryption */
             if (decParam && authRsp.sessionAttributes & TPMA_SESSION_encrypt) {
                 /* Decrypt the first response parameter */
+                
+                // comment by Leon
+#if 0
                 rc = TPM2_ParamDec_CmdResponse(session, decParam, decParamSz);
                 if (rc != TPM_RC_SUCCESS) {
-            #ifdef DEBUG_WOLFTPM
+            #ifdef ATHW_DEBUG_TPM
                     printf("Response parameter decryption failed\r\n");
             #endif
                     return rc;
                 }
+#else
+                tr_log("Not support that response decryption");
+#endif                
             }
         }
     }
@@ -377,12 +388,18 @@ static TPM_RC TPM2_SendCommandAuth(TPM2_CTX* ctx, TPM2_Packet* packet,
     cmd = packet->buf;
     cmdSz = packet->pos;
     (void)cmd;
+    
+    //_buf_dump(packet->buf, "send commande", packet->pos);
+
 
     /* restart the unmarshalling position */
     packet->pos = 0;
     TPM2_Packet_ParseU16(packet, &tag);
     TPM2_Packet_ParseU32(packet, NULL);
     TPM2_Packet_ParseU32(packet, &cmdCode);  /* Extract TPM Command Code */
+    
+    //tr_log("restart unmarshalling tag : 0x%x, cmdCode : 0x%x",
+    //       tag, cmdCode);
 
     /* Is auth session required for this TPM command? */
     if (tag == TPM_ST_SESSIONS) {
@@ -390,30 +407,39 @@ static TPM_RC TPM2_SendCommandAuth(TPM2_CTX* ctx, TPM2_Packet* packet,
         if (info->authCnt < 1 || ctx->session == NULL)
             return TPM_RC_AUTH_MISSING;
 
-    #ifdef WOLFTPM_DEBUG_VERBOSE
-        printf("Found %d auth sessions\r\n", info->authCnt);
+    #ifdef ATHW_DEBUG_TPM
+        tr_log("Found %d auth sessions\r\n", info->authCnt);
     #endif
 
         rc = TPM2_CommandProcess(ctx, packet, info, cmdCode, cmdSz);
+        //_buf_dump(packet->buf, "TPM_ST_SESSIONS response", packet->pos);
         if (rc != 0)
             return rc;
     }
+    
+    _buf_dump(packet->buf, " auth session respoinse", packet->pos);
+
 
     /* reset packet->pos to total command length (send command requires it) */
     packet->pos = cmdSz;
 
     /* submit command and wait for response */
     rc = (TPM_RC)INTERNAL_SEND_COMMAND(ctx, packet);
+     _buf_dump(packet->buf, "CMD Wait response", packet->pos);
     if (rc != 0)
         return rc;
 
     /* parse response */
+    
     rc = TPM2_Packet_Parse(rc, packet);
     respSz = packet->size;
+    _buf_dump(packet->buf, "2 TPM_ST_SESSIONS response", packet->pos);
+
 
     /* restart the unmarshalling position */
     packet->pos = 0;
     TPM2_Packet_ParseU16(packet, &tag);
+    //tr_log("Command Tag : 0x%x", tag);
 
     /* Is auth session required for this TPM command? */
     if (rc == TPM_RC_SUCCESS && tag == TPM_ST_SESSIONS) {
@@ -842,7 +868,7 @@ TPM_RC TPM2_GetCapability(GetCapability_In* in, GetCapability_Out* out)
                     break;
                 }
                 default:
-            #ifdef DEBUG_WOLFTPM
+            #ifdef ATHW_DEBUG_TPM
                     printf("Unknown capability type 0x%x\r\n",
                         (unsigned int)out->capabilityData.capability);
             #endif
@@ -1005,10 +1031,12 @@ TPM_RC TPM2_Create(Create_In* in, Create_Out* out)
         TPM2_Packet_AppendBytes(&packet, in->outsideInfo.buffer,
             in->outsideInfo.size);
         TPM2_Packet_AppendPCR(&packet, &in->creationPCR);
+        //TPM2_Packet_Finalize(&packet, TPM_ST_NO_SESSIONS, TPM_CC_Create);
         TPM2_Packet_Finalize(&packet, TPM_ST_SESSIONS, TPM_CC_Create);
 
         /* send command */
         rc = TPM2_SendCommandAuth(ctx, &packet, &info);
+        //tr_log("return code : 0x%x", rc);
         if (rc == TPM_RC_SUCCESS) {
             UINT32 paramSz = 0;
 
@@ -5387,7 +5415,7 @@ int TPM2_GetNonce(byte* nonceBuf, int nonceSz)
         return BAD_FUNC_ARG;
     }
 
-#ifdef WOLFTPM_DEBUG_VERBOSE
+#ifdef ATHW_DEBUG_TPM
     printf("TPM2_GetNonce (%d bytes)\r\n", nonceSz);
 #endif
 
@@ -5412,7 +5440,7 @@ int TPM2_GetNonce(byte* nonceBuf, int nonceSz)
             TPM2_Packet_AppendU16(&packet, inSz);
             TPM2_Packet_Finalize(&packet, TPM_ST_NO_SESSIONS, TPM_CC_GetRandom);
             rc = TPM2_SendCommand(ctx, &packet);
-        #ifdef WOLFTPM_DEBUG_VERBOSE
+        #ifdef ATHW_DEBUG_TPM
             printf("TPM2_GetNonce (%d bytes at %d): %d (%s)\r\n",
                 inSz, randSz, rc, TPM2_GetRCString(rc));
         #endif
@@ -5422,7 +5450,7 @@ int TPM2_GetNonce(byte* nonceBuf, int nonceSz)
 
             TPM2_Packet_ParseU16(&packet, &outSz);
             if (outSz > MAX_RNG_REQ_SIZE) {
-            #ifdef DEBUG_WOLFTPM
+            #ifdef ATHW_DEBUG_TPM
                 printf("TPM2_GetNonce out size error\r\n");
             #endif
                 rc = BAD_FUNC_ARG;
@@ -5467,7 +5495,7 @@ int TPM2_GetName(TPM2_CTX* ctx, UINT32 handleValue, int handleCnt, int idx, TPM2
         XMEMCPY(name->name, (byte*)&handleValue, name->size);
     }
 
-#ifdef WOLFTPM_DEBUG_VERBOSE
+#ifdef ATHW_DEBUG_TPM
     printf("Name %d: %d\r\n", idx, name->size);
     TPM2_PrintBin(name->name, name->size);
 #endif
@@ -5512,7 +5540,7 @@ void TPM2_SetupPCRSelArray(TPML_PCR_SELECTION* pcr, TPM_ALG_ID alg,
 
 
 #define TPM_RC_STRINGIFY(rc) #rc
-#ifdef DEBUG_WOLFTPM
+#ifdef ATHW_DEBUG_TPM
     #define TPM_RC_STR(rc, desc) case rc: return TPM_RC_STRINGIFY(rc) ": " desc
 #else
     #define TPM_RC_STR(rc, desc) case rc: return TPM_RC_STRINGIFY(rc)
@@ -5830,7 +5858,7 @@ int TPM2_GetWolfRng(WC_RNG** rng)
         /* Use did_vid for devId (conforms with wolfTPM2_GetTpmDevId) */
         rc = wc_InitRng_ex(&ctx->rng, NULL, ctx->did_vid);
         if (rc < 0) {
-        #ifdef DEBUG_WOLFTPM
+        #ifdef ATHW_DEBUG_TPM
             printf("wc_InitRng_ex failed %d: %s\r\n",
                 (int)rc, wc_GetErrorString(rc));
         #endif
@@ -5947,7 +5975,7 @@ int TPM2_AppendPublic(byte* buf, word32 size, int* sizeUsed, TPM2B_PUBLIC* pub)
         return BAD_FUNC_ARG;
 
     if (size < sizeof(TPM2B_PUBLIC)) {
-    #ifdef DEBUG_WOLFTPM
+    #ifdef ATHW_DEBUG_TPM
         printf("Insufficient buffer size for TPM2B_PUBLIC operations\r\n");
     #endif
         return TPM_RC_FAILURE;
@@ -5972,7 +6000,7 @@ int TPM2_ParsePublic(TPM2B_PUBLIC* pub, byte* buf, word32 size, int* sizeUsed)
         return BAD_FUNC_ARG;
 
     if (size < sizeof(TPM2B_PUBLIC)) {
-    #ifdef DEBUG_WOLFTPM
+    #ifdef ATHW_DEBUG_TPM
         printf("Insufficient buffer size for TPM2B_PUBLIC operations\r\n");
     #endif
         return TPM_RC_FAILURE;
@@ -5997,7 +6025,7 @@ void TPM2_ForceZero(void* mem, word32 len)
     while (len--) *z++ = 0;
 }
 
-#ifdef DEBUG_WOLFTPM
+#ifdef ATHW_DEBUG_TPM
 #define LINE_LEN 16
 void TPM2_PrintBin(const byte* buffer, word32 length)
 {
@@ -6062,7 +6090,7 @@ void TPM2_PrintPublicArea(const TPM2B_PUBLIC* pub)
         TPM2_GetAlgName(pub->publicArea.nameAlg), pub->publicArea.nameAlg,
         pub->publicArea.objectAttributes,
         pub->publicArea.authPolicy.size);
-    #ifdef WOLFTPM_DEBUG_VERBOSE
+    #ifdef ATHW_DEBUG_TPM
     TPM2_PrintBin(pub->publicArea.authPolicy.buffer, pub->publicArea.authPolicy.size);
     #endif
 
@@ -6075,7 +6103,7 @@ void TPM2_PrintPublicArea(const TPM2B_PUBLIC* pub)
                 TPM2_GetAlgName(pub->publicArea.parameters.keyedHashDetail.scheme.details.hmac.hashAlg),
                 pub->publicArea.parameters.keyedHashDetail.scheme.details.hmac.hashAlg,
                 pub->publicArea.unique.keyedHash.size);
-            #ifdef WOLFTPM_DEBUG_VERBOSE
+            #ifdef ATHW_DEBUG_TPM
             TPM2_PrintBin(pub->publicArea.unique.keyedHash.buffer, pub->publicArea.unique.keyedHash.size);
             #endif
             break;
@@ -6087,7 +6115,7 @@ void TPM2_PrintPublicArea(const TPM2B_PUBLIC* pub)
                 TPM2_GetAlgName(pub->publicArea.parameters.symDetail.sym.mode.sym),
                 pub->publicArea.parameters.symDetail.sym.mode.sym,
                 pub->publicArea.unique.sym.size);
-            #ifdef WOLFTPM_DEBUG_VERBOSE
+            #ifdef ATHW_DEBUG_TPM
             TPM2_PrintBin(pub->publicArea.unique.sym.buffer, pub->publicArea.unique.sym.size);
             #endif
             break;
@@ -6107,7 +6135,7 @@ void TPM2_PrintPublicArea(const TPM2B_PUBLIC* pub)
                 pub->publicArea.parameters.rsaDetail.keyBits,
                 pub->publicArea.parameters.rsaDetail.exponent,
                 pub->publicArea.unique.rsa.size);
-            #ifdef WOLFTPM_DEBUG_VERBOSE
+            #ifdef ATHW_DEBUG_TPM
             TPM2_PrintBin(pub->publicArea.unique.rsa.buffer, pub->publicArea.unique.rsa.size);
             #endif
             break;
@@ -6132,7 +6160,7 @@ void TPM2_PrintPublicArea(const TPM2B_PUBLIC* pub)
                 pub->publicArea.parameters.eccDetail.kdf.details.any.hashAlg,
                 pub->publicArea.unique.ecc.x.size,
                 pub->publicArea.unique.ecc.y.size);
-            #ifdef WOLFTPM_DEBUG_VERBOSE
+            #ifdef ATHW_DEBUG_TPM
             TPM2_PrintBin(pub->publicArea.unique.ecc.x.buffer, pub->publicArea.unique.ecc.x.size);
             TPM2_PrintBin(pub->publicArea.unique.ecc.y.buffer, pub->publicArea.unique.ecc.y.size);
             #endif
@@ -6142,14 +6170,14 @@ void TPM2_PrintPublicArea(const TPM2B_PUBLIC* pub)
             printf("Derive Type: unique label size %d, context size %d\r\n",
                 pub->publicArea.unique.derive.label.size,
                 pub->publicArea.unique.derive.context.size);
-            #ifdef WOLFTPM_DEBUG_VERBOSE
+            #ifdef ATHW_DEBUG_TPM
             TPM2_PrintBin(pub->publicArea.unique.derive.label.buffer,pub->publicArea.unique.derive.label.size);
             TPM2_PrintBin(pub->publicArea.unique.derive.context.buffer, pub->publicArea.unique.derive.context.size);
             #endif
             break;
     }
 }
-#endif /* DEBUG_WOLFTPM */
+#endif /* ATHW_DEBUG_TPM */
 
 /******************************************************************************/
 /* --- END Helpful API's -- */

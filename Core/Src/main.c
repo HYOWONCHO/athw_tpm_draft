@@ -27,6 +27,7 @@
 #include "tpm_io.h"
 #include "tpm2_wrap.h"
 //#include "platform.h"
+#include "athw_tpm_wrap.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -114,6 +115,11 @@ void _ttywrch(int ch) {
 
 /* USER CODE END 0 */
 
+//extern int bench_sym_aes(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* storageKey,
+//    const char* desc, int algo, int keyBits, const byte* in, byte* out,
+//    word32 inOutSz, int isDecrypt, double maxDuration);
+
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -127,8 +133,16 @@ int main(void)
   athw_dev_t    udev;
   TPM2_CTX      ctx;
   int           ret;
-  uint8_t       message[1024] = {0, };
+  //uint8_t       message[1024] = {0, };
   WOLFTPM2_DEV  dev;
+  athwtpm2_key_t storageKey;
+  athwtpm2_buf_t message;
+  athwtpm2_buf_t cipher;
+  athwtpm2_buf_t plain;
+  
+  int count = 0L;
+  uint32_t start;
+
   
   
   //athw_tpm_phy_ops_t phyops;
@@ -181,15 +195,26 @@ int main(void)
     tr_log("TPM Init failedn 0x%x: %s", ret, TPM2_GetRCString(ret));
     
   }
-
-  ret = athw_tpm_getrandom((void *)&ctx, message, sizeof message);
-  if (ret == ATHW_EOK)
+                         // RNG Benchmark
+  bench_stats_start(&count, &start);
+  do
   {
+    ret = athw_tpm_getrandom((void *)&ctx, message.buffer, sizeof message.buffer);
+    if (ret == ATHW_EOK)
+    {
+      printf("\r\n");
+//_athw_print_bin("TPM2 GetRandom", message.buffer, sizeof message.buffer);
+    }
+  } while (bench_stats_check(start,&count, 1));
+  bench_stats_sym_finish("RNG", count, sizeof(message), start);
   
-    printf("\r\n");
-    _athw_print_bin("TPM2 GetRandom", message, sizeof message);
+  ret = bench_sym_aes(&dev, &storageKey, "AES-128-CBC-end", TPM_ALG_CBC, 128,
+                      message.buffer, cipher.buffer, sizeof message.buffer,
+                      NO, 1);
+  if (ret == 0 && !(ret == TPM_RC_COMMAND_CODE))  {
+    _athw_print_bin("TPM2 GetRandom", cipher.buffer, sizeof cipher.buffer);
   }
-  
+
   
   //athw_tpm_dev_init(&udev);
   

@@ -7,6 +7,30 @@ extern "C" {
 
 #include "tpm2_wrap.h"
 
+typedef WOLFTPM2_DEV        athwtpm2_dev_t;
+typedef WOLFTPM2_KEYBLOB    athwtpm2_keyblob_t;
+typedef WOLFTPM2_HANDLE     athwtpm2_handle_t;
+typedef WOLFTPM2_KEY        athwtpm2_key_t;
+typedef WOLFTPM2_BUFFER     athwtpm2_buf_t;
+typedef WOLFTPM2_SESSION    athwtpm2_session_t;
+
+typedef struct _athwtpm2_keyhnd_t {
+    athwtpm2_dev_t          *dev;
+    athwtpm2_keyblob_t      *blob;
+    athwtpm2_handle_t       *parent;
+    athwtpm2_key_t          *key;
+    TPMT_PUBLIC             *pub; // need to change the name from pub to pubalgo
+}athwtpm2_keyhnd_t;
+
+typedef struct _athwtpm2_sessionhndl_t {
+    athwtpm2_dev_t          *dev;
+    athwtpm2_session_t      *session;
+    athwtpm2_key_t          *key;
+    athwtpm2_handle_t       *bindhndl;
+}athwtpm2_sessionhndl_t;
+
+
+
 /*!
  * \fn  int athw_tpm_init(void *dev, void *iocb, void *userctx) 
  * \brief initialization of TPM 
@@ -86,7 +110,20 @@ int athw_tpm_set_auth_handle(void *_dev, int index, const WOLFTPM2_HANDLE *handl
 
 int athw_tpm_set_auth_password(void *dev, int index, const TPM2B_AUTH *auth);
 
-
+/**
+ * Set the TPM Authorization slot using the serveral parameter
+ * 
+ * @author rocke (2023-10-27)
+ * 
+ * @param _dev           
+ * @param index          
+ * @param session_handle 
+ * @param auth           
+ * @param session_attr   
+ * @param name           
+ * 
+ * @return int 
+ */
 int athw_tpm_set_auth(void *_dev, int index, TPM_HANDLE session_handle,
                       const TPM2B_AUTH *auth,
                       TPMA_SESSION session_attr, 
@@ -94,7 +131,18 @@ int athw_tpm_set_auth(void *_dev, int index, TPM_HANDLE session_handle,
 
 
 
+int athw_get_key_template_symmetric(TPMT_PUBLIC *key, int keybits, TPM_ALG_ID mode, 
+                                    int is_sign, int is_decrypt);
 
+
+int athw_tpm_createkey(void *handle, const uint8_t *auth, int authsz);
+
+int athw_tpm_loadkey(void *handle);
+
+int athw_tpm_create_and_load_key(void *handle, const byte *auth, int authsz);
+
+
+int athw_tpm_start_session(void *session, TPM_SE type, int cipheralg);
 
 #ifdef _cplusplus
 }

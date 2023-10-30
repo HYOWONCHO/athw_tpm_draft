@@ -269,7 +269,7 @@ void TPM2_Packet_AppendAuthCmd(TPM2_Packet* packet, TPMS_AUTH_COMMAND* authCmd)
     if (packet == NULL || authCmd == NULL)
         return;
 
-#ifdef WOLFTPM_DEBUG_VERBOSE
+#ifdef ATHW_DEBUG_TPM
     TPM2_PrintAuth(authCmd);
 #endif
 
