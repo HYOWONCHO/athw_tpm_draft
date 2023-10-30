@@ -183,6 +183,8 @@ int ATHWTPM2_StartSession(ATHW_DEV* dev, ATHW_SESSION* session,
     ATHW_KEY* tpmKey, ATHW_HANDLE* bind, TPM_SE sesType,
     int encDecAlg);
 
+int ATHWPM2_NVStoreKey(ATHW_DEV* dev, TPM_HANDLE primaryHandle,
+    ATHW_KEY* key, TPM_HANDLE persistentHandle);
 
 #ifdef _cplusplus
 }

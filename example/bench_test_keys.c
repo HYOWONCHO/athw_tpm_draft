@@ -23,7 +23,7 @@ int getPrimaryStoragekey(ATHW_DEV* pDev, ATHW_KEY* pStorageKey,
         /* Create primary storage key */
         rc = ATHW_CreateSRK(pDev, pStorageKey, alg,
             (byte*)gStorageKeyAuth, sizeof(gStorageKeyAuth)-1);
-    #if 0 //ndef WOLFTPM_WINAPI
+    #ifndef WOLFTPM_WINAPI
         if (rc == TPM_RC_SUCCESS) {
             /* Move storage key into persistent NV */
             rc = ATHW_NVStoreKey(pDev, TPM_RH_OWNER, pStorageKey, handle);

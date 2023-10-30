@@ -144,7 +144,8 @@ int bench_sym_aes(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* storageKey,
     
     if ((rc & TPM_RC_MODE) == TPM_RC_MODE || (rc & TPM_RC_VALUE) == TPM_RC_VALUE) {
         tr_log("Benchmark symmetric %s not supported!\r\n", desc);
-        rc = 0; goto exit;
+        rc = 0; 
+        goto exit;
     }
     else if (rc != 0)  {
         tr_log("Key create and load fail !!! (0x%x)",rc);
@@ -153,15 +154,18 @@ int bench_sym_aes(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* storageKey,
     
     bench_stats_start(&count, &start);
     
-    do {
+    //do {
         rc = athw_tpm_encrypt_decrypt(dev, &aeskey, in, out, inOutSz, NULL, 0, isDecrypt);
         if (rc == TPM_RC_COMMAND_CODE) {
             tr_log("unavilavle the encrypt and decrypt ");
-            break;
+
         }
-    } while (bench_stats_check(start, &count, maxDuration));
+        else {
+            tr_log("encrypt decrypt : %d %s", rc, TPM2_GetRCString(rc));
+        }
+    //} while (bench_stats_check(start, &count, maxDuration));
     
-    bench_stats_sym_finish(desc, count, inOutSz, start);
+    //bench_stats_sym_finish(desc, count, inOutSz, start);
     
     // TODO : TPM2 Unload Handle implemntatin 
 

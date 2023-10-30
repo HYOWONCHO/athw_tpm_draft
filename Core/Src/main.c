@@ -149,7 +149,7 @@ int main(void)
   ATHW_KEY rsaKey;
   ATHW_KEY eccKey;
   WOLFTPM2_SESSION tpmSession;
-  TPM_ALG_ID paramEncAlg = TPM_ALG_CFB;
+  TPM_ALG_ID paramEncAlg = TPM_RH_NULL;
 
 
 
@@ -208,6 +208,7 @@ int main(void)
   XMEMSET(&rsaKey, 0, sizeof(rsaKey));
   
 
+  tr_log();
   printf("TPM2 Benchmark using Wrapper API's\r\n");
   printf("\tUse Parameter Encryption: %s\r\n", TPM2_GetAlgName(paramEncAlg));
 
@@ -226,19 +227,19 @@ int main(void)
   if (ret != 0) 
     goto exit;
   
-  if (paramEncAlg != TPM_ALG_NULL) {
-          /* Start an authenticated session (salted / unbound) with parameter encryption */
-        ret = ATHWTPM2_StartSession(&dev, &tpmSession, &storageKey, NULL,
-            TPM_SE_HMAC, paramEncAlg);
-        if (ret != 0) goto exit;
-        printf("TPM2_StartAuthSession: sessionHandle 0x%x\r\n",
-            (word32)tpmSession.handle.hndl);
-
-        /* set session for authorization of the storage key */
-        ret = ATHWTPM2_SetAuthSession(&dev, 1, &tpmSession,
-            (TPMA_SESSION_decrypt | TPMA_SESSION_encrypt | TPMA_SESSION_continueSession));
-        if (ret != 0) goto exit;
-  }
+//if (paramEncAlg != TPM_ALG_NULL) {
+//        /* Start an authenticated session (salted / unbound) with parameter encryption */
+//      ret = ATHWTPM2_StartSession(&dev, &tpmSession, &storageKey, NULL,
+//          TPM_SE_HMAC, paramEncAlg);
+//      if (ret != 0) goto exit;
+//      printf("TPM2_StartAuthSession: sessionHandle 0x%x\r\n",
+//          (word32)tpmSession.handle.hndl);
+//
+//      /* set session for authorization of the storage key */
+//      ret = ATHWTPM2_SetAuthSession(&dev, 1, &tpmSession,
+//          (TPMA_SESSION_decrypt | TPMA_SESSION_encrypt | TPMA_SESSION_continueSession));
+//      if (ret != 0) goto exit;
+//}
                          // RNG Benchmark
   bench_stats_start(&count, &start);
   do
@@ -247,7 +248,8 @@ int main(void)
     if (ret == ATHW_EOK)
     {
       printf("\r\r\n");
-//_athw_print_bin("TPM2 GetRandom", message.buffer, sizeof message.buffer);
+
+      _athw_print_bin("TPM2 GetRandom", message.buffer, sizeof message.buffer);
     }
   } while (bench_stats_check(start,&count, 1));
   bench_stats_sym_finish("RNG", count, sizeof(message), start);
@@ -258,13 +260,16 @@ int main(void)
   sesnhndl.bindhndl = NULL;
   
   
-  
+  tr_log("encryption start");
+
   ret = bench_sym_aes(&dev, &storageKey, "AES-128-CBC-end", TPM_ALG_CBC, 128,
                       message.buffer, cipher.buffer, sizeof message.buffer,
                       NO, 1);
   if (ret == 0 && !(ret == TPM_RC_COMMAND_CODE))  {
-    _athw_print_bin("TPM2 GetRandom", cipher.buffer, sizeof cipher.buffer);
+    _athw_print_bin("TPM_ALG_CBC Encrypt", cipher.buffer, sizeof cipher.buffer);
   }
+  
+  tr_log("encryption rc : %d ", ret);
 
   
   //athw_tpm_dev_init(&udev);

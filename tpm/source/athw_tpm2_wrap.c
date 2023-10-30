@@ -225,7 +225,7 @@ static int  athw_tpm_init_ex(void *ctx, void *iocb, void *userctx, int timeouttr
         return rc;
     }
     
-    printf("TPM2: Caps 0x%08x, Did 0x%04x, Vid 0x%04x, Rid 0x%2x \r\r\n",
+    tr_log("TPM2: Caps 0x%08x, Did 0x%04x, Vid 0x%04x, Rid 0x%2x \r\r\n",
         h->caps,
         h->did_vid >> 16,
         h->did_vid & 0xFFFF,
@@ -637,7 +637,7 @@ int athw_tpm_createkey(void *handle, const uint8_t *auth, int authsz)
         return rc;
     }
 #ifdef  ATHW_DEBUG_TPM
-    printf("tpm2 creation key: pub %d, priv %d \r\r\n",
+    tr_log("tpm2 creation key: pub %d, priv %d \r\r\n",
         outkey.outPublic.size, outkey.outPrivate.size);
     TPM2_PrintPublicArea(&outkey.outPublic); 
 #endif
@@ -664,7 +664,7 @@ int athw_tpm_loadkey(void *handle)
     athw_tpm_set_auth_handle(h->dev, 0, h->parent);
     
     // new key load
-    athw_memzero_s(&inload, sizeof inload);
+    memset(&inload, 0x0, sizeof inload);
     inload.parentHandle = h->parent->hndl;
     athw_tpm_copy_priv(&inload.inPrivate, &h->blob->priv);
     athw_tpm_copy_pub(&inload.inPublic, &h->blob->pub);
@@ -694,36 +694,73 @@ int athw_tpm_loadkey(void *handle)
 }
 
 
+//
+//int ATHW_CreateAndLoadKey(ATHW_DEV* dev, ATHW_KEY* key,
+//    ATHW_HANDLE* parent, TPMT_PUBLIC* publicTemplate,
+//    const byte* auth, int authSz)
+//{
+//    int rc;
+//    ATHW_KEYBLOB keyBlob;
+//
+//    if (dev == NULL || key == NULL)
+//        return BAD_FUNC_ARG;
+//
+//    rc = ATHW_CreateKey(dev, &keyBlob, parent, publicTemplate, auth, authSz);
+//    if (rc == TPM_RC_SUCCESS) {
+//        rc = ATHW_LoadKey(dev, &keyBlob, parent);
+//    }
+//
+//    /* return loaded key */
+//    XMEMCPY(key, &keyBlob, sizeof(ATHW_KEY));
+//
+//    return rc;
+//}
+//
+
 int athw_tpm_create_and_load_key(void *handle, const uint8_t *auth, int authsz)
 {
     int rc;
     athwtpm2_keyblob_t keyblob;
     athwtpm2_keyhnd_t   *h = (athwtpm2_keyhnd_t *)handle;
-    if( handle == NULL  ) {
+    if( handle == NULL || h->key == NULL ) {
+        tr_log("NULL Param");
+
         return -ATHW_ENULLP;
     }
     
-    
+    tr_log();
     h->blob = &keyblob;
+    tr_log();
+
     athw_memzero_s(h->blob, sizeof *h->blob);
+    tr_log();
+
     rc = athw_tpm_createkey(handle, auth, authsz);
+    tr_log();
+
     
     if( rc != 0 ) {
+        tr_log();
+
         goto exit; 
     }
     
     rc =  athw_tpm_loadkey(handle);
+    tr_log();
+
     
 exit:
-    
-    memcpy(h->key, &keyblob, h->parent);
+    tr_log();
+
+    memcpy(h->key, &keyblob,sizeof(ATHW_KEY));
+    tr_log();
 
     return rc;
     
 
 }
 
-int ATHWTPM2_EncryptSecret(WOLFTPM2_DEV* dev, const WOLFTPM2_KEY* tpmKey,
+int ATHWTPM2_EncryptSecret(ATHW_DEV* dev, const ATHW_KEY* tpmKey,
     TPM2B_DATA *data, TPM2B_ENCRYPTED_SECRET *secret,
     const char* label)
 {
@@ -735,20 +772,20 @@ int ATHWTPM2_EncryptSecret(WOLFTPM2_DEV* dev, const WOLFTPM2_KEY* tpmKey,
     }
 
 #ifdef ATHW_DEBUG_TPM
-    printf("Encrypt secret: Alg %s, Label %s\r\n",
+    tr_log("Encrypt secret: Alg %s, Label %s\r\n",
         TPM2_GetAlgName(tpmKey->pub.publicArea.type), label);
 #endif
 
-#ifndef WOLFTPM2_NO_WOLFCRYPT
+#ifndef ATHW_NO_WOLFCRYPT
     switch (tpmKey->pub.publicArea.type) {
     #if defined(HAVE_ECC) && !defined(WC_NO_RNG) && defined(WOLFSSL_PUBLIC_MP)
         case TPM_ALG_ECC:
-            rc = wolfTPM2_EncryptSecret_ECC(dev, tpmKey, data, secret, label);
+            rc = ATHW_EncryptSecret_ECC(dev, tpmKey, data, secret, label);
             break;
     #endif
     #if !defined(NO_RSA) && !defined(WC_NO_RNG)
         case TPM_ALG_RSA:
-            rc = wolfTPM2_EncryptSecret_RSA(dev, tpmKey, data, secret, label);
+            rc = ATHW_EncryptSecret_RSA(dev, tpmKey, data, secret, label);
             break;
     #endif
         default:
@@ -757,10 +794,10 @@ int ATHWTPM2_EncryptSecret(WOLFTPM2_DEV* dev, const WOLFTPM2_KEY* tpmKey,
     }
 
 #ifdef WOLFTPM_DEBUG_VERBOSE
-    printf("Encrypt Secret %d: %d bytes\r\n", rc, data->size);
+    tr_log("Encrypt Secret %d: %d bytes\r\n", rc, data->size);
     TPM2_PrintBin(data->buffer, data->size);
 #endif
-#endif /* !WOLFTPM2_NO_WOLFCRYPT */
+#endif /* !ATHW_NO_WOLFCRYPT */
 
     (void)label;
 
@@ -777,7 +814,7 @@ int ATHW_TPM2_KDFa(
     UINT32       keySz      /* IN: size of generated key in bytes */
 )
 {
-#if !defined(WOLFTPM2_NO_WOLFCRYPT) && !defined(NO_HMAC)
+#if !defined(ATHW_NO_WOLFCRYPT) && !defined(NO_HMAC)
     int ret, hashType;
     Hmac hmac_ctx;
     word32 counter = 0;
@@ -889,8 +926,8 @@ exit:
 }
 
 
-int ATHWTPM2_SetAuthSession(WOLFTPM2_DEV* dev, int index,
-    WOLFTPM2_SESSION* tpmSession, TPMA_SESSION sessionAttributes)
+int ATHWTPM2_SetAuthSession(ATHW_DEV* dev, int index,
+    ATHW_SESSION* tpmSession, TPMA_SESSION sessionAttributes)
 {
     int rc;
 
@@ -918,7 +955,7 @@ int ATHWTPM2_SetAuthSession(WOLFTPM2_DEV* dev, int index,
             sizeof(TPMT_SYM_DEF));
 
         /* fresh nonce generated in TPM2_CommandProcess based on this size */
-        session->nonceCaller.size = TPM2_GetHashDigestSize(WOLFTPM2_WRAP_DIGEST);
+        session->nonceCaller.size = TPM2_GetHashDigestSize(TPM_ALG_SHA256);
 
         /* Capture TPM provided nonce */
         session->nonceTPM.size = tpmSession->nonceTPM.size;
@@ -939,8 +976,8 @@ int ATHWTPM2_SetAuthSession(WOLFTPM2_DEV* dev, int index,
 
 
 
-int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
-    WOLFTPM2_KEY* tpmKey, WOLFTPM2_HANDLE* bind, TPM_SE sesType,
+int ATHWTPM2_StartSession(ATHW_DEV* dev, ATHW_SESSION* session,
+    ATHW_KEY* tpmKey, ATHW_HANDLE* bind, TPM_SE sesType,
     int encDecAlg)
 {
     int rc;
@@ -948,13 +985,13 @@ int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
     StartAuthSession_Out authSesOut;
     TPM2B_AUTH* bindAuth = NULL;
     TPM2B_DATA keyIn;
-    TPMI_ALG_HASH authHash = WOLFTPM2_WRAP_DIGEST;
+    TPMI_ALG_HASH authHash = TPM_ALG_SHA256;
     int hashDigestSz;
 
     if (dev == NULL || session == NULL)
         return BAD_FUNC_ARG;
 
-    XMEMSET(session, 0, sizeof(WOLFTPM2_SESSION));
+    XMEMSET(session, 0, sizeof(ATHW_SESSION));
     XMEMSET(&authSesIn, 0, sizeof(authSesIn));
 
     authSesIn.authHash = authHash;
@@ -1005,7 +1042,7 @@ int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
                        authSesIn.nonceCaller.size);
     if (rc < 0) {
     #ifdef ATHW_DEBUG_TPM
-        printf("TPM2_GetNonce failed %d: %s\r\n", rc, TPM2_GetRCString(rc));
+        tr_log("TPM2_GetNonce failed %d: %s\r\n", rc, TPM2_GetRCString(rc));
     #endif
         return rc;
     }
@@ -1023,8 +1060,8 @@ int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
             &authSesIn.encryptedSalt, "SECRET");
         if (rc != 0) {
         #ifdef ATHW_DEBUG_TPM
-            printf("Building encrypted salt failed %d: %s!\r\n", rc,
-                wolfTPM2_GetRCString(rc));
+            tr_log("Building encrypted salt failed %d: %s!\r\n", rc,
+                TPM2_GetRCString(rc));
         #endif
             return rc;
         }
@@ -1033,8 +1070,8 @@ int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
     rc = TPM2_StartAuthSession(&authSesIn, &authSesOut);
     if (rc != TPM_RC_SUCCESS) {
     #ifdef ATHW_DEBUG_TPM
-        printf("TPM2_StartAuthSession failed %d: %s\r\n", rc,
-            wolfTPM2_GetRCString(rc));
+        tr_log("TPM2_StartAuthSession failed %d: %s\r\n", rc,
+            TPM2_GetRCString(rc));
     #endif
         return rc;
     }
@@ -1059,7 +1096,7 @@ int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
             session->handle.auth.buffer, session->handle.auth.size);
         if (rc != hashDigestSz) {
         #ifdef ATHW_DEBUG_TPM
-            printf("KDFa ATH Gen Error %d\r\n", rc);
+            tr_log("KDFa ATH Gen Error %d\r\n", rc);
         #endif
             return TPM_RC_FAILURE;
         }
@@ -1067,7 +1104,7 @@ int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
     }
 
 #ifdef WOLFTPM_DEBUG_VERBOSE
-    printf("Session Key %d\r\n", session->handle.auth.size);
+    tr_log("Session Key %d\r\n", session->handle.auth.size);
     TPM2_PrintBin(session->handle.auth.buffer, session->handle.auth.size);
 #endif
 
@@ -1091,7 +1128,7 @@ int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
         session->nonceTPM.size);
 
 #ifdef ATHW_DEBUG_TPM
-    printf("TPM2_StartAuthSession: handle 0x%x, algorithm %s\r\r\n",
+    tr_log("TPM2_StartAuthSession: handle 0x%x, algorithm %s\r\r\n",
         (word32)session->handle.hndl,
         TPM2_GetAlgName(authSesIn.symmetric.algorithm));
 #endif
@@ -1218,7 +1255,7 @@ int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
 //    }
 //
 //#ifdef ATHW_DEBUG_TPM_VERBOSE
-//    //printf("Session key %d \r\n", session->session->handle.auth.size);
+//    //tr_log("Session key %d \r\n", session->session->handle.auth.size);
 //    _athw_print_bin("Session key",
 //                    session->session->handle.auth.buffer,
 //                    session->session->handle.auth.size);
@@ -1254,7 +1291,7 @@ int ATHWTPM2_StartSession(WOLFTPM2_DEV* dev, WOLFTPM2_SESSION* session,
 //            session->session->nonceTPM.size);
 //
 //#ifdef ATHW_DEBUG_TPM
-//    printf("TPM2_StartAuthSession: handle 0x%x, algorithm %s\r\n",
+//    tr_log("TPM2_StartAuthSession: handle 0x%x, algorithm %s\r\n",
 //        (uint32_t)session->session->handle.hndl,
 //        TPM2_GetAlgName(insession.symmetric.algorithm));
 //#endif
@@ -1279,7 +1316,7 @@ int ATHW_ReadPublicKey(ATHW_DEV* dev, ATHW_KEY* key,
     rc = TPM2_ReadPublic(&readPubIn, &readPubOut);
     if (rc != TPM_RC_SUCCESS) {
     #ifdef ATHW_DEBUG_TPM
-        printf("TPM2_ReadPublic failed %d: %s\r\n", rc, TPM2_GetRCString(rc));
+        tr_log("TPM2_ReadPublic failed %d: %s\r\n", rc, TPM2_GetRCString(rc));
     #endif
         return rc;
     }
@@ -1291,7 +1328,7 @@ int ATHW_ReadPublicKey(ATHW_DEV* dev, ATHW_KEY* key,
     athw_tpm_copy_pub(&key->pub, &readPubOut.outPublic);
 
 #ifdef ATHW_DEBUG_TPM
-    printf("TPM2_ReadPublic Handle 0x%x: pub %d, name %d, qualifiedName %d\r\n",
+    tr_log("TPM2_ReadPublic Handle 0x%x: pub %d, name %d, qualifiedName %d\r\n",
         (word32)readPubIn.objectHandle,
         readPubOut.outPublic.size, readPubOut.name.size,
         readPubOut.qualifiedName.size);
@@ -1463,7 +1500,7 @@ int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
     rc = TPM2_CreatePrimary(&createPriIn, &createPriOut);
     if (rc != TPM_RC_SUCCESS) {
     #ifdef ATHW_DEBUG_TPM
-        printf("TPM2_CreatePrimary: failed %d: %s\r\n", rc,
+        tr_log("TPM2_CreatePrimary: failed %d: %s\r\n", rc,
             TPM2_GetRCString(rc));
     #endif
         return rc;
@@ -1477,12 +1514,116 @@ int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
     athw_tpm_copy_pub(&key->pub, &createPriOut.outPublic);
 
 #ifdef ATHW_DEBUG_TPM
-    printf("TPM2_CreatePrimary: 0x%x (%d bytes)\r\n",
+    tr_log("TPM2_CreatePrimary: 0x%x (%d bytes)\r\n",
         (word32)key->handle.hndl, key->pub.size);
 #endif
 
     return rc;
 }
+
+int ATHW_UnloadHandle(ATHW_DEV* dev, ATHW_HANDLE* handle)
+{
+    int rc;
+    FlushContext_In in;
+
+    if (dev == NULL || handle == NULL)
+        return BAD_FUNC_ARG;
+
+    /* don't try and unload null or persistent handles */
+    if (handle->hndl == 0 || handle->hndl == TPM_RH_NULL ||
+        (handle->hndl >= PERSISTENT_FIRST && handle->hndl <= PERSISTENT_LAST)) {
+        return TPM_RC_SUCCESS;
+    }
+
+    XMEMSET(&in, 0, sizeof(in));
+    in.flushHandle = handle->hndl;
+    rc = TPM2_FlushContext(&in);
+    if (rc != TPM_RC_SUCCESS) {
+    #ifdef ATHW_DEBUG_TPM
+        tr_log("TPM2_FlushContext failed %d: %s\r\n", rc,
+            TPM2_GetRCString(rc));
+    #endif
+        return rc;
+    }
+
+#ifdef ATHW_DEBUG_TPM
+    tr_log("TPM2_FlushContext: Closed handle 0x%x\r\n", (word32)handle->hndl);
+#endif
+
+    handle->hndl = TPM_RH_NULL;
+
+    return TPM_RC_SUCCESS;
+}
+
+/* primaryHandle must be owner or platform hierarchy */
+/* Owner    Persistent Handle Range: 0x81000000 to 0x817FFFFF */
+/* Platform Persistent Handle Range: 0x81800000 to 0x81FFFFFF */
+int ATHW_NVStoreKey(ATHW_DEV* dev, TPM_HANDLE primaryHandle,
+    ATHW_KEY* key, TPM_HANDLE persistentHandle)
+{
+    int rc;
+    EvictControl_In in;
+
+    if (dev == NULL || key == NULL) {
+        return BAD_FUNC_ARG;
+    }
+    if (primaryHandle == TPM_RH_OWNER &&
+        (persistentHandle < PERSISTENT_FIRST ||
+         persistentHandle > PERSISTENT_LAST)) {
+        return BAD_FUNC_ARG;
+    }
+    if (primaryHandle == TPM_RH_PLATFORM &&
+        (persistentHandle < PLATFORM_PERSISTENT ||
+         persistentHandle > PERSISTENT_LAST)) {
+        return BAD_FUNC_ARG;
+    }
+
+    /* if key is already persistent then just return success */
+    if (key->handle.hndl == persistentHandle)
+        return TPM_RC_SUCCESS;
+
+    /* set session auth to blank */
+    athw_tpm_set_auth_password(dev, 0, NULL);
+
+    /* Move key into NV to persist */
+    XMEMSET(&in, 0, sizeof(in));
+    in.auth = primaryHandle;
+    in.objectHandle = key->handle.hndl;
+    in.persistentHandle = persistentHandle;
+
+    rc = TPM2_EvictControl(&in);
+    if (rc != TPM_RC_SUCCESS) {
+    #ifdef WOLFTPM_WINAPI
+        if (rc == (int)TPM_E_COMMAND_BLOCKED) { /* 0x80280400 */
+        #ifdef ATHW_DEBUG_TPM
+            tr_log("TPM2_EvictControl (storing key to NV) not allowed on "
+                   "Windows TBS (err 0x%x)\n", rc);
+        #endif
+            rc = TPM_RC_NV_UNAVAILABLE;
+        }
+    #endif
+
+    #ifdef ATHW_DEBUG_TPM
+        tr_log("TPM2_EvictControl failed %d: %s\n", rc,
+            TPM2_GetRCString(rc));
+    #endif
+        return rc;
+    }
+
+#ifdef ATHW_DEBUG_TPM
+    tr_log("TPM2_EvictControl Auth 0x%x, Key 0x%x, Persistent 0x%x\n",
+        (word32)in.auth, (word32)in.objectHandle, (word32)in.persistentHandle);
+#endif
+
+    /* unload transient handle */
+    ATHW_UnloadHandle(dev, &key->handle);
+
+    /* replace handle with persistent one */
+    key->handle.hndl = persistentHandle;
+
+    return rc;
+}
+
 
 //
 //int ATHWTPM2_StartSession(ATHW_DEV* dev, ATHW_SESSION* session,
@@ -1494,7 +1635,7 @@ int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
 //    StartAuthSession_Out authSesOut;
 //    TPM2B_AUTH* bindAuth = NULL;
 //    TPM2B_DATA keyIn;
-//    TPMI_ALG_HASH authHash = ATHW_WRAP_DIGEST;
+//    TPMI_ALG_HASH authHash = TPM_ALG_SHA256;
 //    int hashDigestSz;
 //
 //    if (dev == NULL || session == NULL)
@@ -1551,7 +1692,7 @@ int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
 //                       authSesIn.nonceCaller.size);
 //    if (rc < 0) {
 //    #ifdef ATHW_DEBUG_TPM
-//        printf("TPM2_GetNonce failed %d: %s\r\n", rc, ATHW_GetRCString(rc));
+//        tr_log("TPM2_GetNonce failed %d: %s\r\n", rc, TPM2_GetRCString(rc));
 //    #endif
 //        return rc;
 //    }
@@ -1569,8 +1710,8 @@ int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
 //            &authSesIn.encryptedSalt, "SECRET");
 //        if (rc != 0) {
 //        #ifdef ATHW_DEBUG_TPM
-//            printf("Building encrypted salt failed %d: %s!\r\n", rc,
-//                ATHW_GetRCString(rc));
+//            tr_log("Building encrypted salt failed %d: %s!\r\n", rc,
+//                TPM2_GetRCString(rc));
 //        #endif
 //            return rc;
 //        }
@@ -1579,8 +1720,8 @@ int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
 //    rc = TPM2_StartAuthSession(&authSesIn, &authSesOut);
 //    if (rc != TPM_RC_SUCCESS) {
 //    #ifdef ATHW_DEBUG_TPM
-//        printf("TPM2_StartAuthSession failed %d: %s\r\n", rc,
-//            ATHW_GetRCString(rc));
+//        tr_log("TPM2_StartAuthSession failed %d: %s\r\n", rc,
+//            TPM2_GetRCString(rc));
 //    #endif
 //        return rc;
 //    }
@@ -1605,7 +1746,7 @@ int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
 //            session->handle.auth.buffer, session->handle.auth.size);
 //        if (rc != hashDigestSz) {
 //        #ifdef ATHW_DEBUG_TPM
-//            printf("KDFa ATH Gen Error %d\r\n", rc);
+//            tr_log("KDFa ATH Gen Error %d\r\n", rc);
 //        #endif
 //            return TPM_RC_FAILURE;
 //        }
@@ -1613,7 +1754,7 @@ int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
 //    }
 //
 //#ifdef ATHW_DEBUG_TPM
-//    printf("Session Key %d\r\n", session->handle.auth.size);
+//    tr_log("Session Key %d\r\n", session->handle.auth.size);
 //    TPM2_PrintBin(session->handle.auth.buffer, session->handle.auth.size);
 //#endif
 //
@@ -1637,7 +1778,7 @@ int ATHW_CreatePrimaryKey(ATHW_DEV* dev, ATHW_KEY* key,
 //        session->nonceTPM.size);
 //
 //#ifdef ATHW_DEBUG_TPM
-//    printf("TPM2_StartAuthSession: handle 0x%x, algorithm %s\r\n",
+//    tr_log("TPM2_StartAuthSession: handle 0x%x, algorithm %s\r\n",
 //        (word32)session->handle.hndl,
 //        TPM2_GetAlgName(authSesIn.symmetric.algorithm));
 //#endif

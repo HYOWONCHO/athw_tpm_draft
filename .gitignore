@@ -180,3 +180,9 @@ Debug/util/source/athw_mem.cyclo
 Debug/util/source/athw_mem.d
 Debug/util/source/athw_mem.o
 Debug/util/source/athw_mem.su
+*.cyclo
+*.d
+*.su
+*.o
+*.BAK
+*.BAK

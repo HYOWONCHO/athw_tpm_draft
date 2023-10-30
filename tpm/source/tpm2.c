@@ -417,7 +417,7 @@ static TPM_RC TPM2_SendCommandAuth(TPM2_CTX* ctx, TPM2_Packet* packet,
             return rc;
     }
     
-    _buf_dump(packet->buf, " auth session resp", packet->pos);
+    _athw_print_bin(" auth session resp",packet->buf, packet->pos);
 
 
     /* reset packet->pos to total command length (send command requires it) */
@@ -425,7 +425,7 @@ static TPM_RC TPM2_SendCommandAuth(TPM2_CTX* ctx, TPM2_Packet* packet,
 
     /* submit command and wait for response */
     rc = (TPM_RC)INTERNAL_SEND_COMMAND(ctx, packet);
-     _buf_dump(packet->buf, "CMD Wait response", packet->pos);
+     _athw_print_bin( "CMD Wait response", packet->buf,packet->pos);
     if (rc != 0)
         return rc;
 
