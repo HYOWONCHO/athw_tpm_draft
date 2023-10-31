@@ -48,8 +48,11 @@
 #define debug(fmt, args...)                             \
     debug_cond(_DEBUG, fmt, ##args)
 
-
+#ifdef ATHW_TRACE_ENABLE
 #define tr_log(fmt,...) printf("[%s:%u] "fmt "\r\r\n",__FUNCTION__,__LINE__,##__VA_ARGS__)
+#else
+#define tr_log(fmt,...)
+#endif
 #define tr_print        printf
 //#define tr_log(...) printf("%s:%d \r\r\n",__FUNCTION__,__LINE__,##__VA_ARGS__);printf("\r\r\n")
 
@@ -76,7 +79,7 @@ static inline void _athw_print_bin(const uint8_t *title, const uint8_t* buffer, 
     uint32_t i, sz;
     
     if(title) {
-        printf("----  %s (length of buffer: %d) \r\r\n", title, length) ;
+        printf("\t%s (length of buffer: %d) \r\r\n", title, length) ;
     }
 
     if (!buffer) {

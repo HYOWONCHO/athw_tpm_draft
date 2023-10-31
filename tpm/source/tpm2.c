@@ -6064,16 +6064,20 @@ void TPM2_PrintBin(const byte* buffer, word32 length)
 
 void TPM2_PrintAuth(const TPMS_AUTH_COMMAND* authCmd)
 {
+//#ifdef ATHW_TPM2_VESIOUS
     if (authCmd == NULL)
         return;
-
+    printf("---------- Auth Informaion ----------- \r\n");
     printf("authCmd:\r\r\n");
     printf("sessionHandle=0x%08X\r\r\n", authCmd->sessionHandle);
     printf("nonceSize=%u nonceBuffer:\r\r\n", authCmd->nonce.size);
-    TPM2_PrintBin(authCmd->nonce.buffer, authCmd->nonce.size);
+    _athw_print_bin("sessionHandle nonce", authCmd->nonce.buffer, authCmd->nonce.size);
     printf("sessionAttributes=0x%02X\r\r\n", authCmd->sessionAttributes);
     printf("hmacSize=%u hmacBuffer:\r\r\n", authCmd->hmac.size);
-    TPM2_PrintBin(authCmd->hmac.buffer, authCmd->hmac.size);
+    _athw_print_bin("sessionAttributes hmac", authCmd->hmac.buffer, authCmd->hmac.size);
+    
+    printf("-------------------------------------- \r\n");
+//#endif     
 }
 
 void TPM2_PrintPublicArea(const TPM2B_PUBLIC* pub)
