@@ -186,3 +186,6 @@ Debug/util/source/athw_mem.su
 *.o
 *.BAK
 *.BAK
+*.BAK
+*.BAK
+Core/Src/main.c.BAK

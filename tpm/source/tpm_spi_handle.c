@@ -486,11 +486,11 @@ int athw_tpm_spi_xfer(void *handle, u32 addr, const u8 *out, u8 *in, u16 len)
         memset(rx_buf, 0x00, sizeof rx_buf);
         memcpy(&tx_buf[TPM_TIS_HEADER_SZ], in, transfer_len);
         //_athw_print_bin("IN buff", in, len);
-        _athw_print_bin("IN TX", tx_buf, TPM_TIS_HEADER_SZ + transfer_len);
+        //_athw_print_bin("IN TX", tx_buf, TPM_TIS_HEADER_SZ + transfer_len);
         HAL_SPI_TransmitReceive(h_spi->handle, 
                                 tx_buf, rx_buf, 
                                 transfer_len, TPM_SPI_TMO_DURATION);
-        _athw_print_bin("IN RX", rx_buf, transfer_len);
+        //_athw_print_bin("IN RX", rx_buf, transfer_len);
        
         memcpy(in, rx_buf, transfer_len);
         in += transfer_len;

@@ -151,6 +151,7 @@ int main(void)
   WOLFTPM2_SESSION tpmSession;
   TPM_ALG_ID paramEncAlg = TPM_RH_NULL;
 
+  double maxDuration = 1;
 
 
      int count = 0L;
@@ -259,17 +260,58 @@ int main(void)
   sesnhndl.key =  &storageKey;
   sesnhndl.bindhndl = NULL;
   
-  
-  tr_log("encryption start");
+  //
+//tr_log("encryption start");
+//
+//ret = bench_sym_aes(&dev, &storageKey, "AES-128-CBC-end", TPM_ALG_CBC, 128,
+//                    message.buffer, cipher.buffer, sizeof message.buffer,
+//                    NO, 1);
+//if (ret == 0 && !(ret == TPM_RC_COMMAND_CODE))  {
+//  _athw_print_bin("TPM_ALG_CBC Encrypt", cipher.buffer, sizeof cipher.buffer);
+//}
+//
+//tr_log("encryption rc : %d ", ret);
 
-  ret = bench_sym_aes(&dev, &storageKey, "AES-128-CBC-end", TPM_ALG_CBC, 128,
-                      message.buffer, cipher.buffer, sizeof message.buffer,
-                      NO, 1);
-  if (ret == 0 && !(ret == TPM_RC_COMMAND_CODE))  {
-    _athw_print_bin("TPM_ALG_CBC Encrypt", cipher.buffer, sizeof cipher.buffer);
+  ret = bench_sym_hash(&dev, "SHA256", TPM_ALG_SHA256, message.buffer, 
+                        sizeof(message.buffer), cipher.buffer,
+                        TPM_SHA256_DIGEST_SIZE, maxDuration);
+  
+  if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
+    tr_log("SHA256 operation fail with %d ", ret);
+    goto exit;
   }
   
-  tr_log("encryption rc : %d ", ret);
+  _athw_print_bin("SHA256 bench test", cipher.buffer, TPM_SHA256_DIGEST_SIZE);
+  
+  
+//ret = bench_sym_hash(&dev, "SHA384", TPM_ALG_SHA384, message.buffer,
+//                      sizeof(message.buffer), cipher.buffer,
+//                      TPM_SHA384_DIGEST_SIZE, maxDuration);
+//
+//if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
+//  tr_log("SHA256 operation fail with %d ", ret);
+//  goto exit;
+//}
+//
+//_athw_print_bin("SHA384 bench test", cipher.buffer, TPM_SHA384_DIGEST_SIZE);
+//
+//
+//ret = bench_sym_hash(&dev, "SHA512", TPM_ALG_SHA512, message.buffer,
+//                      sizeof(message.buffer), cipher.buffer,
+//                      TPM_SHA512_DIGEST_SIZE, maxDuration);
+//
+//if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
+//  tr_log("SHA256 operation fail with %d ", ret);
+//  goto exit;
+//}
+//
+//_athw_print_bin("SHA512 bench test", cipher.buffer, TPM_SHA512_DIGEST_SIZE);
+
+  
+  
+
+  
+
 
   
   //athw_tpm_dev_init(&udev);

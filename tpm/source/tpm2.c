@@ -433,7 +433,7 @@ static TPM_RC TPM2_SendCommandAuth(TPM2_CTX* ctx, TPM2_Packet* packet,
     
     rc = TPM2_Packet_Parse(rc, packet);
     respSz = packet->size;
-    _buf_dump(packet->buf, "2 TPM_ST_SESSIONS response", packet->pos);
+    //_buf_dump(packet->buf, "2 TPM_ST_SESSIONS response", packet->pos);
 
 
     /* restart the unmarshalling position */

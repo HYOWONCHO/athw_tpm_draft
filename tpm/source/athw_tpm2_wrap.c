@@ -27,6 +27,219 @@
 
 static void athw_tpm_copy_symmetric(TPMT_SYM_DEF* out, const TPMT_SYM_DEF* in);
 
+static void ATHW_CopySymmetric(TPMT_SYM_DEF* out, const TPMT_SYM_DEF* in)
+{
+    if (out == NULL || in == NULL)
+        return;
+
+    out->algorithm = in->algorithm;
+    switch (out->algorithm) {
+        case TPM_ALG_XOR:
+            out->keyBits.xorr = in->keyBits.xorr;
+            break;
+        case TPM_ALG_AES:
+            out->keyBits.aes = in->keyBits.aes;
+            out->mode.aes = in->mode.aes;
+            break;
+        case TPM_ALG_NULL:
+            break;
+        default:
+            out->keyBits.sym = in->keyBits.sym;
+            out->mode.sym = in->mode.sym;
+            break;
+    }
+}
+
+static void ATHW_CopyName(TPM2B_NAME* out, const TPM2B_NAME* in)
+{
+    if (out != NULL && in != NULL) {
+        out->size = in->size;
+        if (out->size > (UINT16)sizeof(out->name))
+            out->size = (UINT16)sizeof(out->name);
+        XMEMCPY(out->name, in->name, out->size);
+    }
+}
+
+static void ATHW_CopyAuth(TPM2B_AUTH* out, const TPM2B_AUTH* in)
+{
+    if (out != NULL && in != NULL) {
+        out->size = in->size;
+        if (out->size > (UINT16)sizeof(out->buffer))
+            out->size = (UINT16)sizeof(out->buffer);
+        XMEMCPY(out->buffer, in->buffer, out->size);
+    }
+}
+
+static void ATHW_CopyPubT(TPMT_PUBLIC* out, const TPMT_PUBLIC* in)
+{
+    if (out == NULL || in == NULL)
+        return;
+
+    out->type = in->type;
+    out->nameAlg = in->nameAlg;
+    out->objectAttributes = in->objectAttributes;
+    out->authPolicy.size = in->authPolicy.size;
+    if (out->authPolicy.size > 0) {
+        if (out->authPolicy.size >
+                (UINT16)sizeof(out->authPolicy.buffer))
+            out->authPolicy.size =
+                (UINT16)sizeof(out->authPolicy.buffer);
+        XMEMCPY(out->authPolicy.buffer,
+                in->authPolicy.buffer,
+                out->authPolicy.size);
+    }
+
+    switch (out->type) {
+    case TPM_ALG_KEYEDHASH:
+        out->parameters.keyedHashDetail.scheme =
+            in->parameters.keyedHashDetail.scheme;
+
+        out->unique.keyedHash.size =
+            in->unique.keyedHash.size;
+        if (out->unique.keyedHash.size >
+                (UINT16)sizeof(out->unique.keyedHash.buffer)) {
+            out->unique.keyedHash.size =
+                (UINT16)sizeof(out->unique.keyedHash.buffer);
+        }
+        XMEMCPY(out->unique.keyedHash.buffer,
+                in->unique.keyedHash.buffer,
+                out->unique.keyedHash.size);
+        break;
+    case TPM_ALG_SYMCIPHER:
+        out->parameters.symDetail.sym.algorithm =
+            in->parameters.symDetail.sym.algorithm;
+        out->parameters.symDetail.sym.keyBits.sym =
+            in->parameters.symDetail.sym.keyBits.sym;
+        out->parameters.symDetail.sym.mode.sym =
+            in->parameters.symDetail.sym.mode.sym;
+
+        out->unique.sym.size =
+            in->unique.sym.size;
+        if (out->unique.sym.size >
+                (UINT16)sizeof(out->unique.sym.buffer)) {
+            out->unique.sym.size =
+                (UINT16)sizeof(out->unique.sym.buffer);
+        }
+        XMEMCPY(out->unique.sym.buffer,
+                in->unique.sym.buffer,
+                out->unique.sym.size);
+        break;
+    case TPM_ALG_RSA:
+        ATHW_CopySymmetric(&out->parameters.rsaDetail.symmetric,
+            &in->parameters.rsaDetail.symmetric);
+        out->parameters.rsaDetail.scheme.scheme =
+            in->parameters.rsaDetail.scheme.scheme;
+        if (out->parameters.rsaDetail.scheme.scheme != TPM_ALG_NULL)
+            out->parameters.rsaDetail.scheme.details.anySig.hashAlg =
+                in->parameters.rsaDetail.scheme.details.anySig.hashAlg;
+        out->parameters.rsaDetail.keyBits =
+            in->parameters.rsaDetail.keyBits;
+        out->parameters.rsaDetail.exponent =
+            in->parameters.rsaDetail.exponent;
+
+        out->unique.rsa.size =
+            in->unique.rsa.size;
+        if (out->unique.rsa.size >
+                (UINT16)sizeof(out->unique.rsa.buffer)) {
+            out->unique.rsa.size =
+                (UINT16)sizeof(out->unique.rsa.buffer);
+        }
+        XMEMCPY(out->unique.rsa.buffer,
+                in->unique.rsa.buffer,
+                out->unique.rsa.size);
+        break;
+    case TPM_ALG_ECC:
+        ATHW_CopySymmetric(&out->parameters.eccDetail.symmetric,
+            &in->parameters.eccDetail.symmetric);
+        out->parameters.eccDetail.scheme.scheme =
+            in->parameters.eccDetail.scheme.scheme;
+        if (out->parameters.eccDetail.scheme.scheme != TPM_ALG_NULL) {
+            out->parameters.eccDetail.scheme.details.any.hashAlg =
+                in->parameters.eccDetail.scheme.details.any.hashAlg;
+        }
+        out->parameters.eccDetail.curveID =
+            in->parameters.eccDetail.curveID;
+        out->parameters.eccDetail.kdf.scheme =
+            in->parameters.eccDetail.kdf.scheme;
+        if (out->parameters.eccDetail.kdf.scheme != TPM_ALG_NULL) {
+            out->parameters.eccDetail.kdf.details.any.hashAlg =
+                in->parameters.eccDetail.kdf.details.any.hashAlg;
+        }
+        ATHW_CopyEccParam(&out->unique.ecc.x,
+            &in->unique.ecc.x);
+        ATHW_CopyEccParam(&out->unique.ecc.y,
+            &in->unique.ecc.y);
+        break;
+    default:
+        ATHW_CopySymmetric(&out->parameters.asymDetail.symmetric,
+            &in->parameters.asymDetail.symmetric);
+        out->parameters.asymDetail.scheme.scheme =
+            in->parameters.asymDetail.scheme.scheme;
+        if (out->parameters.asymDetail.scheme.scheme != TPM_ALG_NULL)
+            out->parameters.asymDetail.scheme.details.anySig.hashAlg =
+                in->parameters.asymDetail.scheme.details.anySig.hashAlg;
+        break;
+    }
+}
+
+static void ATHW_CopyPub(TPM2B_PUBLIC* out, const TPM2B_PUBLIC* in)
+{
+    if (out != NULL && in != NULL) {
+        out->size = in->size;
+        ATHW_CopyPubT(&out->publicArea, &in->publicArea);
+    }
+}
+
+static void ATHW_CopyPriv(TPM2B_PRIVATE* out, const TPM2B_PRIVATE* in)
+{
+    if (out != NULL && in != NULL) {
+        out->size = in->size;
+        if (out->size > (UINT16)sizeof(out->buffer))
+            out->size = (UINT16)sizeof(out->buffer);
+        XMEMCPY(out->buffer, in->buffer, out->size);
+    }
+}
+
+void ATHW_CopyEccParam(TPM2B_ECC_PARAMETER* out,
+    const TPM2B_ECC_PARAMETER* in)
+{
+    if (out != NULL && in != NULL) {
+        out->size = in->size;
+        if (out->size > (UINT16)sizeof(out->buffer))
+            out->size = (UINT16)sizeof(out->buffer);
+        XMEMCPY(out->buffer, in->buffer, out->size);
+    }
+}
+
+static void ATHW_CopyKeyFromBlob(ATHW_KEY* key, const ATHW_KEYBLOB* keyBlob)
+{
+    if (key != NULL && keyBlob != NULL) {
+        key->handle.hndl = keyBlob->handle.hndl;
+        ATHW_CopyAuth(&key->handle.auth, &keyBlob->handle.auth);
+        ATHW_CopyName(&key->handle.name, &keyBlob->handle.name);
+        ATHW_CopySymmetric(&key->handle.symmetric, &keyBlob->handle.symmetric);
+        ATHW_CopyPub(&key->pub, &keyBlob->pub);
+    }
+}
+
+static void ATHW_CopyNvPublic(TPMS_NV_PUBLIC* out, const TPMS_NV_PUBLIC* in)
+{
+    if (out != NULL && in != NULL) {
+        out->attributes = in->attributes;
+        out->authPolicy.size = in->authPolicy.size;
+        if (out->authPolicy.size > 0) {
+            if (out->authPolicy.size > (UINT16)sizeof(out->authPolicy.buffer)) {
+                out->authPolicy.size = (UINT16)sizeof(out->authPolicy.buffer);
+            }
+            XMEMCPY(out->authPolicy.buffer, in->authPolicy.buffer, out->authPolicy.size);
+        }
+        out->dataSize = in->dataSize;
+        out->nameAlg = in->nameAlg;
+        out->nvIndex = in->nvIndex;
+    }
+}
+
+
 static void athw_tpm_copy_pubt(TPMT_PUBLIC* out, const TPMT_PUBLIC* in)
 {
     if (out == NULL || in == NULL)
@@ -728,32 +941,32 @@ int athw_tpm_create_and_load_key(void *handle, const uint8_t *auth, int authsz)
         return -ATHW_ENULLP;
     }
     
-    tr_log();
+   // tr_log();
     h->blob = &keyblob;
-    tr_log();
+   // tr_log();
 
     athw_memzero_s(h->blob, sizeof *h->blob);
-    tr_log();
+   // tr_log();
 
     rc = athw_tpm_createkey(handle, auth, authsz);
-    tr_log();
+   // tr_log();
 
     
     if( rc != 0 ) {
-        tr_log();
+       // tr_log();
 
         goto exit; 
     }
     
     rc =  athw_tpm_loadkey(handle);
-    tr_log();
+   // tr_log();
 
     
 exit:
-    tr_log();
+   // tr_log();
 
     memcpy(h->key, &keyblob,sizeof(ATHW_KEY));
-    tr_log();
+   // tr_log();
 
     return rc;
     
@@ -1623,6 +1836,295 @@ int ATHW_NVStoreKey(ATHW_DEV* dev, TPM_HANDLE primaryHandle,
 
     return rc;
 }
+
+int ATHW_UnsetAuth(ATHW_DEV* dev, int index)
+{
+    TPM2_AUTH_SESSION* session;
+
+    if (dev == NULL || index >= MAX_SESSION_NUM || index < 0) {
+        return BAD_FUNC_ARG;
+    }
+
+    session = &dev->session[index];
+    XMEMSET(session, 0, sizeof(TPM2_AUTH_SESSION));
+
+    return TPM2_SetSessionAuth(dev->session);
+}
+
+int ATHW_UnsetAuthSession(ATHW_DEV* dev, int index,
+    ATHW_SESSION* tpmSession)
+{
+    TPM2_AUTH_SESSION* devSession;
+
+    if (dev == NULL || tpmSession == NULL ||
+            index >= MAX_SESSION_NUM || index < 0) {
+        return BAD_FUNC_ARG;
+    }
+
+    devSession = &dev->session[index];
+
+    /* save off nonce from TPM to support continued use of session */
+    XMEMCPY(&tpmSession->nonceTPM, &devSession->nonceTPM, sizeof(TPM2B_NONCE));
+
+    XMEMSET(devSession, 0, sizeof(TPM2_AUTH_SESSION));
+
+    return TPM2_SetSessionAuth(dev->session);
+}
+
+int ATHW_SetAuth(ATHW_DEV* dev, int index,
+    TPM_HANDLE sessionHandle, const TPM2B_AUTH* auth,
+    TPMA_SESSION sessionAttributes, const TPM2B_NAME* name)
+{
+    TPM2_AUTH_SESSION* session;
+
+    if (dev == NULL || index >= MAX_SESSION_NUM || index < 0) {
+        return BAD_FUNC_ARG;
+    }
+
+    session = &dev->session[index];
+    XMEMSET(session, 0, sizeof(TPM2_AUTH_SESSION));
+    session->sessionHandle = sessionHandle;
+    session->sessionAttributes = sessionAttributes;
+    if (auth) {
+        session->auth.size = auth->size;
+        XMEMCPY(session->auth.buffer, auth->buffer, auth->size);
+    }
+    if (name) {
+        session->name.size = name->size;
+        XMEMCPY(session->name.name, name->name, name->size);
+    }
+
+    TPM2_SetSessionAuth(dev->session);
+
+    return TPM_RC_SUCCESS;
+}
+
+int ATHW_SetAuthPassword(ATHW_DEV* dev, int index,
+    const TPM2B_AUTH* auth)
+{
+    return ATHW_SetAuth(dev, index, TPM_RS_PW, auth, 0, NULL);
+}
+
+int ATHW_SetAuthHandle(ATHW_DEV* dev, int index,
+    const ATHW_HANDLE* handle)
+{
+    const TPM2B_AUTH* auth = NULL;
+    const TPM2B_NAME* name = NULL;
+    /* don't set auth for policy session */
+    if (dev->ctx.session == NULL || handle->policyAuth) {
+        return 0;
+    }
+    if (handle) {
+        auth = &handle->auth;
+        name = &handle->name;
+    }
+    return ATHW_SetAuth(dev, index, TPM_RS_PW, auth, 0, name);
+}
+
+int ATHW_SetAuthHandleName(ATHW_DEV* dev, int index,
+    const ATHW_HANDLE* handle)
+{
+    const TPM2B_NAME* name = NULL;
+    TPM2_AUTH_SESSION* session;
+
+    if (dev == NULL || handle == NULL || index >= MAX_SESSION_NUM) {
+        return BAD_FUNC_ARG;
+    }
+
+    name = &handle->name;
+    session = &dev->session[index];
+
+    if (session->auth.size == 0 && handle->auth.size > 0) {
+        session->auth.size = handle->auth.size;
+        XMEMCPY(session->auth.buffer, handle->auth.buffer, handle->auth.size);
+    }
+    session->name.size = name->size;
+    XMEMCPY(session->name.name, name->name, session->name.size);
+
+    return TPM_RC_SUCCESS;
+}
+
+int ATHW_SetAuthSession(ATHW_DEV* dev, int index,
+    ATHW_SESSION* tpmSession, TPMA_SESSION sessionAttributes)
+{
+    int rc;
+
+    if (dev == NULL || index >= MAX_SESSION_NUM) {
+        return BAD_FUNC_ARG;
+    }
+
+    if (tpmSession == NULL) {
+        /* clearing auth session */
+        XMEMSET(&dev->session[index], 0, sizeof(TPM2_AUTH_SESSION));
+        return TPM_RC_SUCCESS;
+    }
+
+    rc = ATHW_SetAuth(dev, index, tpmSession->handle.hndl,
+        &tpmSession->handle.auth, sessionAttributes, NULL);
+    if (rc == TPM_RC_SUCCESS) {
+        TPM2_AUTH_SESSION* session = &dev->session[index];
+
+        /* save off session attributes */
+        tpmSession->sessionAttributes = sessionAttributes;
+
+        /* define the symmetric algorithm */
+        session->authHash = tpmSession->authHash;
+        XMEMCPY(&session->symmetric, &tpmSession->handle.symmetric,
+            sizeof(TPMT_SYM_DEF));
+
+        /* fresh nonce generated in TPM2_CommandProcess based on this size */
+        session->nonceCaller.size = TPM2_GetHashDigestSize(TPM_ALG_SHA256);
+
+        /* Capture TPM provided nonce */
+        session->nonceTPM.size = tpmSession->nonceTPM.size;
+        XMEMCPY(session->nonceTPM.buffer, tpmSession->nonceTPM.buffer,
+            session->nonceTPM.size);
+
+        /* Parameter Encryption session will have an hmac added later.
+         * Reserve space, the same way it was done for nonceCaller above.
+         */
+        if (session->sessionHandle != TPM_RS_PW &&
+            ((session->sessionAttributes & TPMA_SESSION_encrypt) ||
+             (session->sessionAttributes & TPMA_SESSION_decrypt))) {
+            session->auth.size = TPM2_GetHashDigestSize(session->authHash);
+        }
+    }
+    return rc;
+}
+
+
+int ATHW_HashStart(ATHW_DEV* dev, ATHW_HASH* hash,
+    TPMI_ALG_HASH hashAlg, const byte* usageAuth, word32 usageAuthSz)
+{
+    int rc;
+    HashSequenceStart_In in;
+    HashSequenceStart_Out out;
+
+    if (dev == NULL || hash == NULL || hashAlg == TPM_ALG_NULL ||
+        (usageAuthSz > 0 && usageAuth == NULL)) {
+        return BAD_FUNC_ARG;
+    }
+
+    /* Capture usage auth */
+    if (usageAuthSz > sizeof(hash->handle.auth.buffer))
+        usageAuthSz = sizeof(hash->handle.auth.buffer);
+    XMEMSET(hash, 0, sizeof(ATHW_HASH));
+    hash->handle.auth.size = usageAuthSz;
+    if (usageAuth != NULL)
+        XMEMCPY(hash->handle.auth.buffer, usageAuth, usageAuthSz);
+
+    XMEMSET(&in, 0, sizeof(in));
+    ATHW_CopyAuth(&in.auth, &hash->handle.auth);
+    in.hashAlg = hashAlg;
+    rc = TPM2_HashSequenceStart(&in, &out);
+    if (rc != TPM_RC_SUCCESS) {
+    #ifdef DEBUG_WOLFTPM
+        printf("TPM2_HashSequenceStart failed 0x%x: %s\n", rc,
+            TPM2_GetRCString(rc));
+    #endif
+        return rc;
+    }
+
+    /* Capture hash sequence handle */
+    hash->handle.hndl = out.sequenceHandle;
+
+#ifdef DEBUG_WOLFTPM
+    printf("ATHW_HashStart: Handle 0x%x\n",
+        (word32)out.sequenceHandle);
+#endif
+
+    return rc;
+}
+
+int ATHW_HashUpdate(ATHW_DEV* dev, ATHW_HASH* hash,
+    const byte* data, word32 dataSz)
+{
+    int rc = TPM_RC_SUCCESS;
+    SequenceUpdate_In in;
+    word32 pos = 0, hashSz;
+
+    if (dev == NULL || hash == NULL || (data == NULL && dataSz > 0) ||
+            hash->handle.hndl == 0) {
+        return BAD_FUNC_ARG;
+    }
+
+    /* set session auth for hash handle */
+    ATHW_SetAuthHandle(dev, 0, &hash->handle);
+
+    XMEMSET(&in, 0, sizeof(in));
+    in.sequenceHandle = hash->handle.hndl;
+
+    while (pos < dataSz) {
+        hashSz = dataSz - pos;
+        if (hashSz > sizeof(in.buffer.buffer))
+            hashSz = sizeof(in.buffer.buffer);
+
+        in.buffer.size = hashSz;
+        XMEMCPY(in.buffer.buffer, &data[pos], hashSz);
+        rc = TPM2_SequenceUpdate(&in);
+        if (rc != TPM_RC_SUCCESS) {
+        #ifdef DEBUG_WOLFTPM
+            printf("TPM2_SequenceUpdate failed 0x%x: %s\n", rc,
+                TPM2_GetRCString(rc));
+        #endif
+            return rc;
+        }
+        pos += hashSz;
+    }
+
+#ifdef DEBUG_WOLFTPM
+    printf("ATHW_HashUpdate: Handle 0x%x, DataSz %d\n",
+        (word32)in.sequenceHandle, dataSz);
+#endif
+
+    return rc;
+}
+
+int ATHW_HashFinish(ATHW_DEV* dev, ATHW_HASH* hash,
+    byte* digest, word32* digestSz)
+{
+    int rc;
+    SequenceComplete_In in;
+    SequenceComplete_Out out;
+
+    if (dev == NULL || hash == NULL || digest == NULL || digestSz == NULL ||
+            hash->handle.hndl == 0) {
+        return BAD_FUNC_ARG;
+    }
+
+    /* set session auth for hash handle */
+    ATHW_SetAuthHandle(dev, 0, &hash->handle);
+
+    XMEMSET(&in, 0, sizeof(in));
+    in.sequenceHandle = hash->handle.hndl;
+    in.hierarchy = TPM_RH_NULL;
+    rc = TPM2_SequenceComplete(&in, &out);
+
+    /* mark hash handle as done */
+    hash->handle.hndl = TPM_RH_NULL;
+
+    if (rc != TPM_RC_SUCCESS) {
+    #ifdef DEBUG_WOLFTPM
+        printf("TPM2_SequenceComplete failed 0x%x: %s: Handle 0x%x\n", rc,
+            TPM2_GetRCString(rc), (word32)in.sequenceHandle);
+    #endif
+        return rc;
+    }
+
+    if (out.result.size > *digestSz)
+        out.result.size = *digestSz;
+    *digestSz = out.result.size;
+    XMEMCPY(digest, out.result.buffer, *digestSz);
+
+#ifdef DEBUG_WOLFTPM
+    printf("ATHW_HashFinish: Handle 0x%x, DigestSz %d\n",
+        (word32)in.sequenceHandle, *digestSz);
+#endif
+
+    return rc;
+}
+
+
 
 
 //

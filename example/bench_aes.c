@@ -154,7 +154,7 @@ int bench_sym_aes(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* storageKey,
     
     bench_stats_start(&count, &start);
     
-    //do {
+    do {
         rc = athw_tpm_encrypt_decrypt(dev, &aeskey, in, out, inOutSz, NULL, 0, isDecrypt);
         if (rc == TPM_RC_COMMAND_CODE) {
             tr_log("unavilavle the encrypt and decrypt ");
@@ -163,9 +163,9 @@ int bench_sym_aes(WOLFTPM2_DEV* dev, WOLFTPM2_KEY* storageKey,
         else {
             tr_log("encrypt decrypt : %d %s", rc, TPM2_GetRCString(rc));
         }
-    //} while (bench_stats_check(start, &count, maxDuration));
+    } while (bench_stats_check(start, &count, maxDuration));
     
-    //bench_stats_sym_finish(desc, count, inOutSz, start);
+    bench_stats_sym_finish(desc, count, inOutSz, start);
     
     // TODO : TPM2 Unload Handle implemntatin 
 
@@ -175,6 +175,31 @@ exit:
     
     return rc;
 
+}
+
+int bench_sym_hash(ATHW_DEV* dev, const char* desc, int algo,
+    const byte* in, word32 inSz, byte* digest, word32 digestSz, double maxDuration)
+{
+    int rc;
+    int count;
+    double start;
+    ATHW_HASH hash;
+
+    XMEMSET(&hash, 0, sizeof(hash));
+    bench_stats_start(&count, &start);
+    do {
+        rc = ATHW_HashStart(dev, &hash, algo,
+        (const byte*)gUsageAuth, sizeof(gUsageAuth)-1);
+        if (rc != 0) goto exit;
+        rc = ATHW_HashUpdate(dev, &hash, in, inSz);
+        if (rc != 0) goto exit;
+        rc = ATHW_HashFinish(dev, &hash, digest, &digestSz);
+        if (rc != 0) goto exit;
+    } while (bench_stats_check(start, &count, maxDuration));
+    bench_stats_sym_finish(desc, count, inSz, start);
+
+exit:
+    return rc;
 }
 
 
