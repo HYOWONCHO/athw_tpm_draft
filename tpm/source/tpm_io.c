@@ -92,7 +92,7 @@ static int TPM2_IoCb_SPI(TPM2_CTX* ctx, const byte* txBuf, byte* rxBuf,
 #else
 
     /* TODO: Add your platform here for HW SPI interface */
-    printf("Add your platform here for HW SPI interface\r\r\n");
+    //printf("Add your platform here for HW SPI interface\r\r\n");
     (void)txBuf;
     (void)rxBuf;
     (void)xferSz;

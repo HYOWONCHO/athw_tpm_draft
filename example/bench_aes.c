@@ -104,8 +104,8 @@ void bench_stats_sym_finish(const char* desc, int count, int countSz,
 //  printf("%-16s %d %s took %d ms, %d %s/s\r\r\n",
 //      desc, blocks, blockType, total, persec, blockType);
     
-    printf("%-16s %5.0f %s took %5.3f seconds, %8.3f %s/s \r\r\n",
-        desc, blocks, blockType, total, persec, blockType);
+   // printf("%-16s %5.0f %s took %5.3f seconds, %8.3f %s/s \r\r\n",
+   //     desc, blocks, blockType, total, persec, blockType);
 }
 
 
@@ -186,8 +186,8 @@ int bench_sym_hash(ATHW_DEV* dev, const char* desc, int algo,
     ATHW_HASH hash;
 
     XMEMSET(&hash, 0, sizeof(hash));
-    bench_stats_start(&count, &start);
-    do {
+    //bench_stats_start(&count, &start);
+    //do {
         rc = ATHW_HashStart(dev, &hash, algo,
         (const byte*)gUsageAuth, sizeof(gUsageAuth)-1);
         if (rc != 0) goto exit;
@@ -195,8 +195,8 @@ int bench_sym_hash(ATHW_DEV* dev, const char* desc, int algo,
         if (rc != 0) goto exit;
         rc = ATHW_HashFinish(dev, &hash, digest, &digestSz);
         if (rc != 0) goto exit;
-    } while (bench_stats_check(start, &count, maxDuration));
-    bench_stats_sym_finish(desc, count, inSz, start);
+    //} while (bench_stats_check(start, &count, maxDuration));
+    //bench_stats_sym_finish(desc, count, inSz, start);
 
 exit:
     return rc;

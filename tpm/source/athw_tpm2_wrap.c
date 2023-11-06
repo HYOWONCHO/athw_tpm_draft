@@ -2029,6 +2029,7 @@ int ATHW_HashStart(ATHW_DEV* dev, ATHW_HASH* hash,
     hash->handle.hndl = out.sequenceHandle;
 
 #ifdef ATHW_TPM_DEBUG
+#error "Debug must not use"
     tr_log("ATHW_HashStart: Handle 0x%x\r\n",
         (word32)out.sequenceHandle);
 #endif

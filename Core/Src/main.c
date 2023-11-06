@@ -28,6 +28,7 @@
 #include "tpm2_wrap.h"
 //#include "platform.h"
 #include "athw_tpm_wrap.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -87,10 +88,12 @@ int _write(int32_t file, uint8_t *ptr, int32_t len)
 {
     (void)file;
     
-    if( HAL_UART_Transmit(&huart1, ptr, len, len) == HAL_OK )
-        return len;
-    else
-        return 0;
+    //if( HAL_UART_Transmit(&huart1, ptr, len, 0xFFFF) == HAL_OK )
+    //    return len;
+    //else
+    //    return 0;
+
+    return HAL_UART_Transmit(&huart1, ptr, len, 0xFFFF);
 }
 
 
@@ -138,7 +141,7 @@ int main(void)
   //WOLFTPM2_SESSION tpmSession;
 
   athwtpm2_key_t storageKey;
-    athwtpm2_buf_t message;
+  athwtpm2_buf_t message;
   athwtpm2_buf_t cipher;
   athwtpm2_buf_t plain;
   
@@ -152,9 +155,17 @@ int main(void)
   TPM_ALG_ID paramEncAlg = TPM_RH_NULL;
 
   double maxDuration = 1;
+  HAL_StatusTypeDef hal_sts = HAL_OK;
+  
+  uint8_t respbuf[64] = {0x0, };
+  uint8_t txbuf[64] = {0, };
+  
+  uint8_t rxbuf[16] = {0, };
+  //char txbuf[1024] = {0, };
 
 
-     int count = 0L;
+
+  int count = 0L;
   uint32_t start;
 
   
@@ -195,37 +206,25 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  tr_log("ATHW Device begin");
+  //tr_log("ATHW Device begin");
   memset(&ctx, 0x0, sizeof ctx);
-//
-//ret = TPM2_Init_ex(&ctx, TPM2_IoCb, (void *)&hspi1, ATHW_TPM_TIMEOUT_RETRIES);
-//if (ret != ATHW_EOK)  {
-//  tr_log("TPM Init fail");
-//}
-//tr_log("TPM2 Init result %x", -ret);
   
   XMEMSET(&storageKey, 0, sizeof(storageKey));
   XMEMSET(&eccKey, 0, sizeof(eccKey));
   XMEMSET(&rsaKey, 0, sizeof(rsaKey));
-  
-
-  tr_log();
-  printf("TPM2 Benchmark using Wrapper API's\r\n");
-  printf("\tUse Parameter Encryption: %s\r\n", TPM2_GetAlgName(paramEncAlg));
-
-
-
+//printf("TPM2 Benchmark using Wrapper API's\r\n");
+//printf("\tUse Parameter Encryption: %s\r\n", TPM2_GetAlgName(paramEncAlg));
 
 
   ret = athw_tpm_init(&dev, (void *)TPM2_IoCb, &hspi1);
   if (ret != TPM_RC_SUCCESS) {
-    tr_log("TPM Init failedn 0x%x: %s", ret, TPM2_GetRCString(ret));
-    
+    //tr_log("TPM I/nit failedn 0x%x: %s", ret, TPM2_GetRCString(ret));
+
   }
-  
-      /* See if primary storage key already exists */
+//
+//    /* See if primary storage key already exists */
   ret = getPrimaryStoragekey(&dev, &storageKey, TPM_ALG_RSA);
-  if (ret != 0) 
+  if (ret != 0)
     goto exit;
   
 //if (paramEncAlg != TPM_ALG_NULL) {
@@ -242,24 +241,24 @@ int main(void)
 //      if (ret != 0) goto exit;
 //}
                          // RNG Benchmark
-  bench_stats_start(&count, &start);
-  do
-  {                              
-    ret = athw_tpm_getrandom((void *)&ctx, message.buffer, sizeof message.buffer);
-    if (ret == ATHW_EOK)
-    {
-      printf("\r\r\n");
-
-      _athw_print_bin("TPM2 GetRandom", message.buffer, sizeof message.buffer);
-    }
-  } while (bench_stats_check(start,&count, 1));
-  bench_stats_sym_finish("RNG", count, sizeof(message), start);
-  
-  sesnhndl.dev =  &dev;
-  sesnhndl.session =  &tpmsesn;
-  sesnhndl.key =  &storageKey;
-  sesnhndl.bindhndl = NULL;
-  
+//bench_stats_start(&count, &start);
+//do
+//{
+//  ret = athw_tpm_getrandom((void *)&ctx, message.buffer, sizeof message.buffer);
+//  if (ret == ATHW_EOK)
+//  {
+//    printf("\r\r\n");
+//
+//    _athw_print_bin("TPM2 GetRandom", message.buffer, sizeof message.buffer);
+//  }
+//} while (bench_stats_check(start,&count, 1));
+//bench_stats_sym_finish("RNG", count, sizeof(message), start);
+//
+//sesnhndl.dev =  &dev;
+//sesnhndl.session =  &tpmsesn;
+//sesnhndl.key =  &storageKey;
+//sesnhndl.bindhndl = NULL;
+//
   //
 //tr_log("encryption start");
 //
@@ -271,25 +270,37 @@ int main(void)
 //}
 //
 //tr_log("encryption rc : %d ", ret);
-
-  ret = bench_sym_hash(&dev, "SHA256", TPM_ALG_SHA256, message.buffer, 
-                        sizeof(message.buffer), cipher.buffer,
-                        TPM_SHA256_DIGEST_SIZE, maxDuration);
   
-  if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
-    tr_log("SHA256 operation fail with %d ", ret);
-    goto exit;
-  }
+//ret = bench_sym_hash(&dev, "SHA1", TPM_ALG_SHA1, message.buffer,
+//                      sizeof(message.buffer), cipher.buffer,
+//                      TPM_SHA_DIGEST_SIZE, maxDuration);
+//
+//if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
+//  tr_log("SHA256 operation fail with %d ", ret);
+//  goto exit;
+//}
+//
+//_athw_print_bin("SHA1 bench test", cipher.buffer, TPM_SHA_DIGEST_SIZE);
+//
+//
+//ret = bench_sym_hash(&dev, "SHA256", TPM_ALG_SHA256, message.buffer,
+//                      sizeof(message.buffer), cipher.buffer,
+//                      TPM_SHA256_DIGEST_SIZE, maxDuration);
+//
+//if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
+//  tr_log("SHA256 operation fail with %d ", ret);
+//  goto exit;
+//}
+//
+//_athw_print_bin("SHA256 bench test", cipher.buffer, TPM_SHA256_DIGEST_SIZE);
   
-  _athw_print_bin("SHA256 bench test", cipher.buffer, TPM_SHA256_DIGEST_SIZE);
-  
-  
+//
 //ret = bench_sym_hash(&dev, "SHA384", TPM_ALG_SHA384, message.buffer,
 //                      sizeof(message.buffer), cipher.buffer,
 //                      TPM_SHA384_DIGEST_SIZE, maxDuration);
 //
 //if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
-//  tr_log("SHA256 operation fail with %d ", ret);
+//  tr_log("SHA384 operation fail with %d ", ret);
 //  goto exit;
 //}
 //
@@ -333,12 +344,143 @@ exit:
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
 
+      
+      hal_sts = read(0, rxbuf, 3);
+      if (hal_sts != HAL_OK) {
+          continue;
+      }
+      
+      if(rxbuf[0] = 'A' && rxbuf[1] == 'T') {
+          ret = 0;
+      }
+
+      switch (rxbuf[2]) {
+      case  'g':
+      case  'G':
+        ret = athw_tpm_getrandom((void *)&ctx, message.buffer, sizeof message.buffer);
+//      if (ret == ATHW_EOK)
+//      {
+//        //printf("\r\r\n");
+//
+//        //_athw_print_bin("TPM2 GetRandom", message.buffer, sizeof message.buffer);
+//      }
+        
+        write(0, message.buffer, 32);
+
+        ret = 0;
+        break;
+      case 'h':
+      case 'H':
+          // = athw_tpm_getrandom((void *)&ctx, message.buffer, sizeof message.buffer);
+        
+        memset(message.buffer, 0x0, sizeof message.buffer);
+        memset(cipher.buffer, 0x0, sizeof cipher.buffer);
+        message.buffer[0] = 'h';
+        message.buffer[1] = 'e';
+        message.buffer[2] = 'l';
+        message.buffer[3] = 'l';
+        message.buffer[4] = 'o';
+        
+
+        
+        
+        ret = bench_sym_hash(&dev, "SHA256", TPM_ALG_SHA256, message.buffer,
+                             5, cipher.buffer,
+                             TPM_SHA256_DIGEST_SIZE, maxDuration);
+
+        write(0, cipher.buffer, 32);
+
+          break;
+      default:
+        ret = 0;
+        break;
+      }
+     
+
+//      int ret = 0;
+//      char rx = 0;
+//      char *message = "bech test signal\n";
+//    /* USER CODE END WHILE */
+//      //ret = sizeof *message;
+//
+//      memcpy(txbuf, message, strlen(message));
+//
+//      //ret = read(0, &rx, sizeof rx);
+//      rx = 'g';
+//      switch(rx) {
+//      case 'g':
+//          const char *g_message = "get random options";
+//          ret = strlen(g_message);
+//          memcpy(txbuf, g_message, ret);
+//          txbuf[ret] = '\n';
+//          //ret++;
+//          break;
+//      default:
+//          break;
+//      }
+//
+//
+//
+//    //strncpy(txbuf, message, ret);
+//
+//
+//    ret = write(0, txbuf, ret + 1);
+//
+//    //ret = HAL_UART_Transmit(&huart1, txbuf, strlen(message), 0xFFFF);
+//    if(ret == sizeof txbuf) {
+//        ret = sizeof txbuf;
+//    }
+//    else {
+//        ret = 0;
+//    }
+//#if 0
+//    int rc = 0;
+//    char cmd = 0;
+//    rc = read(0, txbuf, sizeof txbuf);
+//    if (rc > 0)  {
+//      if (memcmp(txbuf, "hello", 5) == 0)  {
+//        write(0, txbuf, 64);
+//        memset(txbuf, 0, sizeof txbuf);
+//      }
+//
+//      cmd = txbuf[0];
+//      memset(txbuf, 0, sizeof txbuf);
+//      switch (cmd)  {
+//      case 'g':
+//        //memset(txbuf, 0, sizeof txbuf);
+//        strcpy(txbuf, "random");
+//        write(0, txbuf, 64);
+//
+//        break;
+//      case 'h':
+//        //memset(txbuf, 0, sizeof txbuf);
+//        strcpy(txbuf, "hash");
+//        write(0, txbuf, 64);
+//
+//        break;
+//      default:
+//        //memset(txbuf, 0, sizeof txbuf);
+//        strcpy(txbuf, "Invalid command");
+//        write(0, txbuf, 64);
+//                break;
+//      }
+//
+//
+//    }
+//#endif
+//    //write(0, txbuf, sizeof txbuf);
+//    delay_ms(1000);
+
+
+   
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
+
+
+
 
 /**
   * @brief System Clock Configuration

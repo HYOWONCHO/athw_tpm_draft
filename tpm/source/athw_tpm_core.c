@@ -92,6 +92,7 @@ athw_release:
 
 int athw_tpm_get_desc(void *dev, char *buf, int size)
 {
+#if 0
     athw_dev_t *chip = (athw_dev_t *)dev;
 
     if (size < 80)
@@ -102,6 +103,8 @@ int athw_tpm_get_desc(void *dev, char *buf, int size)
             "ATHW Module", chip->vend_dev & 0xFFFF,
             chip->vend_dev >> 16, chip->rid,
             (chip->is_open ? "open" : "closed"));
+#endif
+    return 0;
 }
 
 

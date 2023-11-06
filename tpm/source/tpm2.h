@@ -3624,11 +3624,11 @@ WOLFTPM_API UINT16 TPM2_GetVendorID(void);
 WOLFTPM_LOCAL void TPM2_ForceZero(void* mem, word32 len);
 
 
-#ifdef DEBUG_WOLFTPM
+#ifdef ATHW_TPM_DEBUG
 /*!
     \ingroup TPM2_Proprietary
     \brief Helper function to print a binary buffer in a formatted way
-    \r\note Requires DEBUG_WOLFTPM to be defined
+    \r\note Requires ATHW_TPM_DEBUG to be defined
 
     \param buffer pointer to a buffer of BYTE type
     \param length integer value of word32 type, containing the size of the buffer
@@ -3649,7 +3649,7 @@ WOLFTPM_API void TPM2_PrintBin(const byte* buffer, word32 length);
 /*!
     \ingroup TPM2_Proprietary
     \brief Helper function to print a structure of TPMS_AUTH_COMMAND type in a human readable way
-    \r\note Requires DEBUG_WOLFTPM to be defined
+    \r\note Requires ATHW_TPM_DEBUG to be defined
 
     \param authCmd pointer to a populated structure of TPMS_AUTH_COMMAND type
 
@@ -3668,7 +3668,7 @@ WOLFTPM_API void TPM2_PrintAuth(const TPMS_AUTH_COMMAND* authCmd);
 /*!
     \ingroup TPM2_Proprietary
     \brief Helper function to print a structure of TPM2B_PUBLIC type in a human readable way
-    \r\note Requires DEBUG_WOLFTPM to be defined
+    \r\note Requires ATHW_TPM_DEBUG to be defined
 
     \param pub pointer to a populated structure of TPM2B_PUBLIC type
 

@@ -76,8 +76,8 @@ typedef int64_t  INT64;
 #endif
 
 /* Debug build options */
-#if defined(ATHW_DEBUG_TPM) && !defined(DEBUG_WOLFTPM)
-    #define DEBUG_WOLFTPM
+#if defined(ATHW_DEBUG_TPM) && !defined(ATHW_TPM_DEBUG)
+    #define ATHW_TPM_DEBUG
 #endif
 
 /* ---------------------------------------------------------------------------*/
@@ -114,7 +114,7 @@ typedef int64_t  INT64;
         #include <wolfssl/ssl.h> /* for wolfSSL_ERR_reason_error_string */
     #endif
 
-    #ifdef DEBUG_WOLFTPM
+    #ifdef ATHW_TPM_DEBUG
         #include <stdio.h>
     #endif
 

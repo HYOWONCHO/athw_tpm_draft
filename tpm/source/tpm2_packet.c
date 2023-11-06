@@ -337,7 +337,7 @@ int TPM2_GetCmdAuthCount(TPM2_CTX* ctx, const CmdInfo_t* info)
         else {
             /* This will result in a TPM_RC_AUTH_MISSING auth error from the TPM
              * Make sure the wolfTPM2_SetAuth* API is called for the index! */
-        #ifdef DEBUG_WOLFTPM
+        #ifdef ATHW_TPM_DEBUG
             printf("Warning: Command requires auth at index %d!\r\n",
                 sessionCount);
         #endif
@@ -523,7 +523,7 @@ void TPM2_Packet_AppendEccPoint(TPM2_Packet* packet, TPMS_ECC_POINT* point)
 void TPM2_Packet_ParseEccPoint(TPM2_Packet* packet, TPMS_ECC_POINT* point)
 {
     if (point == NULL) {
-#ifdef DEBUG_WOLFTPM
+#ifdef ATHW_TPM_DEBUG
         printf("Error null argument passed to TPM2_Packet_ParseEccPoint()\r\n");
 #endif
         return; /* help out static analysis */
@@ -828,7 +828,7 @@ void TPM2_Packet_ParseAttest(TPM2_Packet* packet, TPMS_ATTEST* out)
 
     TPM2_Packet_ParseU32(packet, &out->magic);
     if (out->magic != TPM_GENERATED_VALUE) {
-    #ifdef DEBUG_WOLFTPM
+    #ifdef ATHW_TPM_DEBUG
         printf("Attestation magic invalid!\r\n");
     #endif
         return;
@@ -909,7 +909,7 @@ void TPM2_Packet_ParseAttest(TPM2_Packet* packet, TPMS_ATTEST* out)
             break;
         default:
             /* unknown attestation type */
-        #ifdef DEBUG_WOLFTPM
+        #ifdef ATHW_TPM_DEBUG
             printf("Unknown attestation type: 0x%x\r\n", out->type);
         #endif
             break;
