@@ -190,3 +190,5 @@ Debug/util/source/athw_mem.su
 *.BAK
 Core/Src/main.c.BAK
 Core/Src/main.c.BAK
+*.vpwwildcardcache
+*.vpwhistu

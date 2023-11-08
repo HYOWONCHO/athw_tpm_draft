@@ -159,12 +159,7 @@ int main(void)
   
   uint8_t respbuf[64] = {0x0, };
   uint8_t txbuf[64] = {0, };
-  
   uint8_t rxbuf[16] = {0, };
-  //char txbuf[1024] = {0, };
-
-
-
   int count = 0L;
   uint32_t start;
 
@@ -221,126 +216,15 @@ int main(void)
     //tr_log("TPM I/nit failedn 0x%x: %s", ret, TPM2_GetRCString(ret));
 
   }
-//
-//    /* See if primary storage key already exists */
+  
+  /* See if primary storage key already exists */
   ret = getPrimaryStoragekey(&dev, &storageKey, TPM_ALG_RSA);
   if (ret != 0)
     goto exit;
   
-//if (paramEncAlg != TPM_ALG_NULL) {
-//        /* Start an authenticated session (salted / unbound) with parameter encryption */
-//      ret = ATHWTPM2_StartSession(&dev, &tpmSession, &storageKey, NULL,
-//          TPM_SE_HMAC, paramEncAlg);
-//      if (ret != 0) goto exit;
-//      printf("TPM2_StartAuthSession: sessionHandle 0x%x\r\n",
-//          (word32)tpmSession.handle.hndl);
-//
-//      /* set session for authorization of the storage key */
-//      ret = ATHWTPM2_SetAuthSession(&dev, 1, &tpmSession,
-//          (TPMA_SESSION_decrypt | TPMA_SESSION_encrypt | TPMA_SESSION_continueSession));
-//      if (ret != 0) goto exit;
-//}
-                         // RNG Benchmark
-//bench_stats_start(&count, &start);
-//do
-//{
-//  ret = athw_tpm_getrandom((void *)&ctx, message.buffer, sizeof message.buffer);
-//  if (ret == ATHW_EOK)
-//  {
-//    printf("\r\r\n");
-//
-//    _athw_print_bin("TPM2 GetRandom", message.buffer, sizeof message.buffer);
-//  }
-//} while (bench_stats_check(start,&count, 1));
-//bench_stats_sym_finish("RNG", count, sizeof(message), start);
-//
-//sesnhndl.dev =  &dev;
-//sesnhndl.session =  &tpmsesn;
-//sesnhndl.key =  &storageKey;
-//sesnhndl.bindhndl = NULL;
-//
-  //
-//tr_log("encryption start");
-//
-//ret = bench_sym_aes(&dev, &storageKey, "AES-128-CBC-end", TPM_ALG_CBC, 128,
-//                    message.buffer, cipher.buffer, sizeof message.buffer,
-//                    NO, 1);
-//if (ret == 0 && !(ret == TPM_RC_COMMAND_CODE))  {
-//  _athw_print_bin("TPM_ALG_CBC Encrypt", cipher.buffer, sizeof cipher.buffer);
-//}
-//
-//tr_log("encryption rc : %d ", ret);
-  
-//ret = bench_sym_hash(&dev, "SHA1", TPM_ALG_SHA1, message.buffer,
-//                      sizeof(message.buffer), cipher.buffer,
-//                      TPM_SHA_DIGEST_SIZE, maxDuration);
-//
-//if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
-//  tr_log("SHA256 operation fail with %d ", ret);
-//  goto exit;
-//}
-//
-//_athw_print_bin("SHA1 bench test", cipher.buffer, TPM_SHA_DIGEST_SIZE);
-//
-//
-//ret = bench_sym_hash(&dev, "SHA256", TPM_ALG_SHA256, message.buffer,
-//                      sizeof(message.buffer), cipher.buffer,
-//                      TPM_SHA256_DIGEST_SIZE, maxDuration);
-//
-//if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
-//  tr_log("SHA256 operation fail with %d ", ret);
-//  goto exit;
-//}
-//
-//_athw_print_bin("SHA256 bench test", cipher.buffer, TPM_SHA256_DIGEST_SIZE);
-  
-//
-//ret = bench_sym_hash(&dev, "SHA384", TPM_ALG_SHA384, message.buffer,
-//                      sizeof(message.buffer), cipher.buffer,
-//                      TPM_SHA384_DIGEST_SIZE, maxDuration);
-//
-//if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
-//  tr_log("SHA384 operation fail with %d ", ret);
-//  goto exit;
-//}
-//
-//_athw_print_bin("SHA384 bench test", cipher.buffer, TPM_SHA384_DIGEST_SIZE);
-//
-//
-//ret = bench_sym_hash(&dev, "SHA512", TPM_ALG_SHA512, message.buffer,
-//                      sizeof(message.buffer), cipher.buffer,
-//                      TPM_SHA512_DIGEST_SIZE, maxDuration);
-//
-//if (ret != 0 && (ret & TPM_RC_HASH) != TPM_RC_HASH) {
-//  tr_log("SHA256 operation fail with %d ", ret);
-//  goto exit;
-//}
-//
-//_athw_print_bin("SHA512 bench test", cipher.buffer, TPM_SHA512_DIGEST_SIZE);
-
-  
-  
-
-  
-
-
-  
-  //athw_tpm_dev_init(&udev);
-  
-  
-
-//
-//while (1) {
-//   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13|GPIO_PIN_11|GPIO_PIN_12, GPIO_PIN_SET);
-//   delay_ms(300);
-//   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13|GPIO_PIN_11|GPIO_PIN_12, GPIO_PIN_RESET);
-//   delay_ms(300);
-//}
-
-  //athw_tpm_dev_init(&udev);
   /* USER CODE END 2 */
-exit:
   /* Infinite loop */
+exit:
   /* USER CODE BEGIN WHILE */
   while (1)
   {
@@ -359,13 +243,6 @@ exit:
       case  'g':
       case  'G':
         ret = athw_tpm_getrandom((void *)&ctx, message.buffer, sizeof message.buffer);
-//      if (ret == ATHW_EOK)
-//      {
-//        //printf("\r\r\n");
-//
-//        //_athw_print_bin("TPM2 GetRandom", message.buffer, sizeof message.buffer);
-//      }
-        
         write(0, message.buffer, 32);
 
         ret = 0;
@@ -376,14 +253,6 @@ exit:
         
         memset(message.buffer, 0x0, sizeof message.buffer);
         memset(cipher.buffer, 0x0, sizeof cipher.buffer);
-        message.buffer[0] = 'h';
-        message.buffer[1] = 'e';
-        message.buffer[2] = 'l';
-        message.buffer[3] = 'l';
-        message.buffer[4] = 'o';
-        
-
-        
         
         ret = bench_sym_hash(&dev, "SHA256", TPM_ALG_SHA256, message.buffer,
                              5, cipher.buffer,
@@ -398,79 +267,6 @@ exit:
       }
      
 
-//      int ret = 0;
-//      char rx = 0;
-//      char *message = "bech test signal\n";
-//    /* USER CODE END WHILE */
-//      //ret = sizeof *message;
-//
-//      memcpy(txbuf, message, strlen(message));
-//
-//      //ret = read(0, &rx, sizeof rx);
-//      rx = 'g';
-//      switch(rx) {
-//      case 'g':
-//          const char *g_message = "get random options";
-//          ret = strlen(g_message);
-//          memcpy(txbuf, g_message, ret);
-//          txbuf[ret] = '\n';
-//          //ret++;
-//          break;
-//      default:
-//          break;
-//      }
-//
-//
-//
-//    //strncpy(txbuf, message, ret);
-//
-//
-//    ret = write(0, txbuf, ret + 1);
-//
-//    //ret = HAL_UART_Transmit(&huart1, txbuf, strlen(message), 0xFFFF);
-//    if(ret == sizeof txbuf) {
-//        ret = sizeof txbuf;
-//    }
-//    else {
-//        ret = 0;
-//    }
-//#if 0
-//    int rc = 0;
-//    char cmd = 0;
-//    rc = read(0, txbuf, sizeof txbuf);
-//    if (rc > 0)  {
-//      if (memcmp(txbuf, "hello", 5) == 0)  {
-//        write(0, txbuf, 64);
-//        memset(txbuf, 0, sizeof txbuf);
-//      }
-//
-//      cmd = txbuf[0];
-//      memset(txbuf, 0, sizeof txbuf);
-//      switch (cmd)  {
-//      case 'g':
-//        //memset(txbuf, 0, sizeof txbuf);
-//        strcpy(txbuf, "random");
-//        write(0, txbuf, 64);
-//
-//        break;
-//      case 'h':
-//        //memset(txbuf, 0, sizeof txbuf);
-//        strcpy(txbuf, "hash");
-//        write(0, txbuf, 64);
-//
-//        break;
-//      default:
-//        //memset(txbuf, 0, sizeof txbuf);
-//        strcpy(txbuf, "Invalid command");
-//        write(0, txbuf, 64);
-//                break;
-//      }
-//
-//
-//    }
-//#endif
-//    //write(0, txbuf, sizeof txbuf);
-//    delay_ms(1000);
 
 
    
